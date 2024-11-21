@@ -1,14 +1,15 @@
 import { Document, Schema, model } from 'mongoose'
 
-interface BuyerDoc extends Document {
+interface SellerDoc extends Document {
   name: string
   email: string
   phone: string
   password: string
+  companyDetails: string[]
   lastLogin: Date
 }
 
-const BuyerSchema: Schema = new Schema<BuyerDoc>(
+const SellerSchema: Schema = new Schema<SellerDoc>(
   {
     name: {
       type: String,
@@ -17,6 +18,7 @@ const BuyerSchema: Schema = new Schema<BuyerDoc>(
     phone: {
       type: String,
       default: '',
+      required: true,
     },
     email: {
       type: String,
@@ -28,6 +30,10 @@ const BuyerSchema: Schema = new Schema<BuyerDoc>(
       type: String,
       default: '',
     },
+    companyDetails: {
+      type: [String],
+      default: [],
+    },
     lastLogin: {
       type: Date,
       default: Date.now(),
@@ -36,6 +42,6 @@ const BuyerSchema: Schema = new Schema<BuyerDoc>(
   { timestamps: true },
 )
 
-const Buyer = model<BuyerDoc>('Buyer', BuyerSchema)
+const Seller = model<SellerDoc>('Seller', SellerSchema)
 
-export default Buyer
+export default Seller
