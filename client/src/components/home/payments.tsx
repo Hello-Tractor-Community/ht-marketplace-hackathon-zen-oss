@@ -1,5 +1,5 @@
 import 'swiper/css'
-import "./custom.css"
+import './custom.css'
 import React from 'react'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -44,7 +44,7 @@ export default function Payments() {
 					navigation={false}
 					pagination={true}
 					modules={[Autoplay, Navigation, Pagination]}
-					className={cn('mySwiper border h-full w-full shadow-xl')}
+					className={cn('mySwiper h-full w-full border shadow-xl')}
 				>
 					<SwiperSlide className='relative py-10'>
 						<div
