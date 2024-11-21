@@ -1,5 +1,11 @@
+"use client"
+
+import Banner from "@/components/home/banner";
+
 export default function Home() {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>Hello from landing page</main>
+      <>
+        <Banner/>
+      </>
   )
 }

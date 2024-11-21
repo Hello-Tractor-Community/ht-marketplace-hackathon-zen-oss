@@ -13,7 +13,7 @@ export default function Advert() {
 		<section className='relative hidden w-full border-b border-neutral-200 lg:flex'>
 			<div className='container h-full w-full'>
 				<div className='flex h-full w-full items-center justify-between'>
-					<div className='flex'>Welcome to Carrefour Store</div>
+					<div className='flex'>Welcome to Hello Tractor Store</div>
 					<div className='flex items-center gap-8'>
 						<Link
 							id='contact'
