@@ -1,4 +1,5 @@
-import React, {  useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 import { cn } from '@/lib/utils'
@@ -6,20 +7,34 @@ import './custom.css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css'
-import ProductCard from '../cards/product-card'
+import Link from 'next/link'
 
-export default function FeaturesProducts() {
+export default function BrandList() {
 	const [loading, setLoading] = useState(false)
-	const [products, setProducts] = useState([])
+	const [brands, setBrands] = useState([])
+
+	useEffect(() => {
+		const getProducts = () => {
+			setLoading(true)
+			axios
+				.get(process.env.NEXT_PUBLIC_API_URL + '/api/brands')
+				.then((response) => {
+					setBrands(response.data.data)
+				})
+				.catch((error) => {
+					console.log(error.message)
+				})
+				.finally(() => {
+					setLoading(false)
+				})
+		}
+		getProducts()
+	}, [])
 
 	return (
 		<section className='relative py-10'>
 			<div className='container h-full w-full'>
-				<div className='relative flex w-full'>
-					<h1 className='after:bg-primary-700 w-full border-b border-b-gray-300 pb-2 text-xl font-bold capitalize after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-[80px]'>
-						Feature Heading
-					</h1>
-				</div>
+				{loading && <div>Loading...</div>}
 				<Swiper
 					breakpoints={{
 						360: {
@@ -52,10 +67,12 @@ export default function FeaturesProducts() {
 					navigation={false}
 					pagination={true}
 					modules={[Autoplay, Navigation, Pagination]}
-					className={cn('mySwiper h-full w-full')}
+					className={cn(
+						'mySwiper flex w-full justify-between gap-10 border border-gray-200 py-10'
+					)}
 				>
-					<SwiperSlide className='relative py-10'>
-						<ProductCard loading={loading} />
+					<SwiperSlide className='relative py-6'>
+						<Link href='#'>Tractor brand</Link>
 					</SwiperSlide>
 				</Swiper>
 			</div>
