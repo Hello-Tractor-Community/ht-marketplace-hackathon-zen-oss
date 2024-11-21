@@ -1,16 +1,16 @@
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import { ChevronRight } from 'lucide-react'
-import Link from 'next/link'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Pagination, Navigation } from 'swiper/modules'
-import { cn } from '@/lib/utils'
+import React, { useState } from 'react'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css'
+import "./custom.css"
+import { ChevronRight } from 'lucide-react'
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
 import { m } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 
 export default function Banner() {
 	return (
