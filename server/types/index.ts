@@ -21,3 +21,25 @@ export interface WsMessageDataType {
     data: any
   }
 }
+
+export interface SearchTractorQuery {
+  $or?: Array<{
+    title?: RegExp
+    description?: RegExp
+  }>
+  title?: RegExp
+  description?: RegExp
+  category?: string
+  price?: {
+    $gte?: number
+    $lte?: number
+  }
+  shipping_options?: string
+  delivery_times?: {
+    $lte?: number
+  }
+  costs?: {
+    $gte?: number
+    $lte?: number
+  }
+}

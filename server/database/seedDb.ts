@@ -2,12 +2,15 @@ import bcrypt from 'bcrypt'
 import { Logger } from 'borgen'
 import Admin from '../models/admin.model'
 import SiteSettings from '../models/settings.model'
+import { dealers } from './seed-data'
+import Dealer from '../models/dealer.model'
 
 function seedDatabase() {
   Logger.info({ message: 'Initializing database...' })
   try {
     seedSettings()
     seedAdmin()
+    seedDealers()
     return true
   } catch (err) {
     Logger.error({ message: 'Database initialization failed : ' + err })
@@ -50,6 +53,41 @@ async function seedAdmin() {
     }
   } catch (err) {
     Logger.error({ message: 'Error initializing Admin' + err })
+  }
+}
+
+// Seed the dealers
+async function seedDealers() {
+  Logger.info({ message: 'Initializing Dealers...' })
+  try {
+    for (const dealer of dealers) {
+      let existingDealers = await Dealer.findOne({
+        phone: { $in: dealer.phone },
+      }).exec()
+      if (!existingDealers) {
+        let newDealer = new Dealer({
+          dealer_type: dealer.dealer_type,
+          phone: dealer.phone,
+          address: dealer.address,
+          location: dealer.location,
+        })
+
+        Logger.info({
+          message: 'Dealer seeded successfully',
+          messageColor: 'greenBright',
+          infoColor: 'gray',
+        })
+
+        await newDealer.save()
+      } else {
+        Logger.info({
+          message: 'Dealer already exist in Db',
+          messageColor: 'magentaBright',
+        })
+      }
+    }
+  } catch (err) {
+    Logger.error({ message: 'Error initializing Dealers' + err })
   }
 }
 

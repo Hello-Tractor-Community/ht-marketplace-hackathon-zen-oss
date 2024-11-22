@@ -7,6 +7,7 @@ import * as UserController from '../../controllers/user.Controller'
 const router = Router()
 
 // User routes
+{/*}
 router.post('/', UserController.createUser)
 router.post('/login', adminAuth, UserController.loginUser)
 router.get('/', adminAuth, UserController.getUser)
@@ -18,3 +19,5 @@ router.delete('/', adminAuth, UserController.deleteUser)
 router.get('/search', adminAuth, UserController.searchUser)
 
 export default router
+
+*/}
