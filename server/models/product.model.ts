@@ -10,6 +10,7 @@ interface ProductDoc extends Document {
   shipping_options: string[]
   delivery_times: string[]
   costs: number
+  views: number
 }
 
 const ProductSchema: Schema = new Schema<ProductDoc>(
@@ -50,6 +51,10 @@ const ProductSchema: Schema = new Schema<ProductDoc>(
       type: Number,
       default: 0,
     },
+    views: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true },
 )

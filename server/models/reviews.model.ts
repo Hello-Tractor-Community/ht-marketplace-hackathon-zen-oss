@@ -6,6 +6,7 @@ interface ReviewsDoc extends Document {
   title: string
   description: string
   rating: number
+  response: string
 }
 
 const ReviewsSchema: Schema = new Schema<ReviewsDoc>(
@@ -28,7 +29,11 @@ const ReviewsSchema: Schema = new Schema<ReviewsDoc>(
     rating: {
       type: Number,
       default: 0,
-    }
+    },
+    response: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true },
 )

@@ -1,22 +1,23 @@
 import { Logger } from 'borgen'
-import Seller from '../models/seller.model'
-import axios, { HttpStatusCode } from 'axios'
+import Buyer from '../models/buyer.model'
+import { HttpStatusCode } from 'axios'
 import type { IServerResponse } from '../types'
 import type { Request, Response } from 'express'
 import SiteSettings from '../models/settings.model'
-import { signJwtToken, verifyJwtToken } from '../utils/utils'
+import { signJwtToken } from '../utils/utils'
 import { Config } from '../utils/config'
 import bcrypt from 'bcrypt'
 
 let isProduction = Config.NODE_ENV === 'production'
 
-// Create a seller
-// @route POST /api/v1/seller
-export const createSeller = async (
+// Create a buyer
+// @route POST /api/v1/buyer
+export const createBuyer = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
-  const { name, email, phone, password, companyDetails } = req.body
+  const { name, email, phone, password } = req.body
+
   try {
     if (!name || !email || !password || !phone) {
       return res.status(HttpStatusCode.BadRequest).json({
@@ -26,10 +27,10 @@ export const createSeller = async (
       })
     }
 
-    // Check if seller exists
-    let seller = await Seller.findOne({ email })
+    // Check if buyer exists
+    let buyer = await Buyer.findOne({ email })
 
-    if (seller) {
+    if (buyer) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Account already exists. Please login!',
@@ -51,33 +52,32 @@ export const createSeller = async (
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message:
-          "We're not accepting new sellers at the moment. Please try again later.",
+          "We're not accepting new buyers at the moment. Please try again later.",
         data: null,
       })
     }
 
     let hashedPassword = await bcrypt.hash(password, 10)
 
-    let newSeller = new Seller({
+    let newBuyer = new Buyer({
       name,
       email,
       phone,
-      companyDetails,
       password: hashedPassword,
     })
 
-    let savedSeller = await newSeller.save()
+    let savedBuyer = await newBuyer.save()
 
-    if (!savedSeller) {
+    if (!savedBuyer) {
       return res.status(HttpStatusCode.InternalServerError).json({
         status: 'error',
-        message: 'Error creating seller',
+        message: 'Error creating buyer',
         data: null,
       })
     }
 
     let signedToken = signJwtToken({
-      payload: savedSeller.id,
+      payload: savedBuyer.id,
       expiresIn: '7d',
     })
 
@@ -96,13 +96,13 @@ export const createSeller = async (
       httpOnly: isProduction,
     })
 
-    const { password: _, ...sellerWithoutPassword } = savedSeller.toObject()
+    const { password: _, ...buyerWithoutPassword } = savedBuyer.toObject()
 
     return res.status(HttpStatusCode.Created).json({
       status: 'success',
       message: 'Account created successfully',
       data: {
-        seller: sellerWithoutPassword,
+        buyer: buyerWithoutPassword,
       },
     })
   } catch (err) {
@@ -115,8 +115,8 @@ export const createSeller = async (
   }
 }
 
-// Login a seller
-// @route POST /api/v1/seller/login
+// Login a buyer
+// @route POST /api/v1/buyer/login
 export const loginSeller = async (
   req: Request,
   res: Response<IServerResponse>,
@@ -131,10 +131,10 @@ export const loginSeller = async (
       })
     }
 
-    // Check if seller exists
-    let seller = await Seller.findOne({ email })
+    // Check if buyer exists
+    let buyer = await Buyer.findOne({ email })
 
-    if (!seller) {
+    if (!buyer) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Invalid email or password',
@@ -142,7 +142,7 @@ export const loginSeller = async (
       })
     }
 
-    let isMatch = await bcrypt.compare(password, seller.password)
+    let isMatch = await bcrypt.compare(password, buyer.password)
 
     if (!isMatch) {
       return res.status(HttpStatusCode.BadRequest).json({
@@ -152,11 +152,11 @@ export const loginSeller = async (
       })
     }
 
-    seller.lastLogin = new Date()
-    await seller.save()
+    buyer.lastLogin = new Date()
+    await buyer.save()
 
     let signedToken = signJwtToken({
-      payload: seller.id,
+      payload: buyer.id,
       expiresIn: '7d',
     })
 
@@ -175,13 +175,13 @@ export const loginSeller = async (
       httpOnly: isProduction,
     })
 
-    const { password: _, ...sellerWithoutPassword } = seller.toObject()
+    const { password: _, ...buyerWithoutPassword } = buyer.toObject()
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'User logged in successfully',
       data: {
-        seller: sellerWithoutPassword,
+        buyer: buyerWithoutPassword,
         token: signedToken,
       },
     })
@@ -196,8 +196,8 @@ export const loginSeller = async (
   }
 }
 
-// Logout seller
-// @route GET /api/v1/seller/logout
+// Logout buyer
+// @route GET /api/v1/buyer/logout
 export const logoutSeller = async (
   _: Request,
   res: Response<IServerResponse>,
@@ -206,19 +206,19 @@ export const logoutSeller = async (
 
   res.status(HttpStatusCode.Ok).json({
     status: 'success',
-    message: 'Seller logged out successfully',
+    message: 'Buyer logged out successfully',
     data: null,
   })
 }
 
-// Update seller phone
-// @route PUT /api/v1/seller/phone
+// Update buyer phone
+// @route PUT /api/v1/buyer/phone
 export const updateSellerPhone = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
   const { phone } = req.body
-  const sellerId = res.locals.userId
+  const buyerId = res.locals.userId
 
   try {
     if (!phone) {
@@ -233,16 +233,16 @@ export const updateSellerPhone = async (
       })
     }
 
-    let seller = await Seller.findByIdAndUpdate(
-      sellerId,
+    let buyer = await Buyer.findByIdAndUpdate(
+      buyerId,
       { phone },
       { new: true },
     )
 
-    if (!seller) {
+    if (!buyer) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
-        message: 'Seller not found',
+        message: 'Buyer not found',
         data: null,
       })
     }
@@ -251,7 +251,7 @@ export const updateSellerPhone = async (
       status: 'success',
       message: 'User updated successfully',
       data: {
-        phone: seller.phone,
+        phone: buyer.phone,
       },
     })
   } catch (err) {
@@ -265,14 +265,14 @@ export const updateSellerPhone = async (
   }
 }
 
-// Update seller password
-// @route PUT /api/v1/seller/password
-export const updateSellerPassword = async (
+// Update buyer password
+// @route PUT /api/v1/buyer/password
+export const updateBuyerPassword = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
   const { oldPassword, newPassword } = req.body
-  const sellerId = res.locals.sellerId
+  const buyerId = res.locals.buyerId
 
   try {
     if (!oldPassword || !newPassword) {
@@ -287,17 +287,17 @@ export const updateSellerPassword = async (
       })
     }
 
-    let seller = await Seller.findById(sellerId)
+    let buyer = await Buyer.findById(buyerId)
 
-    if (!seller) {
+    if (!buyer) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
-        message: 'Seller not found',
+        message: 'Buyer not found',
         data: null,
       })
     }
 
-    let isMatch = await bcrypt.compare(oldPassword, seller.password)
+    let isMatch = await bcrypt.compare(oldPassword, buyer.password)
 
     if (!isMatch) {
       return res.status(HttpStatusCode.BadRequest).json({
@@ -307,8 +307,8 @@ export const updateSellerPassword = async (
       })
     }
 
-    seller.password = await bcrypt.hash(newPassword, 10)
-    await seller.save()
+    buyer.password = await bcrypt.hash(newPassword, 10)
+    await buyer.save()
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
@@ -326,9 +326,9 @@ export const updateSellerPassword = async (
   }
 }
 
-// Update seller details
-// @route PUT /api/v1/seller/?id=seller_id
-export const updateSellerDetails = async (
+// Update buyer details
+// @route PUT /api/v1/buyer/?id=seller_id
+export const updateBuyerDetails = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
@@ -336,24 +336,24 @@ export const updateSellerDetails = async (
     const { id } = req.query
     const { name, email } = req.body
 
-    let seller = await Seller.findById(id)
+    let buyer = await Buyer.findById(id)
 
-    if (!seller) {
+    if (!buyer) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
-        message: 'Seller not found',
+        message: 'Buyer not found',
         data: null,
       })
     }
 
-    if (name) seller.name = name
-    if (email) seller.email = email
+    if (name) buyer.name = name
+    if (email) buyer.email = email
 
-    let updatedSeller = await seller.save()
+    let updatedSeller = await buyer.save()
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
-      message: 'Seller updated successfully',
+      message: 'Buyer updated successfully',
       data: updatedSeller,
     })
   } catch (err) {
@@ -361,15 +361,15 @@ export const updateSellerDetails = async (
 
     res.status(HttpStatusCode.InternalServerError).json({
       status: 'error',
-      message: 'Error updating seller',
+      message: 'Error updating buyer',
       data: null,
     })
   }
 }
 
-// Get seller details
-// @route GET /api/v1/seller/?id=seller_id
-export const getSeller = async (
+// Get buyer details
+// @route GET /api/v1/buyer/?id=buyer_id
+export const getBuyer = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
@@ -383,12 +383,12 @@ export const getSeller = async (
       })
     }
 
-    let seller = await Seller.findById(id)
+    let buyer = await Buyer.findById(id)
 
-    if (!seller) {
+    if (!buyer) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
-        message: 'Seller not found',
+        message: 'Buyer not found',
         data: null,
       })
     }
@@ -396,7 +396,7 @@ export const getSeller = async (
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'User found',
-      data: seller,
+      data: buyer,
     })
   } catch (err) {
     Logger.error({ message: 'Error getting user' + err })
@@ -409,61 +409,9 @@ export const getSeller = async (
   }
 }
 
-// Search for a seller by name
-// @route GET /api/v1/seller/search?type=name&term=seller_name
-export const searchSeller = async (
-  req: Request,
-  res: Response<IServerResponse>,
-) => {
-  const { type, term } = req.query
-  try {
-    if ((type !== 'name' && type !== 'id') || !term) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Please enter all fields',
-        data: null,
-      })
-    }
-
-    let seller
-    if (type === 'id') {
-      seller = await Seller.findOne({ id: term })
-    } else {
-      seller = await Seller.findOne({
-        $or: [
-          { name: { $regex: term, $options: 'i' } },
-          { email: { $regex: term, $options: 'i' } },
-        ],
-      })
-    }
-
-    if (!seller) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'User not found',
-        data: null,
-      })
-    }
-
-    res.status(HttpStatusCode.Ok).json({
-      status: 'success',
-      message: 'User found',
-      data: seller,
-    })
-  } catch (err) {
-    Logger.error({ message: 'Error searching user' + err })
-
-    res.status(HttpStatusCode.InternalServerError).json({
-      status: 'error',
-      message: 'Error searching user',
-      data: null,
-    })
-  }
-}
-
-// Get all sellers
-// @route GET /api/v1/seller/all/?page=1&limit=10
-export const getAllSellers = async (
+// Get all buyers
+// @route GET /api/v1/buyer/all/?page=1&limit=10
+export const getAllBuyers = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
@@ -472,17 +420,17 @@ export const getAllSellers = async (
     const limit = parseInt(req.query.limit as string) || 10
     const skip = (page - 1) * limit
 
-    const [sellers, totalSellers] = await Promise.all([
-      Seller.find().skip(skip).limit(limit),
-      Seller.countDocuments(),
+    const [buyers, totalBuyers] = await Promise.all([
+      Buyer.find().skip(skip).limit(limit),
+      Buyer.countDocuments(),
     ])
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'Users found',
       data: {
-        sellers,
-        totalSellers,
+        buyers,
+        totalBuyers,
         page,
       },
     })
@@ -497,8 +445,8 @@ export const getAllSellers = async (
   }
 }
 
-// Delete seller
-// @route DELETE /api/v1/seller/?id=user_id
+// Delete buyer
+// @route DELETE /api/v1/buyer/?id=buyer_id
 export const deleteSeller = async (
   req: Request,
   res: Response<IServerResponse>,
@@ -513,19 +461,19 @@ export const deleteSeller = async (
       })
     }
 
-    let seller = await Seller.findByIdAndDelete(id)
+    let buyer = await Buyer.findByIdAndDelete(id)
 
-    if (!seller) {
+    if (!buyer) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
-        message: 'Seller not found',
+        message: 'Buyer not found',
         data: null,
       })
     }
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
-      message: 'Seller deleted successfully',
+      message: 'Buyer deleted successfully',
       data: null,
     })
   } catch (err) {
@@ -533,7 +481,7 @@ export const deleteSeller = async (
 
     res.status(HttpStatusCode.InternalServerError).json({
       status: 'error',
-      message: 'Error deleting seller',
+      message: 'Error deleting buyer',
       data: null,
     })
   }
