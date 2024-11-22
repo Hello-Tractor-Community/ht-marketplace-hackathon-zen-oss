@@ -67,16 +67,18 @@ export default function Footer() {
 					<ul className='space-y-3 text-sm text-gray-300'>
 						<li>
 							<Link
-								href='/equipment-owners'
+								href='https://hellotractor.com/equipment-owners'
 								className='transition-colors hover:text-white'
+								target='_blank'
 							>
 								For Equipment Owners
 							</Link>
 							<ul className='ml-4 mt-2'>
 								<li>
 									<Link
-										href='/demo-request'
+										href='https://hellotractor.com/demo-request'
 										className='transition-colors hover:text-white'
+										target='_blank'
 									>
 										Buy Technology
 									</Link>
@@ -85,15 +87,17 @@ export default function Footer() {
 						</li>
 						<li>
 							<Link
-								href='/dealer'
+								href='https://hellotractor.com/dealer'
 								className='transition-colors hover:text-white'
+								target='_blank'
 							>
 								For Equipment Dealers
 							</Link>
 							<ul className='ml-4 mt-2'>
 								<li>
 									<Link
-										href='/dealer-pilot'
+										href='https://hellotractor.com/dealer-pilot'
+										target='_blank'
 										className='transition-colors hover:text-white'
 									>
 										Dealer Pilot Program
@@ -103,7 +107,8 @@ export default function Footer() {
 						</li>
 						<li>
 							<Link
-								href='/farmer'
+								href='https://hellotractor.com/farmer'
+								target='_blank'
 								className='transition-colors hover:text-white'
 							>
 								For Farmers
@@ -111,7 +116,8 @@ export default function Footer() {
 							<ul className='ml-4 mt-2'>
 								<li>
 									<Link
-										href='/booking-agent'
+										href='https://hellotractor.com/booking-agent'
+										target='_blank'
 										className='transition-colors hover:text-white'
 									>
 										Become a Booking Agent
@@ -128,48 +134,54 @@ export default function Footer() {
 					<ul className='space-y-3 text-sm text-gray-300'>
 						<li>
 							<Link
-								href='/team'
+								href='https://hellotractor.com/team'
 								className='transition-colors hover:text-white'
+								target='_blank'
 							>
 								Team
 							</Link>
 						</li>
 						<li>
 							<Link
-								href='/blog'
+								href='https://hellotractor.com/blog'
 								className='transition-colors hover:text-white'
+								target='_blank'
 							>
 								Blog
 							</Link>
 						</li>
 						<li>
 							<Link
-								href='/press'
+								href='https://hellotractor.com/press'
 								className='transition-colors hover:text-white'
+								target='_blank'
 							>
 								Press
 							</Link>
 						</li>
 						<li>
 							<Link
-								href='/knowledge-base'
+								href='https://hellotractor.com/knowledge-base'
 								className='transition-colors hover:text-white'
+								target='_blank'
 							>
 								Knowledge Base CA
 							</Link>
 						</li>
 						<li>
 							<Link
-								href='/careers'
+								href='https://hellotractor.com/careers'
 								className='transition-colors hover:text-white'
+								target='_blank'
 							>
 								Careers
 							</Link>
 						</li>
 						<li>
 							<Link
-								href='/contact'
+								href='https://hellotractor.com/contact'
 								className='transition-colors hover:text-white'
+								target='_blank'
 							>
 								Contact
 							</Link>
@@ -185,25 +197,25 @@ export default function Footer() {
 						</h3>
 						<div className='flex space-x-4'>
 							<Link
-								href='https://facebook.com'
+								href='https://facebook.com/hellotractor'
 								className='rounded-full bg-white p-2 transition-colors hover:bg-gray-200'
 							>
 								<Facebook className='h-5 w-5 text-black' />
 							</Link>
 							<Link
-								href='https://twitter.com'
+								href='https://twitter.com/hellotractor'
 								className='rounded-full bg-white p-2 transition-colors hover:bg-gray-200'
 							>
 								<Twitter className='h-5 w-5 text-black' />
 							</Link>
 							<Link
-								href='https://instagram.com'
+								href='https://instagram.com/hellotractor'
 								className='rounded-full bg-white p-2 transition-colors hover:bg-gray-200'
 							>
 								<Instagram className='h-5 w-5 text-black' />
 							</Link>
 							<Link
-								href='https://linkedin.com'
+								href='https://linkedin.com/company/hello-tractor'
 								className='rounded-full bg-white p-2 transition-colors hover:bg-gray-200'
 							>
 								<Linkedin className='h-5 w-5 text-black' />
