@@ -4,50 +4,51 @@ import { m } from 'framer-motion'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { LogOut, Mail, User } from 'lucide-react'
+import { LogOut, Mail, User, UserRound } from 'lucide-react'
 
 export default function Advert() {
 	const [openUserMenu, setOpenUserMenu] = useState(false)
 
 	return (
-		<section className='relative hidden w-full border-b border-neutral-200 lg:flex'>
-			<div className='container h-full w-full'>
-				<div className='flex h-full w-full items-center justify-between'>
-					<div className='flex'>Welcome to Hello Tractor Store</div>
-					<div className='flex items-center gap-8'>
-						<Link
-							id='contact'
-							href='/contact'
-							data-testid='contact'
-							className='flex h-full items-center rounded-md px-4 py-2 hover:bg-neutral-100'
-						>
-							<Mail className='text-primary-500 h-4 w-4' />
-							<span className='mx-2'>Contact</span>
-						</Link>
+		<section className='relative z-50 hidden w-full border-b border-neutral-200 bg-white lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:flex'>
+			<div className='container flex h-full items-center justify-between p-4'>
+				<h3 className='flex font-[400]'>Welcome to Hello Tractor</h3>
+				<div className='flex items-center'>
+					<Link
+						href='https://hellotractor.com/about-us'
+						className='flex h-full items-center rounded-md p-2 hover:bg-neutral-100'
+					>
+						<span className='mx-2 text-sm'>About</span>
+					</Link>
+					<Link
+						href='https://hellotractor.com/pricing'
+						className='rounded-md p-2 hover:bg-neutral-100'
+					>
+						<span className='text-sm uppercase'>Request Demo</span>
+					</Link>
 
-						<div className='justify-flex-end flex h-full items-center gap-4 px-4 py-2 hover:bg-neutral-100'>
-							{true ? (
-								<div className='flex gap-2 hover:cursor-pointer'>
-									<User className='text-primary-500 h-4 w-4' />
-									<span
-										onClick={() =>
-											setOpenUserMenu(!openUserMenu)
-										}
-									>
-										Account
-									</span>
-									<UserMenu openUserMenu={openUserMenu} />
-								</div>
-							) : (
-								<Link
-									href='/signin'
-									className='flex cursor-pointer items-center gap-4'
+					<div className='ml-2 flex h-full items-center hover:bg-neutral-100'>
+						{true ? (
+							<div className=''>
+								<div
+									onClick={() =>
+										setOpenUserMenu(!openUserMenu)
+									}
+									className='rounded-md border p-2 hover:cursor-pointer'
 								>
-									<LogOut className='text-primary-500 h-4 w-4' />
-									<span>Login</span>
-								</Link>
-							)}
-						</div>
+									<UserRound className='text-primary-500 h-5 w-5' />
+								</div>
+								<UserMenu openUserMenu={openUserMenu} />
+							</div>
+						) : (
+							<Link
+								href='/signin'
+								className='flex cursor-pointer items-center gap-4'
+							>
+								<LogOut className='text-primary-500 h-4 w-4' />
+								<span>Login</span>
+							</Link>
+						)}
 					</div>
 				</div>
 			</div>
