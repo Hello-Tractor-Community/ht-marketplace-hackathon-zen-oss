@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 import { cn } from '@/lib/utils'
@@ -7,19 +7,21 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css'
 import ProductCard from '../cards/product-card'
+import { DEFAULT_SLIDES } from './banner'
 
 export default function FeaturesProducts() {
 	const [loading, setLoading] = useState(false)
 	const [products, setProducts] = useState([])
 
 	return (
-		<section className='relative py-10'>
+		<section className='relative lg:mx-32 space-y-6'>
 			<div className='container h-full w-full'>
 				<div className='relative flex w-full'>
-					<h1 className='after:bg-primary-700 w-full border-b border-b-gray-300 pb-2 text-xl font-bold capitalize after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-[80px]'>
-						Feature Heading
+					<h1 className='text-center text-2xl font-bold font-manrope'>
+						Your recently viewed tractors
 					</h1>
 				</div>
+
 				<Swiper
 					breakpoints={{
 						360: {
@@ -49,14 +51,25 @@ export default function FeaturesProducts() {
 					}}
 					spaceBetween={50}
 					slidesPerView={1}
-					navigation={false}
+					navigation={true}
 					pagination={true}
 					modules={[Autoplay, Navigation, Pagination]}
-					className={cn('mySwiper h-full w-full')}
+					className={cn('h-full w-full')}
 				>
-					<SwiperSlide className='relative py-10'>
-						<ProductCard loading={loading} />
-					</SwiperSlide>
+					{DEFAULT_SLIDES.map((slide, index) => {
+						return (
+							<SwiperSlide key={'tract' + index}
+                            style={{
+                                backgroundColor:"transparent"
+                            }}
+                            >
+								<ProductCard
+									loading={loading}
+									product={slide}
+								/>
+							</SwiperSlide>
+						)
+					})}
 				</Swiper>
 			</div>
 		</section>
