@@ -10,6 +10,8 @@ import bcrypt from 'bcrypt'
 
 let isProduction = Config.NODE_ENV === 'production'
 
+
+{/*
 // Create a new user
 export async function loginOauth({
 	name,
@@ -550,3 +552,5 @@ export const deleteUser = async (
 		})
 	}
 }
+*/}
+

@@ -1,33 +1,21 @@
-import { Document, Schema, model } from 'mongoose'
+import { Document, Schema, model, Types } from 'mongoose'
 
 interface BuyerDoc extends Document {
-  name: string
-  email: string
-  phone: string
-  password: string
-  lastLogin: Date
+    seller_id: Types.ObjectId
+    buyer_id: Types.ObjectId
+    lastLogin: Date
 }
 
-const BuyerSchema: Schema = new Schema<BuyerDoc>(
+const UserSchema: Schema = new Schema<BuyerDoc>(
   {
-    name: {
-      type: String,
-      required: true,
-    },
-    phone: {
-      type: String,
-      default: '',
-    },
-    email: {
-      type: String,
-      unique: true,
-      index: true,
-      required: true,
-    },
-    password: {
-      type: String,
-      default: '',
-    },
+      seller_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Seller',
+      },
+      buyer_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
     lastLogin: {
       type: Date,
       default: Date.now(),
@@ -36,6 +24,6 @@ const BuyerSchema: Schema = new Schema<BuyerDoc>(
   { timestamps: true },
 )
 
-const Buyer = model<BuyerDoc>('Buyer', BuyerSchema)
+const User = model<BuyerDoc>('User', UserSchema)
 
-export default Buyer
+export default User
