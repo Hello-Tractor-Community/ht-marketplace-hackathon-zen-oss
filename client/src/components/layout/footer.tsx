@@ -9,6 +9,8 @@ import {
 	Instagram,
 	Linkedin
 } from 'lucide-react'
+import { buttonVariants } from '../ui/button'
+import { cn } from '@/lib/utils'
 
 export default function Footer() {
 	return (
@@ -244,7 +246,7 @@ export default function Footer() {
 						</h3>
 						<Link
 							href='https://web.hellotractor.com/booknow'
-							className='inline-block rounded-md bg-white px-6 py-2 font-medium text-black transition-colors hover:bg-gray-200'
+                                className={cn(buttonVariants({ variant: 'default', size: 'lg' }),"w-[160px] lg:ml-3")}
 						>
 							Book Now
 						</Link>
