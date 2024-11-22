@@ -19,6 +19,7 @@ export const createProduct = async (
       description,
       category,
       price,
+      stock,
       shipping_options,
       delivery_times,
       costs,
@@ -31,6 +32,7 @@ export const createProduct = async (
       !description ||
       !category ||
       !price ||
+      !stock ||
       !shipping_options ||
       !delivery_times ||
       !costs
@@ -72,6 +74,7 @@ export const createProduct = async (
       title,
       description,
       category,
+      stock,
       images: imageNames,
       price,
       shipping_options,
@@ -315,6 +318,7 @@ export const updateProduct = async (
       description,
       category,
       price,
+      stock,
       shipping_options,
       delivery_times,
       costs,
@@ -364,6 +368,7 @@ export const updateProduct = async (
     if (price) product.price = price
     if (shipping_options) product.shipping_options = shipping_options
     if (delivery_times) product.delivery_times = delivery_times
+    if (stock) product.stock = stock
     if (costs) product.costs = costs
 
     let updatedProduct = await product.save()

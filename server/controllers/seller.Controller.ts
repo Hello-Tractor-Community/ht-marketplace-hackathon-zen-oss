@@ -16,8 +16,8 @@ export const createSeller = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
-  const { name, email, phone, password, companyDetails } = req.body
   try {
+    let { name, email, phone, password, companyDetails } = req.body
     if (!name || !email || !password || !phone) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
@@ -33,6 +33,18 @@ export const createSeller = async (
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Account already exists. Please login!',
+        data: null,
+      })
+    }
+
+    // Check if seller exists using phone number
+    phone = Array.isArray(phone) ? phone : [phone]
+    seller = await Seller.findOne({ phone: { $in: [phone] } })
+
+    if (seller) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Account with this phone number already exists. Please login!',
         data: null,
       })
     }
@@ -182,7 +194,6 @@ export const loginSeller = async (
       message: 'User logged in successfully',
       data: {
         seller: sellerWithoutPassword,
-        token: signedToken,
       },
     })
   } catch (err) {
@@ -219,6 +230,7 @@ export const updateSellerPhone = async (
 ) => {
   const { phone } = req.body
   const sellerId = res.locals.userId
+  console.log(sellerId)
 
   try {
     if (!phone) {
@@ -272,7 +284,7 @@ export const updateSellerPassword = async (
   res: Response<IServerResponse>,
 ) => {
   const { oldPassword, newPassword } = req.body
-  const sellerId = res.locals.sellerId
+  const sellerId = res.locals.userId
 
   try {
     if (!oldPassword || !newPassword) {
@@ -327,14 +339,28 @@ export const updateSellerPassword = async (
 }
 
 // Update seller details
-// @route PUT /api/v1/seller/?id=seller_id
+// @route PUT /api/v1/seller
 export const updateSellerDetails = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
   try {
-    const { id } = req.query
-    const { name, email } = req.body
+    const { name, email, phone } = req.body
+    if (!name && !email && !phone) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Missing details',
+        data: {
+          body: {
+            name: 'string',
+            email: 'string',
+            phone: 'string',
+          },
+        },
+      })
+    }
+    const id = res.locals.userId
+    console.log(id)
 
     let seller = await Seller.findById(id)
 
@@ -348,17 +374,30 @@ export const updateSellerDetails = async (
 
     if (name) seller.name = name
     if (email) seller.email = email
+    if (phone) seller.phone = phone
 
     let updatedSeller = await seller.save()
+
+    if (!updatedSeller) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error updating seller',
+        data: null,
+      })
+    }
+
+    // seller without password
+
+    const { password: _, ...updatedSellerWithoutPassword } =
+      updatedSeller.toJSON()
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'Seller updated successfully',
-      data: updatedSeller,
+      data: updatedSellerWithoutPassword,
     })
   } catch (err) {
     Logger.error({ message: 'Error updating user' + err })
-
     res.status(HttpStatusCode.InternalServerError).json({
       status: 'error',
       message: 'Error updating seller',
@@ -373,8 +412,8 @@ export const getSeller = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
-  const { id } = req.query
   try {
+    const { id } = req.query
     if (!id) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
@@ -393,10 +432,12 @@ export const getSeller = async (
       })
     }
 
+    const { password: _, ...sellerWithoutPassword } = seller.toJSON()
+
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'User found',
-      data: seller,
+      data: sellerWithoutPassword,
     })
   } catch (err) {
     Logger.error({ message: 'Error getting user' + err })
@@ -477,11 +518,24 @@ export const getAllSellers = async (
       Seller.countDocuments(),
     ])
 
+    if (!sellers) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Users not found',
+        data: null,
+      })
+    }
+    // Remove password from response
+    const usersWithoutPassword = sellers.map((seller) => {
+      const { password: _, ...userWithoutPassword } = seller.toJSON()
+      return userWithoutPassword
+    })
+
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'Users found',
       data: {
-        sellers,
+        sellers: usersWithoutPassword,
         totalSellers,
         page,
       },

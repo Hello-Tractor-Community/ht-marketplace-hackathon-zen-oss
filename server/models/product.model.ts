@@ -7,6 +7,7 @@ interface ProductDoc extends Document {
   category: string
   images: string[]
   price: number
+  stock: number
   shipping_options: string[]
   delivery_times: string[]
   costs: number
@@ -34,6 +35,10 @@ const ProductSchema: Schema = new Schema<ProductDoc>(
     images: {
       type: [String],
       default: [],
+    },
+    stock: {
+      type: Number,
+      default: 0,
     },
     price: {
       type: Number,
