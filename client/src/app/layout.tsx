@@ -4,7 +4,6 @@ import localFont from 'next/font/local'
 import type { Metadata, Viewport } from 'next'
 import { Manrope, Merriweather } from 'next/font/google'
 
-
 const avenir = localFont({
 	src: [
 		{
@@ -41,16 +40,16 @@ const merriweather = Merriweather({
 })
 
 export const metadata: Metadata = {
-	title: 'Hello Tractor | Commerce',
+	title: 'Hello Tractor | Growing Together',
 	description:
-		'Hello Tractor is an agricultural technology company that connects tractor owners to farmers in need of tractor services.',
+		'Technology for smarter, better maintained and more profitable tractors.',
 	robots: {
-		index: false,
+		index: true,
 		follow: true,
 		nocache: true,
 		googleBot: {
 			index: true,
-			follow: false,
+			follow: true,
 			noimageindex: true,
 			'max-video-preview': -1,
 			'max-image-preview': 'large',

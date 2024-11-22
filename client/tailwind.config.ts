@@ -29,6 +29,14 @@ const config = {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				htractor: {
+					DEFAULT: '#ff461e',
+					hibiscus: '#f8285f',
+					sage: '#93c393',
+					breeze: '#93c2c6',
+					plum: '#2f1c54',
+					charcoal: '#161616'
+				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
