@@ -1,5 +1,6 @@
 import './globals.css'
 import { cn } from '@/lib/utils'
+import { Toaster } from 'sonner'
 import localFont from 'next/font/local'
 import type { Metadata, Viewport } from 'next'
 import { Manrope, Merriweather } from 'next/font/google'
@@ -80,6 +81,7 @@ export default function RootLayout({
 				)}
 			>
 				{children}
+				<Toaster richColors />
 			</body>
 		</html>
 	)

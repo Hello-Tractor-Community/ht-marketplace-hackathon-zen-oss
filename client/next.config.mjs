@@ -11,6 +11,11 @@ const nextConfig = {
 				protocol: 'https',
 				hostname: 'hellotractor.com',
 				port: ''
+			},
+			{
+				protocol: 'https',
+				hostname: 'ht-mobileassets.s3.amazonaws.com',
+				port: ''
 			}
 		]
 	}
