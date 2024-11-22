@@ -18,6 +18,11 @@ const config = {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['var(--font-avenir)', 'sans-serif'],
+				merriweather: ['var(--font-merriweather)', 'serif'],
+				manrope: ['var(--font-manrope)', 'sans-serif']
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
