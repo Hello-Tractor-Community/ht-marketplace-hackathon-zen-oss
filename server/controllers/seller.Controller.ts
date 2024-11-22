@@ -222,60 +222,6 @@ export const logoutSeller = async (
   })
 }
 
-// Update seller phone
-// @route PUT /api/v1/seller/phone
-export const updateSellerPhone = async (
-  req: Request,
-  res: Response<IServerResponse>,
-) => {
-  const { phone } = req.body
-  const sellerId = res.locals.userId
-  console.log(sellerId)
-
-  try {
-    if (!phone) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Missing phone',
-        data: {
-          body: {
-            phone: 'string',
-          },
-        },
-      })
-    }
-
-    let seller = await Seller.findByIdAndUpdate(
-      sellerId,
-      { phone },
-      { new: true },
-    )
-
-    if (!seller) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Seller not found',
-        data: null,
-      })
-    }
-
-    res.status(HttpStatusCode.Ok).json({
-      status: 'success',
-      message: 'User updated successfully',
-      data: {
-        phone: seller.phone,
-      },
-    })
-  } catch (err) {
-    Logger.error({ message: 'Error updating phone' + err })
-
-    res.status(HttpStatusCode.InternalServerError).json({
-      status: 'error',
-      message: 'Error updating phone',
-      data: null,
-    })
-  }
-}
 
 // Update seller password
 // @route PUT /api/v1/seller/password
