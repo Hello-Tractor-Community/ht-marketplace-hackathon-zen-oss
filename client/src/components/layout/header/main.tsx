@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
 	return (
-		<section className='container mt-[45px] flex w-full items-center gap-12 py-8'>
+		<section className='container mt-[45px] flex w-full items-center gap-12 py-8 lg:px-14'>
 			<div
 				className={cn(
 					'flex items-center gap-4 ',
