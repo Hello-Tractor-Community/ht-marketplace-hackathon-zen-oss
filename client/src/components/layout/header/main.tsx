@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { Heart, Search } from 'lucide-react'
+import { UserWishlist } from '@/components/modals/wishlist'
 
 export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
@@ -29,10 +30,7 @@ export default function Main() {
 
 			<SearchTractor />
 
-			<div className='flex flex-col items-center'>
-				<Heart />
-				<p className='text-sm'>Wishlist</p>
-			</div>
+            <UserWishlist/>
 		</section>
 	)
 }
