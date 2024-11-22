@@ -31,7 +31,7 @@ export default function CallToAction() {
 									}}
 									className='h-[200px] w-[200px] bg-contain bg-center bg-no-repeat'
 								/>
-							<Button variant="secondary" className='text-base w-full'>Buy New </Button>
+							<Button variant="ghost" className='text-base w-full'>Buy New </Button>
 						</div>
 
 						<div className='flex flex-col gap-2 p-4'>
@@ -41,7 +41,7 @@ export default function CallToAction() {
 									}}
 									className='h-[200px] w-[200px] bg-contain bg-center bg-no-repeat'
 								/>
-							<Button variant="secondary" className='text-base w-full'>Buy Used</Button>
+							<Button variant="ghost" className='text-base w-full'>Buy Used</Button>
 						</div>
 					</div>
 				</div>

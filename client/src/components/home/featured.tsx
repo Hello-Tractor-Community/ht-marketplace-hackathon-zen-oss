@@ -8,18 +8,36 @@ import 'swiper/css/pagination'
 import 'swiper/css'
 import ProductCard from '../cards/product-card'
 import { DEFAULT_SLIDES } from './banner'
+import Link from 'next/link'
 
-export default function FeaturesProducts() {
+interface FeaturesProductsProps {
+	title: string
+	link: string
+	className?: string
+	products: typeof DEFAULT_SLIDES
+}
+
+export default function FeaturesProducts({
+	title,
+	link,
+	className,
+	products
+}: FeaturesProductsProps) {
 	const [loading, setLoading] = useState(false)
-	const [products, setProducts] = useState([])
 
 	return (
-		<section className='relative lg:mx-32 space-y-6'>
+		<section className={cn('relative space-y-6 lg:mx-32', className)}>
 			<div className='container h-full w-full'>
-				<div className='relative flex w-full'>
-					<h1 className='text-center text-2xl font-bold font-manrope'>
-						Your recently viewed tractors
+				<div className=' flex w-full items-center justify-between'>
+					<h1 className='text-center capitalize font-manrope text-2xl font-bold'>
+						{title}
 					</h1>
+					<Link
+						href={link}
+						className='font-[500] underline-offset-2 hover:underline'
+					>
+						See all
+					</Link>
 				</div>
 
 				<Swiper
@@ -56,13 +74,14 @@ export default function FeaturesProducts() {
 					modules={[Autoplay, Navigation, Pagination]}
 					className={cn('h-full w-full')}
 				>
-					{DEFAULT_SLIDES.map((slide, index) => {
+					{products.map((slide, index) => {
 						return (
-							<SwiperSlide key={'tract' + index}
-                            style={{
-                                backgroundColor:"transparent"
-                            }}
-                            >
+							<SwiperSlide
+								key={'tract' + index}
+								style={{
+									backgroundColor: 'transparent'
+								}}
+							>
 								<ProductCard
 									loading={loading}
 									product={slide}
