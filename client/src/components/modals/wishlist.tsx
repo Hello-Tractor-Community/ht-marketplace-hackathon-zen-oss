@@ -105,11 +105,9 @@ export function UserWishlist() {
 					))}
 				</div>
 				<SheetFooter>
-					<SheetClose asChild>
-						<Button variant='default' type='submit'>
-							Save changes
-						</Button>
-					</SheetClose>
+					<p className='text-xs text-muted-foreground w-full text-center'>
+                     Hello Tractor &copy; 2024. All rights reserved.
+					</p>
 				</SheetFooter>
 			</SheetContent>
 		</Sheet>

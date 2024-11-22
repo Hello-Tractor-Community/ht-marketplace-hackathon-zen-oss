@@ -19,7 +19,7 @@ export default function Menus() {
 				<div className='flex w-full  justify-between rounded-md border border-gray-200 p-2'>
 					<div className='flex items-center gap-8'>
 						<div
-							className='bg-primary-900 mx-1 flex w-[260px] cursor-pointer items-center justify-between gap-1 rounded-md px-6 py-3 text-white'
+							className='bg-primary-900 mx-1 flex w-[260px] cursor-pointer items-center justify-between gap-1 rounded-md px-6 py-3'
 							onClick={handleCategory}
 						>
 							<span className='uppercase'>categories</span>

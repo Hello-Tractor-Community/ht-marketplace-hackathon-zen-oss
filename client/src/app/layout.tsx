@@ -77,7 +77,8 @@ export default function RootLayout({
 				className={cn(
 					avenir.className,
 					manrope.variable,
-					merriweather.variable
+					merriweather.variable,
+                    "bg-gray-50"
 				)}
 			>
 				{children}

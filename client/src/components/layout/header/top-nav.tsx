@@ -6,12 +6,12 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { LogOut, Mail, User, UserRound } from 'lucide-react'
 
-export default function Advert() {
+export default function TopNav() {
 	const [openUserMenu, setOpenUserMenu] = useState(false)
 
 	return (
-		<section className='relative z-50 hidden w-full border-b border-neutral-200 bg-white lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:flex'>
-			<div className='container flex h-full items-center justify-between p-4'>
+		<section className='relative z-50 hidden w-full border-b border-neutral-200 lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:flex'>
+			<div className='container flex h-full items-center justify-between p-1'>
 				<h3 className='flex font-[400]'>Welcome to Hello Tractor</h3>
 				<div className='flex items-center'>
 					<Link
