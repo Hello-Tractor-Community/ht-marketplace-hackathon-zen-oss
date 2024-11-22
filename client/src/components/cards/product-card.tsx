@@ -1,61 +1,33 @@
-import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
-import React from 'react'
 
-interface ProductType {
-	name: string
-	slug: string
-	reviews: any[]
-	subProducts: any[]
+interface ProductCardProps {
+	loading: boolean
+	product: {
+		model: string
+		tractor_model_logo_url: string
+	}
 }
 
-export default function ProductCard({ loading }: { loading: boolean }) {
+export default function ProductCard({ loading, product }: ProductCardProps) {
 	return (
-		<div className='group flex flex-col items-center gap-4 rounded-md border border-gray-200 pb-8 hover:shadow-xl'>
-			<Link
-				href={` /products`}
-				className='relative flex items-center justify-center p-1'
-			>
-				{loading ? (
-					<Skeleton className='h-[30vh]' />
-				) : (
-					<div
-						style={{
-							height: '20vh',
-							width: '160px',
-							position: 'relative',
-							backgroundImage: `url('https://source.unsplash.com/160x200/?product')`,
-							backgroundPosition: 'center center',
-							backgroundSize: 'contain',
-							backgroundRepeat: 'no-repeat'
-						}}
-					></div>
-				)}
-
-				<div className='absolute left-0 top-20'>
-					<span className='rounded-r-md bg-yellow-600 px-2 py-1 text-base font-bold text-white'>
-						- 30%
-					</span>
-				</div>
-			</Link>
-
-			<div className='flex-flex-col items-start gap-2 px-4'>
-				<div className='ease-l inline-flex items-center text-slate-300 duration-300'>
-					RATINGS
-					<span className='ms-4 font-bold'>4</span>
-				</div>
-
-				<Link href={`/products/7`} className='relative flex '>
-					<h1 className='my-4 h-14 text-clip text-pretty text-justify text-xs capitalize lg:text-sm'>
-						This is the product name
-					</h1>
-				</Link>
+		<div className='mt-8 h-full w-full'>
+			<div className='flex h-[250px] items-center justify-center overflow-hidden rounded-xl bg-slate-100 p-2'>
+				<div
+					style={{
+						backgroundImage: `url(${product.tractor_model_logo_url})`
+					}}
+					className='h-[300px] w-[300px] bg-contain bg-center bg-no-repeat'
+				/>
 			</div>
 
-			<div className='relative mb-2 flex justify-between px-4'>
-				<span className='bg-primary-900 absolute inset-y-2 left-0 h-2 w-2 rounded-r-full'>
-					Some amounts here
-				</span>
+			<div className='mt-3 flex flex-col items-start justify-center'>
+				<Link
+					href={`/products/${product.model}`}
+					className='line-clamp-2 underline-offset-2 hover:underline'
+				>
+					{product.model}
+				</Link>
+				<p className='font-manrope font-bold'>$3400</p>
 			</div>
 		</div>
 	)

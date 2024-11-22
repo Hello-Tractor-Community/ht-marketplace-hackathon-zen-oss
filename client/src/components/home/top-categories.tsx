@@ -1,44 +1,48 @@
 'use client'
-import axios from 'axios'
-import Link from 'next/link'
-import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
+import { DEFAULT_SLIDES } from './banner'
+import { Button } from '../ui/button'
 
 export default function TopCategories() {
 	const [loading, setLoading] = useState(false)
-	const [categories, setCategories] = useState([])
 
 	return (
-		<section className='w-full py-10'>
+		<section className='my-28 lg:mx-36 bg-white px-6 py-10 rounded-xl'>
 			<div className='container h-full w-full'>
 				{loading && <div>Loading...</div>}
-				<div className='flex w-full flex-wrap justify-center gap-10 xl:flex-nowrap xl:justify-between'>
+				<div className='flex w-full flex-wrap justify-center gap-4  xl:justify-between'>
 					<div className='flex flex-col items-center gap-4 xl:items-start '>
-						<h1 className='text-center text-2xl font-bold leading-8 lg:text-left'>
-							Top Categories in Sales and Trending
+						<h1 className='text-center text-2xl font-manrope font-bold'>
+							Lets Grow Together
 						</h1>
-						<h2 className='mt-4 max-w-screen-md text-center text-sm'>
-							Last mont up to 1500+ Products Sales From this
-							category. You can choose a Product from from here
-							and save money
+						<h2 className='mt-4 max-w-md text-sm'>
+							Get access to timely and affordable mechanization
+							service whenever you need it. Whether you are
+							getting a new or used tractor, we have got you
+							covered.
 						</h2>
 					</div>
 
-					<div className='grid grid-cols-2 gap-4 md:grid-cols-4 '>
-						<Link
-							href={`/categories/item/products`}
-							className='hover:border-primary-200 flex max-w-xl cursor-pointer flex-col items-center justify-between gap-12 gap-y-2 rounded-md border border-gray-200 px-10 py-4'
-						>
-							<Image
-								src={''}
-								alt='category'
-								width='50'
-								height='50'
-							/>
-							<h3 className='text-center text-sm capitalize'>
-								Category name
-							</h3>
-						</Link>
+					<div className='grid grid-cols-2 gap-4'>
+						<div className='flex flex-col gap-2 p-4 rounded-lg'>
+								<div
+									style={{
+										backgroundImage: `url(${DEFAULT_SLIDES[1].tractor_model_logo_url})`
+									}}
+									className='h-[200px] w-[200px] bg-contain bg-center bg-no-repeat'
+								/>
+							<Button variant="secondary" className='text-base w-full'>Buy New </Button>
+						</div>
+
+						<div className='flex flex-col gap-2 p-4'>
+								<div
+									style={{
+										backgroundImage: `url(${DEFAULT_SLIDES[2].tractor_model_logo_url})`
+									}}
+									className='h-[200px] w-[200px] bg-contain bg-center bg-no-repeat'
+								/>
+							<Button variant="secondary" className='text-base w-full'>Buy Used</Button>
+						</div>
 					</div>
 				</div>
 			</div>

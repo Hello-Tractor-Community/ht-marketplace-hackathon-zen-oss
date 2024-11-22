@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 import Image from 'next/image'
 
-const DEFAULT_SLIDES = [
+export const DEFAULT_SLIDES = [
 	{
 		model: 'Sonalika DI-35',
 		tractor_model_logo_url:
@@ -100,14 +100,14 @@ function HomeSlide({ className }: { className?: string }) {
 							backgroundColor: colors[colorIndex]
 						}}
 					>
-						<div className='flex w-full items-center justify-between p-36'>
-							<div className='grid w-fit grid-cols-1  place-content-start justify-items-start  gap-6 capitalize lg:left-10'>
+						<div className='flex w-full items-center justify-between py-36 px-28'>
+							<div className='grid w-fit grid-cols-1  place-content-start justify-items-start  gap-2 capitalize'>
 								<motion.h1
 									initial={animation.title.hide}
 									whileInView={animation.title.show}
 									transition={{ delay: 0.3 }}
 									className={cn(
-										'font-manrope text-xl font-semibold capitalize lg:text-4xl',
+										'font-sans text-xl font-semibold capitalize lg:text-4xl line-clamp-1',
 										{ 'text-white': colorIndex == 2 }
 									)}
 								>
@@ -116,9 +116,9 @@ function HomeSlide({ className }: { className?: string }) {
 								<motion.h2
 									initial={animation.subtitle.hide}
 									whileInView={animation.subtitle.show}
-									transition={{ delay: 0.2 }}
+									transition={{ delay: 0.25 }}
 									className={cn(
-										'max-w-60 text-left text-sm leading-8 tracking-widest lg:max-w-screen-md lg:text-xl',
+										'max-w-60 font-sans text-left text-sm leading-8 lg:max-w-screen-md lg:text-xl',
 										{ 'text-white': colorIndex == 2 }
 									)}
 								>
@@ -130,7 +130,7 @@ function HomeSlide({ className }: { className?: string }) {
 									transition={{ delay: 0.2 }}
 									className={cn(
 										buttonVariants({ variant: 'default' }),
-										'rounded px-4 py-6 text-lg text-white'
+										'rounded px-4 py-6 text-lg text-white mt-4 w-[150px] text-center'
 									)}
 									href={`/links/here`}
 								>
