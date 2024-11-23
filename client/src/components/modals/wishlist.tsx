@@ -59,7 +59,7 @@ export function UserWishlist() {
 					<p className='text-sm'>Wishlist</p>
 				</div>
 			</SheetTrigger>
-			<SheetContent className='flex flex-col'>
+			<SheetContent className='flex flex-col bg-white'>
 				<SheetHeader className='font-manrope'>
 					<SheetTitle>Your Wishlist</SheetTitle>
 					<SheetDescription>
@@ -71,7 +71,7 @@ export function UserWishlist() {
 					{wishlist.map((tractor, index) => (
 						<div
 							key={index}
-							className='flex items-center justify-between rounded-md border p-2 hover:cursor-pointer hover:bg-slate-50'
+							className='flex items-center justify-between rounded-md border p-2 hover:bg-slate-50'
 						>
 							<div className='flex items-center gap-2'>
 								<Image
@@ -83,7 +83,7 @@ export function UserWishlist() {
 							</div>
 
 							<div className='flex max-w-[50%] flex-col'>
-								<p className='line-clamp-3 text-sm'>
+								<p className='line-clamp-3 cursor-pointer text-sm underline-offset-2 hover:underline'>
 									{tractor.model}
 								</p>
 								<p className='line-clamp-2 text-xs text-muted-foreground'>
@@ -105,8 +105,8 @@ export function UserWishlist() {
 					))}
 				</div>
 				<SheetFooter>
-					<p className='text-xs text-muted-foreground w-full text-center'>
-                     Hello Tractor &copy; 2024. All rights reserved.
+					<p className='w-full text-center text-xs text-muted-foreground'>
+						Hello Tractor &copy; 2024. All rights reserved.
 					</p>
 				</SheetFooter>
 			</SheetContent>

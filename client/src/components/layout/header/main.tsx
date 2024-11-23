@@ -4,34 +4,42 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import React, { useState } from 'react'
-import { Heart, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { UserWishlist } from '@/components/modals/wishlist'
 import { Button } from '@/components/ui/button'
+import Filters from '@/components/home/filters'
+import Link from 'next/link'
 
 export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
 	return (
-		<section className='container mt-[45px] flex w-full items-center gap-12 py-8 lg:px-14'>
-			<div
-				className={cn(
-					'flex items-center gap-4 ',
-					openSearchMobile && ' hidden lg:flex'
-				)}
-			>
-				<div className='flex'>
-					<Image
-						src='/HT_LOGO_CMYK_Orange.png'
-						alt='logo'
-						width={4142}
-						height={1883}
-						className='w-[250px]'
-					/>
+		<section className='container mt-[45px] lg:px-14'>
+			<div className='flex w-full items-start py-8'>
+				<div
+					className={cn(
+						'flex items-center gap-4 ',
+						openSearchMobile && ' hidden lg:flex'
+					)}
+				>
+					<Link href="/">
+						<Image
+							src='/HT_LOGO_CMYK_Orange.png'
+							alt='logo'
+							width={4142}
+							height={1883}
+							className='w-[250px]'
+						/>
+					</Link>
+				</div>
+
+				<div className='mt-6 flex w-full flex-row items-start gap-12'>
+					<SearchTractor />
+
+					<UserWishlist />
 				</div>
 			</div>
 
-			<SearchTractor />
-
-			<UserWishlist />
+			<Filters className='mb-4' />
 		</section>
 	)
 }
@@ -44,11 +52,11 @@ const SearchTractor = () => {
 		show: { y: 0, opacity: 1 }
 	}
 	return (
-		<section className='flex w-full flex-row items-center gap-2'>
-			<div className='relative w-full'>
+		<section className='grid w-full grid-cols-10 place-items-center items-center'>
+			<div className='relative col-span-9 w-full'>
 				<div
 					className={cn(
-						'absolute -top-9 z-40 w-full border border-transparent p-2',
+						'absolute top-0 z-40 -mt-[35px] w-full border border-transparent p-2',
 						{
 							'rounded-xl border-border bg-white': isFocused
 						}
@@ -93,7 +101,7 @@ const SearchTractor = () => {
 			<Button
 				variant='default'
 				size='lg'
-				className='w-[150px] rounded-md px-4 py-6 text-base text-white shadow-none'
+				className='ml-9 w-[150px] rounded-md px-4 py-6 text-base text-white shadow-none'
 			>
 				Search tractor
 			</Button>

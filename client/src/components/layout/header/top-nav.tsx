@@ -4,7 +4,7 @@ import { m } from 'framer-motion'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { LogOut, Mail, User, UserRound } from 'lucide-react'
+import { LogOut, Mail, ShoppingCart, User, UserRound } from 'lucide-react'
 
 export default function TopNav() {
 	const [openUserMenu, setOpenUserMenu] = useState(false)
@@ -12,17 +12,28 @@ export default function TopNav() {
 	return (
 		<section className='relative z-50 hidden w-full border-b border-neutral-200 bg-gray-50 lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:flex lg:px-32'>
 			<div className='container flex h-full items-center justify-between p-1'>
-				<h3 className='flex font-[400]'>Welcome to Hello Tractor</h3>
+				<h3 className='flex items-center font-[500]'>
+					Welcome to Hello Tractor&nbsp;
+					<span className='-mt-0.5 ml-0.5 -rotate-45 animate-bounce text-htractor-hibiscus'>
+						<ShoppingCart size={20} />
+					</span>
+				</h3>
 				<div className='flex items-center'>
 					<Link
 						href='https://hellotractor.com/about-us'
-						className='flex h-full items-center rounded-md p-2 hover:bg-neutral-100'
+						className='p-1 underline-offset-2 hover:underline'
 					>
 						<span className='mx-2 text-sm'>About</span>
 					</Link>
 					<Link
+						href='https://hellotractor.com/contact'
+						className='p-1 underline-offset-2 hover:underline'
+					>
+						<span className='mx-2 text-sm'>Contact</span>
+					</Link>
+					<Link
 						href='https://hellotractor.com/pricing'
-						className='rounded-md p-2 hover:bg-neutral-100'
+						className='p-1 underline-offset-2 hover:underline'
 					>
 						<span className='text-sm uppercase'>Request Demo</span>
 					</Link>
@@ -34,9 +45,9 @@ export default function TopNav() {
 									onClick={() =>
 										setOpenUserMenu(!openUserMenu)
 									}
-									className='rounded-md border p-2 hover:cursor-pointer'
+									className='rounded-full border border-gray-200 p-1.5 hover:cursor-pointer hover:shadow'
 								>
-									<UserRound className='text-primary-500 h-5 w-5' />
+									<UserRound className='text-primary-500 h-4 w-4' />
 								</div>
 								<UserMenu openUserMenu={openUserMenu} />
 							</div>

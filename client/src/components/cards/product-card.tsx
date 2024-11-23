@@ -22,14 +22,14 @@ export default function ProductCard({ loading, product }: ProductCardProps) {
 					}}
 					className='relative h-[300px] w-[300px] bg-contain bg-center bg-no-repeat'
 				>
-					<div className='absolute left-0 top-10 text-htractor-charcoal hover:cursor-pointer hover:text-htractor'>
-					<Badge
-						variant='secondary'
-						className='border bg-white font-manrope font-normal text-black'
-					>
-						New
-					</Badge>
-                    </div>
+					<div className='absolute left-0 top-10'>
+						<Badge
+							variant='secondary'
+							className='border bg-white font-manrope font-normal text-black'
+						>
+							New
+						</Badge>
+					</div>
 					<div className='absolute right-0 top-10 text-htractor-charcoal hover:cursor-pointer hover:text-htractor'>
 						<Heart size={24} />
 					</div>
@@ -69,7 +69,7 @@ export default function ProductCard({ loading, product }: ProductCardProps) {
 				<div className='mt-3  flex w-full items-center justify-between'>
 					<p className='font-manrope font-bold'>$3400</p>
 					<Link
-						href={'/'}
+						href={'/tractor'}
 						className={cn(
 							buttonVariants({ variant: 'outline', size: 'sm' })
 						)}
