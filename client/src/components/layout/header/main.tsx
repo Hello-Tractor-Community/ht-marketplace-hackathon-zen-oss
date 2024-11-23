@@ -8,6 +8,7 @@ import { Search } from 'lucide-react'
 import { UserWishlist } from '@/components/modals/wishlist'
 import { Button } from '@/components/ui/button'
 import Filters from '@/components/home/filters'
+import Link from 'next/link'
 
 export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
@@ -20,7 +21,7 @@ export default function Main() {
 						openSearchMobile && ' hidden lg:flex'
 					)}
 				>
-					<div className='flex'>
+					<Link href="/">
 						<Image
 							src='/HT_LOGO_CMYK_Orange.png'
 							alt='logo'
@@ -28,7 +29,7 @@ export default function Main() {
 							height={1883}
 							className='w-[250px]'
 						/>
-					</div>
+					</Link>
 				</div>
 
 				<div className='mt-6 flex w-full flex-row items-start gap-12'>
