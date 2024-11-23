@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import React, { useState } from 'react'
-import { Heart, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { UserWishlist } from '@/components/modals/wishlist'
 import { Button } from '@/components/ui/button'
 import Filters from '@/components/home/filters'
@@ -13,7 +13,7 @@ export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
 	return (
 		<section className='container mt-[45px] lg:px-14'>
-			<div className='flex w-full items-start gap-11 py-8'>
+			<div className='flex w-full items-start py-8'>
 				<div
 					className={cn(
 						'flex items-center gap-4 ',
@@ -38,7 +38,7 @@ export default function Main() {
 				</div>
 			</div>
 
-            <Filters className='mb-4'/>
+			<Filters className='mb-4' />
 		</section>
 	)
 }

@@ -12,8 +12,9 @@ import {
 	PopoverContent,
 	PopoverTrigger
 } from '@/components/ui/popover'
-import { ArrowDownNarrowWide, ChevronDown, Cog } from 'lucide-react'
+import { ArrowDownNarrowWide, ChevronDown, Cog, Map } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 const statuses = [
 	{
@@ -99,6 +100,14 @@ export default function Filters({ className }: FilterProps) {
 						setSelectedItem={setSelectedStatus}
 					/>
 				</div>
+
+				<Link
+					href='/'
+					className='ml-auto flex items-center gap-2 text-sm underline-offset-2 hover:text-htractor-sage hover:underline'
+				>
+					<Map size={20} />
+					<span>See our dealers near you.</span>
+				</Link>
 			</div>
 
 			<p className='font-manrope'>

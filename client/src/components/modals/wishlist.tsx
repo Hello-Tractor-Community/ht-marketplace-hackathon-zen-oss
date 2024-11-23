@@ -59,7 +59,7 @@ export function UserWishlist() {
 					<p className='text-sm'>Wishlist</p>
 				</div>
 			</SheetTrigger>
-			<SheetContent className='flex flex-col'>
+			<SheetContent className='flex bg-white flex-col'>
 				<SheetHeader className='font-manrope'>
 					<SheetTitle>Your Wishlist</SheetTitle>
 					<SheetDescription>
