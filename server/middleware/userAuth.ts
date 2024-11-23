@@ -5,13 +5,13 @@ import { HttpStatusCode } from 'axios'
 import { verifyJwtToken } from '../utils/utils'
 
 // Cooke name = _ht010usr
-export const userAuth = async (
+export const sellerAuth = async (
 	req: Request,
 	res: Response<IServerResponse>,
 	next: NextFunction
 ) => {
 	try {
-		let cookie = req.cookies._ht010usr
+		let cookie = req.cookies._dp010usr
 
 		if (!cookie) {
 			return res.status(HttpStatusCode.Unauthorized).json({

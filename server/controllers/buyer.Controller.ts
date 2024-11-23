@@ -37,6 +37,15 @@ export const createBuyer = async (
         data: null,
       })
     }
+    buyer = await Buyer.findOne({ phone })
+
+    if (buyer) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Account with this phone number already exists. Please login!',
+        data: null,
+      })
+    }
 
     let settings = await SiteSettings.findOne()
 
@@ -117,7 +126,7 @@ export const createBuyer = async (
 
 // Login a buyer
 // @route POST /api/v1/buyer/login
-export const loginSeller = async (
+export const loginBuyer = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
@@ -198,7 +207,7 @@ export const loginSeller = async (
 
 // Logout buyer
 // @route GET /api/v1/buyer/logout
-export const logoutSeller = async (
+export const logoutBuyer = async (
   _: Request,
   res: Response<IServerResponse>,
 ) => {
@@ -211,60 +220,6 @@ export const logoutSeller = async (
   })
 }
 
-// Update buyer phone
-// @route PUT /api/v1/buyer/phone
-export const updateSellerPhone = async (
-  req: Request,
-  res: Response<IServerResponse>,
-) => {
-  const { phone } = req.body
-  const buyerId = res.locals.userId
-
-  try {
-    if (!phone) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Missing phone',
-        data: {
-          body: {
-            phone: 'string',
-          },
-        },
-      })
-    }
-
-    let buyer = await Buyer.findByIdAndUpdate(
-      buyerId,
-      { phone },
-      { new: true },
-    )
-
-    if (!buyer) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Buyer not found',
-        data: null,
-      })
-    }
-
-    res.status(HttpStatusCode.Ok).json({
-      status: 'success',
-      message: 'User updated successfully',
-      data: {
-        phone: buyer.phone,
-      },
-    })
-  } catch (err) {
-    Logger.error({ message: 'Error updating phone' + err })
-
-    res.status(HttpStatusCode.InternalServerError).json({
-      status: 'error',
-      message: 'Error updating phone',
-      data: null,
-    })
-  }
-}
-
 // Update buyer password
 // @route PUT /api/v1/buyer/password
 export const updateBuyerPassword = async (
@@ -272,7 +227,7 @@ export const updateBuyerPassword = async (
   res: Response<IServerResponse>,
 ) => {
   const { oldPassword, newPassword } = req.body
-  const buyerId = res.locals.buyerId
+  const buyerId = res.locals.userId
 
   try {
     if (!oldPassword || !newPassword) {
@@ -334,7 +289,27 @@ export const updateBuyerDetails = async (
 ) => {
   try {
     const { id } = req.query
-    const { name, email } = req.body
+    const { name, email, phone } = req.body
+    if (!id) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Missing id',
+        data: null,
+      })
+    }
+    if (!name && !email && !phone) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Missing details',
+        data: {
+          body: {
+            name: 'string',
+            email: 'string',
+            phone: 'string',
+          },
+        },
+      })
+    }
 
     let buyer = await Buyer.findById(id)
 
@@ -348,13 +323,24 @@ export const updateBuyerDetails = async (
 
     if (name) buyer.name = name
     if (email) buyer.email = email
+    if (phone) buyer.phone = phone
 
-    let updatedSeller = await buyer.save()
+    let updatedBuyer = await buyer.save()
+
+    if (!updatedBuyer) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error updating buyer',
+        data: null,
+      })
+    }
+
+    const { password: _, ...buyerWithoutPassword } = updatedBuyer.toObject()
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'Buyer updated successfully',
-      data: updatedSeller,
+      data: buyerWithoutPassword,
     })
   } catch (err) {
     Logger.error({ message: 'Error updating user' + err })
@@ -393,10 +379,13 @@ export const getBuyer = async (
       })
     }
 
+
+    const { password: _, ...buyerWithoutPassword } = buyer.toObject()
+
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'User found',
-      data: buyer,
+      data: buyerWithoutPassword,
     })
   } catch (err) {
     Logger.error({ message: 'Error getting user' + err })
@@ -425,11 +414,17 @@ export const getAllBuyers = async (
       Buyer.countDocuments(),
     ])
 
+
+    const usersWithoutPassword = buyers.map((buyer) => {
+      const { password: _, ...userWithoutPassword } = buyer.toJSON()
+      return userWithoutPassword
+    })
+
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'Users found',
       data: {
-        buyers,
+        buyers: usersWithoutPassword,
         totalBuyers,
         page,
       },
@@ -447,7 +442,7 @@ export const getAllBuyers = async (
 
 // Delete buyer
 // @route DELETE /api/v1/buyer/?id=buyer_id
-export const deleteSeller = async (
+export const deleteBuyer = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {

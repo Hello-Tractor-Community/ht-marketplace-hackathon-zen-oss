@@ -1,6 +1,7 @@
 import { Router } from 'express'
 //import userGroup from './userGroup'
 import sellerGroup from './sellerGroup'
+import buyerGroup from './buyerGroup'
 import { HttpStatusCode } from 'axios'
 
 const router = Router()
@@ -12,6 +13,7 @@ router.get('/ping', (_, res) => {
 
 // Route groups
 router.use('/seller', sellerGroup)
+router.use('/buyer', buyerGroup)
 
 
 export default router

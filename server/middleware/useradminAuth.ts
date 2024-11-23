@@ -4,17 +4,17 @@ import { Logger } from 'borgen'
 import { HttpStatusCode } from 'axios'
 import { verifyJwtToken } from '../utils/utils'
 
-export const adminUserAuth = async (
+export const adminSellerAuth = async (
   req: Request,
   res: Response<IServerResponse>,
   next: NextFunction,
 ) => {
   try {
-    let usrCookie = req.cookies._ht010usr
+    let sellerCookie = req.cookies._dp010usr
 
     let admCookie = req.cookies._ht010adm
 
-    if (!admCookie && !usrCookie) {
+    if (!admCookie && !sellerCookie) {
       return res.status(HttpStatusCode.Unauthorized).json({
         status: 'error',
         message: 'Please login and try again!',
@@ -41,7 +41,7 @@ export const adminUserAuth = async (
       next()
     } else {
       // User
-      let decoded = verifyJwtToken(usrCookie)
+      let decoded = verifyJwtToken(sellerCookie)
 
       if (decoded.status === 'error') {
         return res.status(HttpStatusCode.Unauthorized).json({
