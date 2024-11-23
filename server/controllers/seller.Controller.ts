@@ -7,6 +7,7 @@ import SiteSettings from '../models/settings.model'
 import { signJwtToken, verifyJwtToken } from '../utils/utils'
 import { Config } from '../utils/config'
 import bcrypt from 'bcrypt'
+import { google } from 'googleapis'
 
 let isProduction = Config.NODE_ENV === 'production'
 
@@ -17,8 +18,8 @@ export const createSeller = async (
   res: Response<IServerResponse>,
 ) => {
   try {
-    let { name, email, phone, password, companyDetails } = req.body
-    if (!name || !email || !password || !phone) {
+    let { name, email, phone, password, companyDetails, recaptcha } = req.body
+    if (!name || !email || !password || !phone || !recaptcha) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Please enter all fields',
@@ -70,10 +71,26 @@ export const createSeller = async (
 
     let hashedPassword = await bcrypt.hash(password, 10)
 
+
+    const identityToolkit = google.identitytoolkit({
+      version: 'v3',
+      auth: Config.GCP_API_KEY,
+    })
+
+    const response = await identityToolkit.relyingparty.sendVerificationCode({
+      requestBody: {
+        phoneNumber: phone,
+        recaptchaToken: recaptcha,
+      },
+    })
+
+    const sessionInfo = response.data.sessionInfo
+
     let newSeller = new Seller({
       name,
       email,
       phone,
+      sessionInfo,
       companyDetails,
       password: hashedPassword,
     })
@@ -126,6 +143,91 @@ export const createSeller = async (
     })
   }
 }
+
+
+// Verify the code sent to seller
+// @route POST /api/v1/seller/verify
+export const verifySeller = async (
+  req: Request,
+  res: Response<IServerResponse>,
+) => {
+  const { code } = req.body
+  const sellerId = res.locals.userId
+  try {
+    if (!code) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Please enter all fields',
+        data: null,
+      })
+    }
+
+    const seller = await Seller.findById(sellerId)
+
+    if (!seller) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Seller not found please login',
+        data: null,
+      })
+    }
+    let sessionInfo = seller.sessionInfo
+    if (!sessionInfo) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Session Info not found',
+        data: null,
+      })
+    }
+
+    const identityToolkit = google.identitytoolkit({
+      version: 'v3',
+      auth: Config.GCP_API_KEY,
+    })
+
+   const response = await identityToolkit.relyingparty.verifyPhoneNumber({
+      requestBody: {
+        code,
+        sessionInfo,
+      },
+    })
+
+    if (!response) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Unable to verify the provided code, please try again',
+        data: null,
+      })
+    }
+    seller.isVerified = true
+    seller.sessionInfo = null
+    let savedSeller = await seller.save()
+
+    if (!savedSeller) {
+      return res.status(HttpStatusCode.InternalServerError).json({
+        status: 'error',
+        message: 'Error verifying user',
+        data: null,
+      })
+    }
+
+    return res.status(HttpStatusCode.Ok).json({
+      status: 'success',
+      message: 'Verification successful',
+      data: null,
+    })
+  } catch (err) {
+    Logger.error({ message: 'Error verifying user' + err })
+    return res.status(HttpStatusCode.InternalServerError).json({
+      status: 'error',
+      message: 'Error verifying user',
+      data: null,
+    })
+  }
+}
+
+
+
 
 // Login a seller
 // @route POST /api/v1/seller/login

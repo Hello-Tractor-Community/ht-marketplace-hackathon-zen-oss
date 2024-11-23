@@ -7,8 +7,151 @@ import SiteSettings from '../models/settings.model'
 import { signJwtToken } from '../utils/utils'
 import { Config } from '../utils/config'
 import bcrypt from 'bcrypt'
+import { WorkOS } from '@workos-inc/node'
 
 let isProduction = Config.NODE_ENV === 'production'
+
+const workos = new WorkOS(Config.WORKOS_API_KEY)
+const clientId = Config.WORKOS_CLIENT_ID
+
+// Google Single Sign On
+// @route GET /api/v1/buyer/google
+export const googleSSO = async (
+  req: Request,
+  res: Response<IServerResponse>,
+) => {
+  try {
+    const provider = 'GoogleOAuth'
+    const redirectUri = 'https://dashboard.my-app.com'
+
+    const authorizationUrl = workos.sso.getAuthorizationUrl({
+      provider,
+      redirectUri,
+      clientId,
+    })
+
+    return res.status(HttpStatusCode.Ok).json({
+      status: 'success',
+      message: 'Authorization URL',
+      data: {
+        url: authorizationUrl,
+      },
+    })
+  } catch (err) {
+    Logger.error({ message: 'Error creating user' + err })
+    return res.status(HttpStatusCode.InternalServerError).json({
+      status: 'error',
+      message: 'Error creating user',
+      data: null,
+    })
+  }
+}
+
+// Callback for Google Single Sign On
+// @route GET /api/v1/buyer/google/callback
+export const googleSSOCallback = async (
+  req: Request,
+  res: Response<IServerResponse>,
+) => {
+  try {
+    const { code } = req.query as { code: string }
+
+    const { profile } = await workos.sso.getProfileAndToken({
+      code,
+      clientId,
+    })
+    let name = profile.firstName + ' ' + profile.lastName
+
+    const buyer = await Buyer.findOne({ email: profile.email })
+    if (!buyer) {
+      // Create a new buyer
+      const newBuyer = new Buyer({
+        name,
+        email: profile.email,
+        phone: '',
+        password: '',
+      })
+
+      let savedBuyer = await newBuyer.save()
+      if (!savedBuyer) {
+        return res.status(HttpStatusCode.BadRequest).json({
+          status: 'error',
+          message: 'Error creating buyer',
+          data: null,
+        })
+      }
+
+      let signedToken = signJwtToken({
+        payload: savedBuyer.id,
+        expiresIn: '7d',
+      })
+
+      if (signedToken.status === 'error') {
+        return res.status(HttpStatusCode.InternalServerError).json({
+          status: 'error',
+          message: 'Error signing token',
+          data: null,
+        })
+      }
+
+      // Set cookie
+      res.cookie('_dp010usr', signedToken.data.token, {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        secure: isProduction,
+        httpOnly: isProduction,
+      })
+
+    const { password: _, ...buyerWithoutPassword } = savedBuyer.toObject()
+
+      return res.status(HttpStatusCode.Created).json({
+        status: 'success',
+        message: 'Account created successfully',
+        data: {
+          buyer: buyerWithoutPassword,
+        },
+      })
+    } else {
+
+      let signedToken = signJwtToken({
+        payload: buyer.id,
+        expiresIn: '7d',
+      })
+
+      if (signedToken.status === 'error') {
+        return res.status(HttpStatusCode.InternalServerError).json({
+          status: 'error',
+          message: 'Error signing token',
+          data: null,
+        })
+      }
+
+      // Set cookie
+      res.cookie('_dp010usr', signedToken.data.token, {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        secure: isProduction,
+        httpOnly: isProduction,
+      })
+
+    const { password: _, ...buyerWithoutPassword } = buyer.toObject()
+
+      return res.status(HttpStatusCode.Created).json({
+        status: 'success',
+        message: 'Account created successfully',
+        data: {
+          buyerWithoutPassword,
+        },
+      })
+    }
+
+  } catch (err) {
+    Logger.error({ message: 'Error fetching user info' + err })
+    return res.status(HttpStatusCode.InternalServerError).json({
+      status: 'error',
+      message: 'Error fetching user info',
+      data: null,
+    })
+  }
+}
 
 // Create a buyer
 // @route POST /api/v1/buyer
@@ -379,7 +522,6 @@ export const getBuyer = async (
       })
     }
 
-
     const { password: _, ...buyerWithoutPassword } = buyer.toObject()
 
     res.status(HttpStatusCode.Ok).json({
@@ -413,7 +555,6 @@ export const getAllBuyers = async (
       Buyer.find().skip(skip).limit(limit),
       Buyer.countDocuments(),
     ])
-
 
     const usersWithoutPassword = buyers.map((buyer) => {
       const { password: _, ...userWithoutPassword } = buyer.toJSON()
