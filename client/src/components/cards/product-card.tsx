@@ -69,7 +69,7 @@ export default function ProductCard({ loading, product }: ProductCardProps) {
 				<div className='mt-3  flex w-full items-center justify-between'>
 					<p className='font-manrope font-bold'>$3400</p>
 					<Link
-						href={'/'}
+						href={'/tractor'}
 						className={cn(
 							buttonVariants({ variant: 'outline', size: 'sm' })
 						)}
