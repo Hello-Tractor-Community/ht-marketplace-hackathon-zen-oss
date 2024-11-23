@@ -13,13 +13,37 @@ export const addToWishlist = async (
   try {
     const { product_id } = req.query
     const buyer_id = res.locals.userId
-    if (!product_id || !buyer_id) {
+
+    if (!product_id) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Please enter all fields',
         data: null,
       })
     }
+    const exists = await Wishlist.findOne({ buyer_id })
+    if (exists) {
+        // Update wishlist
+        const wishlist = await Wishlist.findOneAndUpdate(
+          { buyer_id },
+          { $push: { product_id } },
+          { new: true },
+        )
+        if (!wishlist) {
+          return res.status(HttpStatusCode.BadRequest).json({
+            status: 'error',
+            message: 'Error adding product to wishlist',
+            data: null,
+          })
+        }
+        wishlist.populate('product_id')
+        return res.status(HttpStatusCode.Created).json({
+          status: 'success',
+          message: 'Product added to wishlist successfully',
+          data: wishlist,
+        })
+    }
+
     const wishlist = new Wishlist({
       product_id,
       buyer_id,
@@ -89,7 +113,7 @@ export const getBuyerWishlist = async (
 }
 
 // Remove from Wishlist
-// @route DELETE /api/v1/wishlist?id=product_id
+// @route PUT /api/v1/wishlist?id=product_id
 export const removeFromWishlist = async (
   req: Request,
   res: Response<IServerResponse>,
@@ -104,9 +128,14 @@ export const removeFromWishlist = async (
         data: null,
       })
     }
-    const wishlist = await Wishlist.findOneAndDelete({
-      product_id,
-    })
+
+    // Update wishlist
+    const wishlist = await Wishlist.findOneAndUpdate(
+      { buyer_id, product_id },
+      { $pull: { product_id } },
+      { new: true },
+    )
+
     if (!wishlist) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',

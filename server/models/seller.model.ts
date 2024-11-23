@@ -1,11 +1,13 @@
 import { Document, Schema, model } from 'mongoose'
 
 interface SellerDoc extends Document {
-  name: string
+  name:string
   email: string
   phone: string[]
   password: string
+  sessionInfo: string | null
   companyDetails: string[]
+  isVerified: boolean
   lastLogin: Date
 }
 
@@ -32,6 +34,14 @@ const SellerSchema: Schema = new Schema<SellerDoc>(
     companyDetails: {
       type: [String],
       default: [],
+    },
+    sessionInfo: {
+      type: String,
+      default: '',
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
     lastLogin: {
       type: Date,
