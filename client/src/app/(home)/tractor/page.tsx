@@ -96,9 +96,10 @@ export default function Page() {
 			/>
 
 			<div className='mt-24'>
-				<h2 className='mb-4 text-2xl font-[500]'>
+				<h2 className='font-manrope text-2xl mb-4 font-bold capitalize'>
 					Product Specifications
 				</h2>
+
 				<ProductSpecifications sections={DEF_SPECS} />
 			</div>
 

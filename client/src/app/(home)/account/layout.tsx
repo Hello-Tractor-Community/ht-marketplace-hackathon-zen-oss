@@ -1,18 +1,15 @@
-import SidebarAccount from '@/components/layout/account/profile'
+import { Metadata } from 'next'
 
-export default async function layout({
+export default async function Layout({
 	children
 }: {
 	children: React.ReactNode
 }) {
-	return (
-		<section className='relative h-screen py-10'>
-			<div className='container h-full w-full overflow-x-auto overflow-y-hidden'>
-				<div className='relative flex'>
-					<SidebarAccount />
-					<div className='flex-1'>{children} </div>
-				</div>
-			</div>
-		</section>
-	)
+	return <>{children}</>
+}
+
+export const metadata: Metadata = {
+	title: 'Hello Tractor | Account',
+	description:
+		'Hello Tractor - Your one-stop shop for all your tractor needs',
 }

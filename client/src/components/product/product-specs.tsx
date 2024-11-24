@@ -16,7 +16,7 @@ export function ProductSpecifications({
 }: ProductSpecificationsProps) {
 
 	return (
-		<div className='rounded-lg border border-gray-200 bg-white'>
+		<div className='bg-white border border-gray-200'>
 			<Accordion type='single' collapsible>
 				{sections.map((section, index) => {
 					return (
@@ -24,10 +24,10 @@ export function ProductSpecifications({
 							key={'specs' + index}
 							value={'specs' + index}
 						>
-							<AccordionTrigger className='p-4 text-base hover:bg-slate-50'>
+							<AccordionTrigger className='text-lg p-6'>
 								{section.title}
 							</AccordionTrigger>
-							<AccordionContent>
+							<AccordionContent className='bg-white'>
 								{section.title && (
 									<div className='px-6 pb-4'>
 										<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>

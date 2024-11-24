@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/sheet'
 import { Heart, Trash } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -43,7 +44,9 @@ const tractors = [
 ]
 
 export function UserWishlist() {
+	const [isOpened, setIsOpened] = useState(false)
 	const [wishlist, setWishlist] = useState(tractors)
+	const router = useRouter()
 
 	async function removeFromWishlist(index: number, name: string) {
 		const updatedWishlist = wishlist.filter((_, i) => i !== index)
@@ -51,8 +54,14 @@ export function UserWishlist() {
 		toast.success(`${name} has been removed from your wishlist`)
 	}
 
+	function handleOpenProduct() {
+		router.push('/tractor')
+
+		setIsOpened(false)
+	}
+
 	return (
-		<Sheet>
+		<Sheet open={isOpened} onOpenChange={() => setIsOpened(!isOpened)}>
 			<SheetTrigger>
 				<div className='flex cursor-pointer flex-col items-center hover:opacity-80'>
 					<Heart />
@@ -83,7 +92,10 @@ export function UserWishlist() {
 							</div>
 
 							<div className='flex max-w-[50%] flex-col'>
-								<p className='line-clamp-3 cursor-pointer text-sm underline-offset-2 hover:underline'>
+								<p
+									onClick={handleOpenProduct}
+									className='line-clamp-3 cursor-pointer text-sm underline-offset-2 hover:underline'
+								>
 									{tractor.model}
 								</p>
 								<p className='line-clamp-2 text-xs text-muted-foreground'>
