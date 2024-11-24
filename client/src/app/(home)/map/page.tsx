@@ -10,24 +10,18 @@ import {
 } from '@/components/ui/dropdown-menu'
 import 'leaflet/dist/leaflet.css'
 import { useState } from 'react'
+import { Layers } from 'lucide-react'
 import { LatLngExpression } from 'leaflet'
+import { Icon, divIcon, point } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
+import DealersCard from '@/components/cards/dealers-card'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
-import { Icon, divIcon, point } from 'leaflet'
-import DealersCard from '@/components/cards/dealers-card'
-import { Layers } from 'lucide-react'
-
 export default function Page() {
-	const [position, setPosition] = useState<LatLngExpression>({
-		lat: 51.505,
-		lng: -0.09
-	})
-
 	return (
 		<section className='container flex flex-col pb-16 pt-6 lg:px-24'>
 			<div className='flex flex-row gap-4'>
-				<div className='h-[500px] w-full overflow-hidden border border-gray-200 bg-slate-100'>
+				<div className='h-[500px] w-full overflow-hidden rounded-lg border-4 border-gray-200 bg-slate-100'>
 					<DealerMap />
 				</div>
 				<div className='w-[300px]'>
@@ -106,7 +100,7 @@ export function DealerMap() {
 				))}
 			</MarkerClusterGroup>
 
-			<div className='absolute right-2 top-2 z-[1000] '>
+			<div className='absolute right-2 top-2 z-[400] '>
 				<DropdownMenu>
 					<DropdownMenuTrigger className='focus-visible:outline-none'>
 						<div className='cursor-pointer rounded-full border border-gray-200 bg-white p-2 hover:opacity-80 active:opacity-100'>

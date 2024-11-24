@@ -102,7 +102,7 @@ export default function Filters({ className }: FilterProps) {
 				</div>
 
 				<Link
-					href='/'
+					href='/map'
 					className='ml-auto flex items-center gap-2 text-sm underline-offset-2 hover:text-htractor-sage hover:underline'
 				>
 					<Map size={20} />

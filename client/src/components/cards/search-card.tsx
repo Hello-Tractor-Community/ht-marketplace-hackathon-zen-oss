@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
+import { Button, buttonVariants } from '../ui/button'
 import { Separator } from '../ui/separator'
 import { BadgeCheck, Cog, Heart } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface ProductCardProps {
 	product: {
@@ -36,12 +37,15 @@ export default function ProductSearchCard({ product }: ProductCardProps) {
 					</div>
 				</div>
 
-				<Button
-					variant='outline'
-					className='mt-4 w-full rounded-full py-6 text-base'
+				<Link
+					href='/tractor'
+					className={cn(
+						buttonVariants({ variant: 'outline' }),
+						'mt-4 w-full rounded-full py-6 text-base'
+					)}
 				>
 					View Tractor
-				</Button>
+				</Link>
 
 				<Separator className='my-4' />
 
