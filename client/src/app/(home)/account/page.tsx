@@ -1,6 +1,8 @@
 'use client'
 
 import Chats from '@/components/dashboard/buyer/chats'
+import Profile from '@/components/dashboard/buyer/profile'
+import Listings from '@/components/dashboard/buyer/listings'
 import Wishlist from '@/components/dashboard/buyer/wishlist'
 import BuyerAccountSettings from '@/components/dashboard/buyer/account'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -15,16 +17,22 @@ export default function Page() {
 				</span>
 			</h2>
 
-			<Tabs defaultValue='account' className='mt-4 w-full'>
+			<Tabs defaultValue='chats' className='mt-4 w-full'>
 				<TabsList className='gap-4'>
-					<TabsTrigger value='account' className='text-base'>
-						Account
-					</TabsTrigger>
 					<TabsTrigger value='chats' className='text-base'>
 						Chats
 					</TabsTrigger>
+					<TabsTrigger value='account' className='text-base'>
+						Account
+					</TabsTrigger>
 					<TabsTrigger value='wishlist' className='text-base'>
 						Wishlist
+					</TabsTrigger>
+					<TabsTrigger value='profile' className='text-base'>
+						Profile
+					</TabsTrigger>
+					<TabsTrigger value='listings' className='text-base'>
+						Listings
 					</TabsTrigger>
 				</TabsList>
 
@@ -36,6 +44,12 @@ export default function Page() {
 				</TabsContent>
 				<TabsContent value='chats'>
 					<Chats />
+				</TabsContent>
+				<TabsContent value='profile'>
+					<Profile />
+				</TabsContent>
+				<TabsContent value='listings'>
+					<Listings />
 				</TabsContent>
 			</Tabs>
 		</section>
