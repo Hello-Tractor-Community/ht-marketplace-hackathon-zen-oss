@@ -45,7 +45,8 @@
     "swiper": "^11.1.15",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.14",
