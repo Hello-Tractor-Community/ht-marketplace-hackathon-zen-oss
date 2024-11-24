@@ -1,20 +1,29 @@
 import Link from 'next/link'
-import { Badge } from '../ui/badge'
-import { Button, buttonVariants } from '../ui/button'
-import { Separator } from '../ui/separator'
-import { BadgeCheck, Cog, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Badge } from '../ui/badge'
+import { Separator } from '../ui/separator'
+import { buttonVariants } from '../ui/button'
+import { BadgeCheck, Cog, Heart } from 'lucide-react'
 
 interface ProductCardProps {
+	className?: string
 	product: {
 		model: string
 		tractor_model_logo_url: string
 	}
 }
 
-export default function ProductSearchCard({ product }: ProductCardProps) {
+export default function ProductSearchCard({
+	product,
+	className
+}: ProductCardProps) {
 	return (
-		<div className='flex h-full w-full flex-row rounded-xl border border-gray-200 p-2'>
+		<div
+			className={cn(
+				'flex h-full w-full flex-row rounded-xl border border-gray-200 p-2',
+				className
+			)}
+		>
 			<div className='flex h-fit flex-col'>
 				<div className='flex h-[250px] w-full items-center justify-center overflow-hidden rounded-xl bg-slate-100 p-2'>
 					<div
