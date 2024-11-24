@@ -63,7 +63,7 @@ const SearchTractor = () => {
 			<div className='relative col-span-9 w-full'>
 				<div
 					className={cn(
-						'absolute top-0 z-40 -mt-[35px] w-full border border-transparent p-2',
+						'absolute top-0 z-[500] -mt-[35px] w-full border border-transparent p-2',
 						{
 							'rounded-xl border-border bg-white': isFocused
 						}

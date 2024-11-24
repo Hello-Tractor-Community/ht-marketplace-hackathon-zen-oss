@@ -10,7 +10,7 @@ export default function TopNav() {
 	const [openUserMenu, setOpenUserMenu] = useState(false)
 
 	return (
-		<section className='relative z-50 hidden w-full border-b border-neutral-200 bg-gray-50 lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:flex lg:px-32'>
+		<section className='relative z-[1000] hidden w-full border-b border-neutral-200 bg-gray-50 lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:flex lg:px-32'>
 			<div className='container flex h-full items-center justify-between p-1'>
 				<h3 className='flex items-center font-[500]'>
 					Welcome to Hello Tractor&nbsp;
