@@ -1,5 +1,13 @@
 'use client'
 
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import 'leaflet/dist/leaflet.css'
 import { useState } from 'react'
 import { LatLngExpression } from 'leaflet'
@@ -8,6 +16,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import { Icon, divIcon, point } from 'leaflet'
 import DealersCard from '@/components/cards/dealers-card'
+import { Layers } from 'lucide-react'
 
 export default function Page() {
 	const [position, setPosition] = useState<LatLngExpression>({
@@ -96,6 +105,34 @@ export function DealerMap() {
 					</Marker>
 				))}
 			</MarkerClusterGroup>
+
+			<div className='absolute right-2 top-2 z-[1000] '>
+				<DropdownMenu>
+					<DropdownMenuTrigger className='focus-visible:outline-none'>
+						<div className='cursor-pointer rounded-full border border-gray-200 bg-white p-2 hover:opacity-80 active:opacity-100'>
+							<Layers />
+						</div>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className='z-[1000]'>
+						<DropdownMenuLabel className='font-[500]'>
+							Map Type
+						</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							onClick={() => setMapType('default')}
+							className='cursor-pointer'
+						>
+							Default
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => setMapType('satellite')}
+							className='cursor-pointer'
+						>
+							Satellite
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</div>
 		</MapContainer>
 	)
 }
