@@ -20,11 +20,11 @@ export default function Page() {
 					<TabsTrigger value='account' className='text-base'>
 						Account
 					</TabsTrigger>
-					<TabsTrigger value='wishlist' className='text-base'>
-						Wishlist
-					</TabsTrigger>
 					<TabsTrigger value='chats' className='text-base'>
 						Chats
+					</TabsTrigger>
+					<TabsTrigger value='wishlist' className='text-base'>
+						Wishlist
 					</TabsTrigger>
 				</TabsList>
 
