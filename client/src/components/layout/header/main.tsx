@@ -9,6 +9,7 @@ import { UserWishlist } from '@/components/modals/wishlist'
 import { Button } from '@/components/ui/button'
 import Filters from '@/components/home/filters'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
@@ -21,7 +22,7 @@ export default function Main() {
 						openSearchMobile && ' hidden lg:flex'
 					)}
 				>
-					<Link href="/">
+					<Link href='/'>
 						<Image
 							src='/HT_LOGO_CMYK_Orange.png'
 							alt='logo'
@@ -46,11 +47,17 @@ export default function Main() {
 
 const SearchTractor = () => {
 	const [isFocused, setIsFocused] = useState(false)
+	const router = useRouter()
 
 	const animation = {
 		hide: { y: 82, opacity: 0 },
 		show: { y: 0, opacity: 1 }
 	}
+
+	function handleSearch() {
+		router.push('/search')
+	}
+
 	return (
 		<section className='grid w-full grid-cols-10 place-items-center items-center'>
 			<div className='relative col-span-9 w-full'>
@@ -101,6 +108,7 @@ const SearchTractor = () => {
 			<Button
 				variant='default'
 				size='lg'
+				onClick={handleSearch}
 				className='ml-9 w-[150px] rounded-md px-4 py-6 text-base text-white shadow-none'
 			>
 				Search tractor

@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import React from 'react'
 import { DEF_SPECS } from '@/app/(home)/tractor/page'
 import {
 	Accordion,
@@ -15,18 +14,6 @@ interface ProductSpecificationsProps {
 export function ProductSpecifications({
 	sections
 }: ProductSpecificationsProps) {
-	const [expandedSections, setExpandedSections] = useState<
-		Record<string, boolean>
-	>({
-		'Mahindra 275 DI HT TU SP Plus Engine': true
-	})
-
-	const toggleSection = (title: string) => {
-		setExpandedSections((prev) => ({
-			...prev,
-			[title]: !prev[title]
-		}))
-	}
 
 	return (
 		<div className='rounded-lg border border-gray-200 bg-white'>

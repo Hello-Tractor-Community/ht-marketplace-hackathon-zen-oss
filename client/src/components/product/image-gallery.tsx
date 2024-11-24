@@ -30,14 +30,14 @@ export function TractorGallery({ images }: ImageGalleryProps) {
 
 				<button
 					onClick={prevImage}
-					className='absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 transition-colors hover:bg-white'
+					className='absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 transition-colors hover:bg-white hover:text-htractor-hibiscus'
 					aria-label='Previous image'
 				>
 					<ChevronLeft className='h-6 w-6' />
 				</button>
 				<button
 					onClick={nextImage}
-					className='absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 transition-colors hover:bg-white'
+					className='absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 transition-colors hover:bg-white hover:text-htractor-hibiscus'
 					aria-label='Next image'
 				>
 					<ChevronRight className='h-6 w-6' />
