@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 
 export default function Footer() {
 	return (
-		<footer className='bg-black py-16 text-white'>
+		<footer className='bg-black py-16 mt-auto text-white'>
 			<div className='container grid grid-cols-1 gap-12 px-4 md:grid-cols-2 lg:mx-20 lg:grid-cols-4'>
 				{/* Contact Us Section */}
 				<div className='w-fit space-y-6'>
