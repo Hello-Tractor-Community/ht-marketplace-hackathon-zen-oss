@@ -6,14 +6,12 @@ import { BadgeCheck, Cog, Heart } from 'lucide-react'
 
 interface ProductCardProps {
 	product: {
-        model: string
+		model: string
 		tractor_model_logo_url: string
 	}
 }
 
-export default function ProductSearchCard({
-	product
-}: ProductCardProps) {
+export default function ProductSearchCard({ product }: ProductCardProps) {
 	return (
 		<div className='flex h-full w-full flex-row rounded-xl border border-gray-200 p-2'>
 			<div className='flex h-fit flex-col'>
