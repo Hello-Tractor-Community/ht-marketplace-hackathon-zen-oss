@@ -16,10 +16,12 @@ import { Icon, divIcon, point } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import DealersCard from '@/components/cards/dealers-card'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import FeaturesProducts from '@/components/home/featured'
+import { DEFAULT_SLIDES } from '@/components/home/banner'
 
 export default function Page() {
 	return (
-		<section className='container flex flex-col pb-16 pt-6 lg:px-24'>
+		<section className='container flex flex-col pb-24 pt-6 lg:px-24'>
 			<div className='flex flex-row gap-4'>
 				<div className='h-[500px] w-full overflow-hidden rounded-lg border-4 border-gray-200 bg-slate-100'>
 					<DealerMap />
@@ -34,6 +36,13 @@ export default function Page() {
 					</div>
 				</div>
 			</div>
+
+			<FeaturesProducts
+				title='Tractors near you'
+				link='/'
+				products={DEFAULT_SLIDES}
+				className='mt-12 lg:mx-0'
+			/>
 		</section>
 	)
 }
