@@ -14,7 +14,6 @@ import { Layers } from 'lucide-react'
 import { LatLngExpression } from 'leaflet'
 import { Icon, divIcon, point } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-import DealersCard from '@/components/cards/dealers-card'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import FeaturesProducts from '@/components/home/featured'
 import { DEFAULT_SLIDES } from '@/components/home/banner'
@@ -22,19 +21,8 @@ import { DEFAULT_SLIDES } from '@/components/home/banner'
 export default function Page() {
 	return (
 		<section className='container flex flex-col pb-24 pt-6 lg:px-24'>
-			<div className='flex flex-row gap-4'>
-				<div className='h-[500px] w-full overflow-hidden rounded-lg border-4 border-gray-200 bg-slate-100'>
-					<DealerMap />
-				</div>
-				<div className='w-[300px]'>
-					<p className='font-[500]'>Nearest dealers</p>
-
-					<div className='flex flex-col gap-1'>
-						{Array.from({ length: 5 }).map((_, i) => {
-							return <DealersCard key={'dealer' + i} />
-						})}
-					</div>
-				</div>
+			<div className='h-[500px] w-full overflow-hidden rounded-lg border-4 border-gray-200 bg-slate-100'>
+				<DealerMap />
 			</div>
 
 			<FeaturesProducts

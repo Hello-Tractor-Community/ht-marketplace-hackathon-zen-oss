@@ -15,10 +15,10 @@ export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
 	return (
 		<section className='container mt-[45px] lg:px-14'>
-			<div className='flex w-full items-start py-8'>
+			<div className='flex w-full items-start'>
 				<div
 					className={cn(
-						'flex items-center gap-4 ',
+						'flex items-center gap-4',
 						openSearchMobile && ' hidden lg:flex'
 					)}
 				>
@@ -40,7 +40,7 @@ export default function Main() {
 				</div>
 			</div>
 
-			<Filters className='mb-4' />
+			<Filters className='my-2' />
 		</section>
 	)
 }
