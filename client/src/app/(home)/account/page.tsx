@@ -1,22 +1,52 @@
-import { Metadata } from 'next'
-import React from 'react'
+'use client'
 
-export default async function page() {
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+export default function Page() {
 	return (
-		<div className='h-screen p-4'>
-			<div className='border-gray rounded-lg border-2 border-dashed p-4'>
-				<div className='mb-4 flex justify-center rounded bg-gray-50'>
-					This is where a user can view and edit their account details
-				</div>
-			</div>
-		</div>
+		<section className='container mb-12 mt-4 h-fit lg:px-24'>
+			<h2 className=''>
+				Hello there,&nbsp;
+				<span className='font-manrope font-semibold'>
+					Branson &#128075;
+				</span>
+			</h2>
+
+			<Tabs defaultValue='account' className='mt-2 w-full'>
+				<TabsList className='gap-4'>
+					<TabsTrigger value='account' className='text-base'>
+						Account
+					</TabsTrigger>
+					<TabsTrigger value='wishlist' className='text-base'>
+						Wishlist
+					</TabsTrigger>
+					<TabsTrigger value='chats' className='text-base'>
+						Chats
+					</TabsTrigger>
+				</TabsList>
+
+				<TabsContent value='account'>
+					<Account />
+				</TabsContent>
+				<TabsContent value='wishlist'>
+					<Wishlist />
+				</TabsContent>
+				<TabsContent value='chats'>
+					<Chats />
+				</TabsContent>
+			</Tabs>
+		</section>
 	)
 }
 
-export const metadata: Metadata = {
-	title: 'Profil - Account',
-	description: 'Become a full stack Nextjs with this project',
-	icons: {
-		icon: '/assets/images/logo.svg'
-	}
+const Account = () => {
+	return <div className='mt-4'>Hello From Account</div>
+}
+
+const Wishlist = () => {
+	return <div className='mt-4'>Hello From Wishlist</div>
+}
+
+const Chats = () => {
+	return <div className='mt-4'>Hello From Chats</div>
 }
