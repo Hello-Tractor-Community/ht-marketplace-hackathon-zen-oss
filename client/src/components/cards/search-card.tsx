@@ -79,7 +79,12 @@ export default function ProductSearchCard({
 				<div className='flex items-center justify-between'>
 					<div className='flex items-center gap-2'>
 						<div>
-							<p className='font-medium'>John Does</p>
+							<Link
+								href={'/dealer/7uf93hf0sf02'}
+								className='font-medium underline-offset-2 hover:underline'
+							>
+								John Does
+							</Link>
 							<p className='flex items-center gap-1 text-sm text-blue-600'>
 								<BadgeCheck className='h-4 w-4' />
 								Verified Seller
