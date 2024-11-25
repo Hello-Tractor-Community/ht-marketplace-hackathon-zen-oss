@@ -28,9 +28,6 @@ export default function Page() {
 					<TabsTrigger value='wishlist' className='text-base'>
 						Wishlist
 					</TabsTrigger>
-					<TabsTrigger value='profile' className='text-base'>
-						Profile
-					</TabsTrigger>
 					<TabsTrigger value='listings' className='text-base'>
 						Listings
 					</TabsTrigger>
@@ -44,9 +41,6 @@ export default function Page() {
 				</TabsContent>
 				<TabsContent value='chats'>
 					<Chats />
-				</TabsContent>
-				<TabsContent value='profile'>
-					<Profile />
 				</TabsContent>
 				<TabsContent value='listings'>
 					<Listings />
