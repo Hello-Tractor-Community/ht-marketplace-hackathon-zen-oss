@@ -14,8 +14,8 @@ import { useRouter } from 'next/navigation'
 export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
 	return (
-		<section className='container mt-[45px] lg:px-14'>
-			<div className='flex w-full items-start'>
+		<section className='mt-[18px] 2xl:container md:mt-0 2xl:mt-[45px] 3xl:px-14'>
+			<div className='flex w-full flex-col items-start md:flex-row'>
 				<div
 					className={cn(
 						'flex items-center gap-4',
@@ -33,7 +33,7 @@ export default function Main() {
 					</Link>
 				</div>
 
-				<div className='mt-6 flex w-full flex-row items-start gap-12'>
+				<div className='mt-6 flex w-full flex-row items-start px-4 2xl:gap-12'>
 					<SearchTractor />
 
 					<UserWishlist />
@@ -59,8 +59,8 @@ const SearchTractor = () => {
 	}
 
 	return (
-		<section className='grid w-full grid-cols-10 place-items-center items-center'>
-			<div className='relative col-span-9 w-full'>
+		<section className='flex w-full flex-col gap-4 md:flex-row md:items-center 2xl:grid 2xl:grid-cols-10 2xl:place-items-center 2xl:gap-0'>
+			<div className='relative w-full flex-1 2xl:col-span-9 2xl:flex-none'>
 				<div
 					className={cn(
 						'absolute top-0 z-[500] -mt-[35px] w-full border border-transparent p-2',
@@ -85,7 +85,12 @@ const SearchTractor = () => {
 								placeholder='Find a tractor'
 								onFocus={() => setIsFocused(true)}
 								onBlur={() => setIsFocused(false)}
-								className='flex h-9 w-full bg-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0  disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
+								className='hidden h-9 w-full bg-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed  disabled:opacity-50 md:flex md:text-sm'
+							/>
+
+							<input
+								placeholder='Find a tractor'
+								className='flex h-9 w-full bg-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed  disabled:opacity-50 md:hidden md:text-sm'
 							/>
 						</div>
 					</div>
@@ -109,7 +114,7 @@ const SearchTractor = () => {
 				variant='default'
 				size='lg'
 				onClick={handleSearch}
-				className='ml-9 w-[150px] rounded-md px-4 py-6 text-base text-white shadow-none'
+				className='mt-4 rounded-md px-4 py-6 text-base text-white shadow-none md:ml-9 md:mt-0 3xl:w-[150px]'
 			>
 				Search tractor
 			</Button>

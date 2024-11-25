@@ -44,7 +44,7 @@ export default function ProductCard({ loading, product }: ProductCardProps) {
 					{product.model}
 				</Link>
 
-				<div className='mt-1 flex w-full items-center justify-between'>
+				<div className='mt-1 flex w-full flex-wrap items-center gap-1 3xl:flex-nowrap 3xl:justify-between'>
 					<Badge
 						variant='secondary'
 						className='border border-gray-200 bg-white font-manrope font-normal capitalize text-black'
