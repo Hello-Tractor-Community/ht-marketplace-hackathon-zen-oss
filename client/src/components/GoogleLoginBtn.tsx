@@ -1,10 +1,10 @@
-import { useGoogleLogin } from '@react-oauth/google'
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { Loader } from 'lucide-react'
-import { toast } from 'sonner'
-import { useUserStore } from '@/store/store'
+import { useRouter } from 'next/navigation'
+import { useUserStore } from '@/store/user-store'
+import { useGoogleLogin } from '@react-oauth/google'
 
 interface GoogleLoginBtnProps {
 	requiresInvite?: boolean
