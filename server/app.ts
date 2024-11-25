@@ -9,6 +9,8 @@ import { Config } from './utils/config'
 import cookieParser from 'cookie-parser'
 import connectDb from './database/connectDb'
 import { setupWebSocketServer } from './sockets'
+import { createRouteHandler } from 'uploadthing/express'
+import {uploadRouter} from './router/v1/upload-thing'
 
 const app = express()
 
@@ -30,6 +32,17 @@ app.use(compression())
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
+
+app.use(
+  '/api/uploadthing',
+  createRouteHandler({
+    router: uploadRouter,
+    config: {
+      token: Config.UPLOADTHING_TOKEN,
+      callbackUrl: Config.CALLBACK_URL,
+    },
+  }),
+)
 
 app.use('/', router)
 
