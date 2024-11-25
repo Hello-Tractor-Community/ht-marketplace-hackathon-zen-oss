@@ -1,9 +1,25 @@
 import { Document, Schema, model, Types } from 'mongoose'
 
-interface UserDoc extends Document {
+export interface UserDoc extends Document {
   userType: 'Buyer' | 'Seller'
-  userId: Types.ObjectId
+  userId: Types.ObjectId | IBuyer | ISeller
   lastLogin: Date
+}
+
+export interface IBuyer extends Document {
+  name: string
+  email: string
+  phone: string
+  password: string
+}
+
+export interface ISeller extends Document {
+  name: string
+  email: string
+  phone: string
+  password: string
+  storeName: string
+  storeDescription: string
 }
 
 const UserSchema: Schema = new Schema<UserDoc>(

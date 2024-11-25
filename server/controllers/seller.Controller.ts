@@ -8,7 +8,7 @@ import { signJwtToken } from '../utils/utils'
 import { Config } from '../utils/config'
 import bcrypt from 'bcrypt'
 import { google } from 'googleapis'
-import User from '../models/user.model'
+import User, { ISeller, UserDoc } from '../models/user.model'
 
 let isProduction = Config.NODE_ENV === 'production'
 
@@ -155,12 +155,11 @@ export const createSeller = async (
       httpOnly: isProduction,
     })
 
-
     return res.status(HttpStatusCode.Created).json({
       status: 'success',
       message: 'Account created successfully',
       data: {
-        seller: populatedUser
+        seller: populatedUser,
       },
     })
   } catch (err) {
@@ -303,7 +302,6 @@ export const loginSeller = async (
       })
     }
 
-
     const populatedUser = await User.findById(user.id).populate({
       path: 'userId',
       model: 'Seller',
@@ -317,7 +315,6 @@ export const loginSeller = async (
         data: null,
       })
     }
-
 
     let signedToken = signJwtToken({
       payload: populatedUser.id,
@@ -339,12 +336,11 @@ export const loginSeller = async (
       httpOnly: isProduction,
     })
 
-
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'User logged in successfully',
       data: {
-          seller: populatedUser
+        seller: populatedUser,
       },
     })
   } catch (err) {
@@ -380,7 +376,7 @@ export const updateSellerPassword = async (
   res: Response<IServerResponse>,
 ) => {
   const { oldPassword, newPassword } = req.body
-  const sellerId = res.locals.userId
+  const userId = res.locals.userId
 
   try {
     if (!oldPassword || !newPassword) {
@@ -395,22 +391,39 @@ export const updateSellerPassword = async (
       })
     }
 
-    let seller = await Seller.findById(sellerId)
+    const user = (await User.findById(userId).populate({
+      path: 'userId',
+      model: 'Seller',
+      select: 'password', // Select only the password field
+    })) as UserDoc & { userId: ISeller }
 
-    if (!seller) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Seller not found',
-        data: null,
-      })
-    }
+    let isMatch = await bcrypt.compare(
+      oldPassword,
 
-    let isMatch = await bcrypt.compare(oldPassword, seller.password)
+      (user.userId as ISeller).password,
+    )
 
     if (!isMatch) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Incorrect password',
+        data: null,
+      })
+    }
+
+    const seller = await Seller.findByIdAndUpdate(
+      user.userId._id,
+      {
+        password: await bcrypt.hash(newPassword, 10),
+      },
+      {
+        new: true,
+      },
+    )
+    if (!seller) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error updating password',
         data: null,
       })
     }
@@ -455,11 +468,15 @@ export const updateSellerDetails = async (
         },
       })
     }
-    const id = res.locals.userId
-    console.log(id)
+    const userId = res.locals.userId
 
-    let seller = await Seller.findById(id)
+    const user = (await User.findById(userId).populate({
+      path: 'userId',
+      model: 'Seller',
+      select: 'name email phone',
+    })) as UserDoc & { userId: ISeller }
 
+    let seller = await Seller.findById(user.userId._id)
     if (!seller) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
@@ -484,13 +501,11 @@ export const updateSellerDetails = async (
 
     // seller without password
 
-    const { password: _, ...updatedSellerWithoutPassword } =
-      updatedSeller.toJSON()
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'Seller updated successfully',
-      data: updatedSellerWithoutPassword,
+      data: null,
     })
   } catch (err) {
     Logger.error({ message: 'Error updating user' + err })
@@ -663,8 +678,17 @@ export const deleteSeller = async (
       })
     }
 
-    let seller = await Seller.findByIdAndDelete(id)
+    let user = await User.findById(id)
 
+    if (!user) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Seller not found',
+        data: null,
+      })
+    }
+
+    let seller = await Seller.findByIdAndDelete(user.userId._id)
     if (!seller) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
@@ -672,6 +696,8 @@ export const deleteSeller = async (
         data: null,
       })
     }
+
+    await User.findByIdAndDelete(id)
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',

@@ -8,7 +8,7 @@ import { signJwtToken } from '../utils/utils'
 import { Config } from '../utils/config'
 import bcrypt from 'bcrypt'
 import { WorkOS } from '@workos-inc/node'
-import User from '../models/user.model'
+import User, { IBuyer, UserDoc } from '../models/user.model'
 
 let isProduction = Config.NODE_ENV === 'production'
 
@@ -49,7 +49,7 @@ export const googleSSO = async (
 }
 
 // Callback for Google Single Sign On
-// @route GET /api/v1/buyer/google/callback
+// @route GET /api/v1/buyer/google/callback?code=
 export const googleSSOCallback = async (
   req: Request,
   res: Response<IServerResponse>,
@@ -453,7 +453,7 @@ export const updateBuyerPassword = async (
   res: Response<IServerResponse>,
 ) => {
   const { oldPassword, newPassword } = req.body
-  const buyerId = res.locals.userId
+  const userId = res.locals.userId
 
   try {
     if (!oldPassword || !newPassword) {
@@ -468,9 +468,13 @@ export const updateBuyerPassword = async (
       })
     }
 
-    let buyer = await Buyer.findById(buyerId)
+    const user = (await User.findById(userId).populate({
+      path: 'userId',
+      model: 'Buyer',
+      select: 'password', // Select only the password field
+    })) as UserDoc & { userId: IBuyer }
 
-    if (!buyer) {
+    if (!user) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Buyer not found',
@@ -478,7 +482,10 @@ export const updateBuyerPassword = async (
       })
     }
 
-    let isMatch = await bcrypt.compare(oldPassword, buyer.password)
+    let isMatch = await bcrypt.compare(
+      oldPassword,
+      (user.userId as IBuyer).password,
+    )
 
     if (!isMatch) {
       return res.status(HttpStatusCode.BadRequest).json({
@@ -488,8 +495,22 @@ export const updateBuyerPassword = async (
       })
     }
 
-    buyer.password = await bcrypt.hash(newPassword, 10)
-    await buyer.save()
+    const buyer = await Buyer.findByIdAndUpdate(
+      user.userId._id,
+      {
+        password: await bcrypt.hash(newPassword, 10),
+      },
+      {
+        new: true,
+      },
+    )
+    if (!buyer) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error updating password',
+        data: null,
+      })
+    }
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
@@ -508,21 +529,15 @@ export const updateBuyerPassword = async (
 }
 
 // Update buyer details
-// @route PUT /api/v1/buyer/?id=seller_id
+// @route PUT /api/v1/buyer
 export const updateBuyerDetails = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
   try {
-    const { id } = req.query
+    const userId = res.locals.userId
+
     const { name, email, phone } = req.body
-    if (!id) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Missing id',
-        data: null,
-      })
-    }
     if (!name && !email && !phone) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
@@ -537,7 +552,21 @@ export const updateBuyerDetails = async (
       })
     }
 
-    let buyer = await Buyer.findById(id)
+    const user = (await User.findById(userId).populate({
+      path: 'userId',
+      model: 'Buyer',
+      select: 'name email phone',
+    })) as UserDoc & { userId: IBuyer }
+
+    if (!user) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Buyer not found',
+        data: null,
+      })
+    }
+
+    let buyer = await Buyer.findById(user.userId._id)
 
     if (!buyer) {
       return res.status(HttpStatusCode.BadRequest).json({
@@ -561,12 +590,11 @@ export const updateBuyerDetails = async (
       })
     }
 
-    const { password: _, ...buyerWithoutPassword } = updatedBuyer.toObject()
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'Buyer updated successfully',
-      data: buyerWithoutPassword,
+      data: null,
     })
   } catch (err) {
     Logger.error({ message: 'Error updating user' + err })
