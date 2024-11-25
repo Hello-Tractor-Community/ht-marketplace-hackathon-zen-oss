@@ -9,4 +9,5 @@ export const Config = {
   WORKOS_API_KEY: process.env.WORKOS_API_KEY as string,
   WORKOS_CLIENT_ID: process.env.WORKOS_CLIENT_ID as string,
   UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN as string,
+  CALLBACK_URL: process.env.CALLBACK_URL as string,
 }

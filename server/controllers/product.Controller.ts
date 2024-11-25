@@ -304,15 +304,19 @@ export const updateProduct = async (
       title,
       description,
       category,
+      brand,
       price,
       stock,
       shipping_options,
       delivery_times,
       costs,
+      features,
+      horsePower,
+      year,
+      engineHours,
+      imagesToAdd, // New image URLs from the frontend
       imagesToDelete,
     } = req.body
-
-    const files = req.files as Express.Multer.File[]
 
     const product = await Product.findById(id)
     if (!product) {
@@ -323,7 +327,7 @@ export const updateProduct = async (
       })
     }
 
-    let remainingImages = [...product.images]
+    let remainingImages = [...(product.images || [])]
     if (imagesToDelete && Array.isArray(imagesToDelete)) {
       await deleteImages(imagesToDelete)
       remainingImages = remainingImages.filter(
@@ -331,32 +335,25 @@ export const updateProduct = async (
       )
     }
 
-    let newImageNames: string[] = []
-    if (files && files.length > 0) {
-      try {
-        newImageNames = await Promise.all(
-          files.map((file) => processImage(file)),
-        )
-      } catch (error) {
-        Logger.error({ message: 'Error processing images: ' + error })
-        return res.status(HttpStatusCode.InternalServerError).json({
-          status: 'error',
-          message: 'Error processing images',
-          data: null,
-        })
-      }
+    if (imagesToAdd && Array.isArray(imagesToAdd)) {
+      remainingImages = [...remainingImages, ...imagesToAdd]
     }
 
-    product.images = [...remainingImages, ...newImageNames]
+    product.images = remainingImages
 
     if (title) product.title = title
     if (description) product.description = description
     if (category) product.category = category
+    if (brand) product.brand = brand
     if (price) product.price = price
+    if (stock) product.stock = stock
     if (shipping_options) product.shipping_options = shipping_options
     if (delivery_times) product.delivery_times = delivery_times
-    if (stock) product.stock = stock
     if (costs) product.costs = costs
+    if (features) product.features = features // Ensure features array matches schema
+    if (horsePower) product.horsePower = horsePower
+    if (year) product.year = year
+    if (engineHours) product.engineHours = engineHours
 
     let updatedProduct = await product.save()
     if (!updatedProduct) {
