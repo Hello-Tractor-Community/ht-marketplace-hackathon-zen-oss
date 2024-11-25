@@ -4,6 +4,10 @@ interface ProductDoc extends Document {
   store_id: Types.ObjectId
   title: string
   description: string
+  brand?: string
+  features?: string
+  horsePower?: number
+  engineHours?: number
   engine: {
     cylinder?: number
     capacity?: number
@@ -64,6 +68,10 @@ const ProductSchema = new Schema<ProductDoc>(
     store_id: { type: Schema.Types.ObjectId, ref: 'Store' },
     title: { type: String },
     description: { type: String },
+    brand: { type: String },
+    features: { type: String },
+    horsePower: { type: Number },
+    engineHours: { type: Number },
     engine: {
       cylinder: { type: Number },
       capacity: { type: Number },
