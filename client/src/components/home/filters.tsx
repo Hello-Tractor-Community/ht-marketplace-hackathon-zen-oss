@@ -16,7 +16,7 @@ import { ArrowDownNarrowWide, ChevronDown, Cog, Map } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
-const statuses = [
+export const filterStatus = [
 	{
 		value: 'backlog',
 		label: 'Backlog'
@@ -45,7 +45,7 @@ interface FilterProps {
 
 export default function Filters({ className }: FilterProps) {
 	const [selectedStatus, setSelectedStatus] = useState<
-		(typeof statuses)[0] | null
+		(typeof filterStatus)[0] | null
 	>(null)
 	return (
 		<div className={cn('container -mt-4 flex flex-col gap-4', className)}>
@@ -121,13 +121,13 @@ export default function Filters({ className }: FilterProps) {
 interface SelectDropdownProps {
 	type: string
 	icon: React.ReactNode
-	selectedItem: (typeof statuses)[0] | null
+	selectedItem: (typeof filterStatus)[0] | null
 	setSelectedItem: React.Dispatch<
-		React.SetStateAction<(typeof statuses)[0] | null>
+		React.SetStateAction<(typeof filterStatus)[0] | null>
 	>
 }
 
-const SelectDropdown = ({
+export const SelectDropdown = ({
 	type,
 	icon,
 	selectedItem,
@@ -151,13 +151,13 @@ const SelectDropdown = ({
 					<CommandList>
 						<CommandEmpty>No results found.</CommandEmpty>
 						<CommandGroup>
-							{statuses.map((status) => (
+							{filterStatus.map((status) => (
 								<CommandItem
 									key={status.value}
 									value={status.value}
 									onSelect={(value) => {
 										setSelectedItem(
-											statuses.find(
+											filterStatus.find(
 												(priority) =>
 													priority.value === value
 											) || null

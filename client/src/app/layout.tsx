@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 import localFont from 'next/font/local'
 import type { Metadata, Viewport } from 'next'
 import { Manrope, Merriweather } from 'next/font/google'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 const avenir = localFont({
 	src: [
@@ -66,6 +67,8 @@ export const viewport: Viewport = {
 	maximumScale: 1
 }
 
+const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''
+
 export default function RootLayout({
 	children
 }: Readonly<{
@@ -78,10 +81,12 @@ export default function RootLayout({
 					avenir.className,
 					manrope.variable,
 					merriweather.variable,
-                    "bg-gray-50"
+					'bg-gray-50'
 				)}
 			>
-				{children}
+				<GoogleOAuthProvider clientId={googleClientId}>
+					{children}
+				</GoogleOAuthProvider>
 				<Toaster richColors />
 			</body>
 		</html>

@@ -1,4 +1,3 @@
-import { Separator } from '@radix-ui/react-dropdown-menu'
 import Main from './main'
 import TopNav from './top-nav'
 

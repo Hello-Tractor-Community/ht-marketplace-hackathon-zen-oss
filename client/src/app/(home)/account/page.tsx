@@ -1,7 +1,6 @@
 'use client'
 
 import Chats from '@/components/dashboard/buyer/chats'
-import Profile from '@/components/dashboard/buyer/profile'
 import Listings from '@/components/dashboard/buyer/listings'
 import Wishlist from '@/components/dashboard/buyer/wishlist'
 import BuyerAccountSettings from '@/components/dashboard/buyer/account'
