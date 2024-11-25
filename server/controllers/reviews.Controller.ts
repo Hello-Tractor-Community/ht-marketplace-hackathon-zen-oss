@@ -62,6 +62,7 @@ export const getReview = async (
         data: null,
       })
     }
+
     const review = await Reviews.findById(id)
     if (!review) {
       return res.status(HttpStatusCode.BadRequest).json({

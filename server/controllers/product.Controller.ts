@@ -1,10 +1,11 @@
 import { Logger } from 'borgen'
 import Product from '../models/product.model'
 import { HttpStatusCode } from 'axios'
-import type { IServerResponse } from '../types'
+import type { IServerResponse, SearchQuery } from '../types'
 import type { Request, Response } from 'express'
 import { deleteImages, processImage } from '../utils/image-upload'
 import Store from '../models/store.model'
+import { Types } from 'mongoose'
 
 // Create a new tractor
 // @route POST /api/v1/product
@@ -148,7 +149,7 @@ export const getAllProducts = async (
 }
 
 // Filter products
-// @route GET /api/v1/product/filter?
+// @route GET /api/v1/product/filter?search=product&category=category&brand=brand&horsePower=hp&year=year&engineHours=engineHours&minPrice=minPrice&maxPrice=maxPrice&page=1&limit=10&sortBy=createdAt&sortOrder=desc
 export const filterProducts = async (
   req: Request,
   res: Response<IServerResponse>,
@@ -157,19 +158,19 @@ export const filterProducts = async (
     const {
       search,
       category,
+      brand,
+      horsePower,
+      year,
+      engineHours,
       minPrice,
       maxPrice,
-      shippingOption,
-      maxDeliveryTime,
-      minCost,
-      maxCost,
       page = 1,
       limit = 10,
       sortBy = 'createdAt',
       sortOrder = 'desc',
     } = req.query
 
-    const searchQuery = {}
+    const searchQuery: SearchQuery = {}
 
     if (search) {
       const searchRegex = new RegExp(String(search), 'i')
@@ -180,6 +181,22 @@ export const filterProducts = async (
       searchQuery.category = String(category)
     }
 
+    if (brand) {
+      searchQuery.brand = String(brand)
+    }
+
+    if (horsePower) {
+      searchQuery.horsePower = Number(horsePower)
+    }
+
+    if (year) {
+      searchQuery.year = Number(year)
+    }
+
+    if (engineHours) {
+      searchQuery.engineHours = Number(engineHours)
+    }
+
     // Price range filter
     if (minPrice || maxPrice) {
       searchQuery.price = {}
@@ -187,45 +204,10 @@ export const filterProducts = async (
       if (maxPrice) searchQuery.price.$lte = Number(maxPrice)
     }
 
-    // Shipping options filter
-    if (shippingOption) {
-      searchQuery.shipping_options = String(shippingOption)
-    }
-
-    // Delivery time filter
-    if (maxDeliveryTime) {
-      searchQuery.delivery_times = {
-        $lte: Number(maxDeliveryTime),
-      }
-    }
-
-    // Costs range filter
-    if (minCost || maxCost) {
-      searchQuery.costs = {}
-      if (minCost) searchQuery.costs.$gte = Number(minCost)
-      if (maxCost) searchQuery.costs.$lte = Number(maxCost)
-    }
+    console.log(searchQuery)
 
     // Calculate skip value for pagination
     const skip = (Number(page) - 1) * Number(limit)
-
-    // Validate sort field
-    const allowedSortFields = [
-      'title',
-      'price',
-      'category',
-      'delivery_times',
-      'costs',
-      'createdAt',
-    ]
-
-    if (!allowedSortFields.includes(String(sortBy))) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Invalid sort field',
-        data: null,
-      })
-    }
 
     // Get total count for pagination
     const totalProducts = await Product.countDocuments(searchQuery)
@@ -236,6 +218,14 @@ export const filterProducts = async (
       .skip(skip)
       .limit(Number(limit))
       .select('-__v') // Exclude version key
+
+    if (!products) {
+      return res.status(HttpStatusCode.NotFound).json({
+        status: 'error',
+        message: 'Products not found',
+        data: null,
+      })
+    }
 
     // Calculate pagination metadata
     const totalPages = Math.ceil(totalProducts / Number(limit))
@@ -254,16 +244,6 @@ export const filterProducts = async (
           hasNextPage,
           hasPrevPage,
           limit: Number(limit),
-        },
-        filters: {
-          search,
-          category,
-          minPrice,
-          maxPrice,
-          shippingOption,
-          maxDeliveryTime,
-          minCost,
-          maxCost,
         },
       },
     })
@@ -285,6 +265,7 @@ export const getProduct = async (
 ) => {
   try {
     const { id } = req.query
+
     const product = await Product.findById(id)
     if (!product) {
       return res.status(HttpStatusCode.BadRequest).json({

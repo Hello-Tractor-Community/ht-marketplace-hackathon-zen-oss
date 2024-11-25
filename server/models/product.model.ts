@@ -56,7 +56,7 @@ interface ProductDoc extends Document {
   shipping_options?: string[]
   delivery_times?: string[]
   costs?: number
-  views?: number
+  views: number
 }
 
 const ProductSchema = new Schema<ProductDoc>(
