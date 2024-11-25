@@ -20,6 +20,7 @@ export const createSeller = async (
 ) => {
   try {
     let { name, email, phone, password, companyDetails, recaptcha } = req.body
+
     if (!name || !email || !password || !phone || !recaptcha) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
@@ -120,8 +121,22 @@ export const createSeller = async (
       })
     }
 
+    const populatedUser = await User.findById(savedUser.id).populate({
+      path: 'userId',
+      model: 'Seller',
+      select: '-_id -password -createdAt -updatedAt -__v',
+    })
+
+    if (!populatedUser) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error populating user',
+        data: null,
+      })
+    }
+
     let signedToken = signJwtToken({
-      payload: savedUser.id,
+      payload: populatedUser.id,
       expiresIn: '7d',
     })
 
@@ -140,13 +155,12 @@ export const createSeller = async (
       httpOnly: isProduction,
     })
 
-    const { password: _, ...sellerWithoutPassword } = savedSeller.toObject()
 
     return res.status(HttpStatusCode.Created).json({
       status: 'success',
       message: 'Account created successfully',
       data: {
-        seller: sellerWithoutPassword,
+        seller: populatedUser
       },
     })
   } catch (err) {
@@ -289,8 +303,24 @@ export const loginSeller = async (
       })
     }
 
+
+    const populatedUser = await User.findById(user.id).populate({
+      path: 'userId',
+      model: 'Seller',
+      select: '-_id -password -createdAt -updatedAt -__v',
+    })
+
+    if (!populatedUser) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error populating user',
+        data: null,
+      })
+    }
+
+
     let signedToken = signJwtToken({
-      payload: user.id,
+      payload: populatedUser.id,
       expiresIn: '7d',
     })
 
@@ -309,13 +339,12 @@ export const loginSeller = async (
       httpOnly: isProduction,
     })
 
-    const { password: _, ...sellerWithoutPassword } = seller.toObject()
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'User logged in successfully',
       data: {
-        seller: sellerWithoutPassword,
+          seller: populatedUser
       },
     })
   } catch (err) {

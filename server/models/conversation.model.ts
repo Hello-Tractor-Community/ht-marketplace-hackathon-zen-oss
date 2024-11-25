@@ -1,29 +1,32 @@
 import { Document, Schema, model, Types } from 'mongoose'
 
 interface ConversationDoc extends Document {
-    participants: {
-        buyer_id: Types.ObjectId
-        seller_id: Types.ObjectId
-    }
-    lastMessage: string
+    messages: Types.Array<Types.ObjectId>
+    starter: Types.ObjectId
+    recipient: Types.ObjectId
+    newMsg: boolean
 }
 
 const ConversationSchema: Schema = new Schema<ConversationDoc>(
   {
-      participants: {
-          buyer_id: {
-              type: Schema.Types.ObjectId,
-              ref: 'Buyer',
-          },
-          seller_id: {
-              type: Schema.Types.ObjectId,
-              ref: 'Seller',
-          }
+    messages: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Message',
       },
-      lastMessage: {
-          type: String,
-          default: '',
-      }
+    ],
+    starter: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    recipient: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    newMsg: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 )

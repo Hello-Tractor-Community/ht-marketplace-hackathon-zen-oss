@@ -2,8 +2,10 @@ import { WebSocket } from 'ws'
 import { WsMessageDataType } from '../types'
 import { CONNECTED_CLIENTS } from '.'
 import { objToJson } from '../utils/utils'
+import Message from '../models/message.model'
+import Conversation from '../models/conversation.model'
 
-export const handleUserMessage = (
+export const handleUserMessage = async (
   wsClient: WebSocket,
   request: WsMessageDataType,
 ) => {
@@ -14,7 +16,7 @@ export const handleUserMessage = (
   if (recepientWs && recepientWs.readyState === WebSocket.OPEN) {
     isDelivered = true
 
-    // send the receipeint their message
+    // send the receipient their message
     let recipientMsg = objToJson({
       msg_type: 'user.message',
       msg_res: {
@@ -23,6 +25,7 @@ export const handleUserMessage = (
         data: {
           sender_id: request.msg_res.data.sender_id,
           recipient_id: request.msg_res.data.recipient_id,
+          conversation_id: request.msg_res.data.conversation_id,
           message: request.msg_res.data.message,
         },
       },
@@ -42,6 +45,7 @@ export const handleUserMessage = (
           sender_id: request.msg_res.data.sender_id,
           recipient_id: request.msg_res.data.recipient_id,
           message: request.msg_res.data.message,
+          conversation_id: request.msg_res.data.conversation_id,
           is_delivered: isDelivered,
         },
       },
@@ -50,7 +54,37 @@ export const handleUserMessage = (
     wsClient.send(senderMsg)
   }
 
-  // Store message in DB for persistence
+  // Create a new message
+  const newMessage = new Message({
+    conversation_id: request.msg_res.data.conversation_id,
+    content: request.msg_res.data.message,
+    sender_id: request.msg_res.data.sender_id,
+    recipient_id: request.msg_res.data.recipient_id,
+    isDelivered,
+  })
+  let message = await newMessage.save()
+  if (!message) {
+    return {
+      status: 'error',
+      message: 'Error saving message',
+      data: null,
+    }
+  }
+
+  // Update the conversation
+  let conversation = await Conversation.findOneAndUpdate(
+    { _id: request.msg_res.data.conversation_id },
+    { $push: { messages: newMessage._id }, $set: { newMsg: true } },
+  )
+
+  if (!conversation) {
+    return {
+      status: 'error',
+      message: 'Error updating conversation',
+      data: null,
+    }
+  }
+
   // - Fetch the conversation between the two users
   // => newMsg field in conversation model
   // - Create a new message
