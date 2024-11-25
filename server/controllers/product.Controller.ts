@@ -1,9 +1,8 @@
 import { Logger } from 'borgen'
 import Product from '../models/product.model'
 import { HttpStatusCode } from 'axios'
-import type { IServerResponse, SearchTractorQuery } from '../types'
+import type { IServerResponse } from '../types'
 import type { Request, Response } from 'express'
-import SiteSettings from '../models/settings.model'
 import { deleteImages, processImage } from '../utils/image-upload'
 import Store from '../models/store.model'
 
@@ -34,6 +33,8 @@ export const createProduct = async (req: Request, res: Response) => {
       images, // Array of URLs from Uploadthing
     } = req.body
 
+    const seller_id = res.locals.userId
+
     // Validate required fields
     if (
       !title ||
@@ -60,7 +61,7 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     // Find seller's store
-    const store = await Store.findOne({ seller_id: req.user.id })
+    const store = await Store.findOne({ seller_id })
     if (!store) {
       return res.status(HttpStatusCode.NotFound).json({
         status: 'error',
@@ -102,7 +103,7 @@ export const createProduct = async (req: Request, res: Response) => {
       data: savedProduct,
     })
   } catch (error) {
-    Logger.error('Error creating product:', error)
+    Logger.error({ message: 'Error creating product: ' + error })
     return res.status(HttpStatusCode.InternalServerError).json({
       status: 'error',
       message: 'Failed to create product',
@@ -168,7 +169,7 @@ export const filterProducts = async (
       sortOrder = 'desc',
     } = req.query
 
-    const searchQuery: SearchTractorQuery = {}
+    const searchQuery = {}
 
     if (search) {
       const searchRegex = new RegExp(String(search), 'i')

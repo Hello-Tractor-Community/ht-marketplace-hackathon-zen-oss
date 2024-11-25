@@ -5,7 +5,6 @@ interface BuyerDoc extends Document {
   email: string
   phone: string
   password: string
-  lastLogin: Date
 }
 
 const BuyerSchema: Schema = new Schema<BuyerDoc>(
@@ -27,10 +26,6 @@ const BuyerSchema: Schema = new Schema<BuyerDoc>(
     password: {
       type: String,
       default: '',
-    },
-    lastLogin: {
-      type: Date,
-      default: Date.now(),
     },
   },
   { timestamps: true },

@@ -6,7 +6,7 @@ export interface IServerResponse {
 
 type WsMessageType =
   | 'user.auth'
-  | 'user.acct'
+  | 'user.message'
   | 'user.balance'
   | 'auth.error'
   | 'pay.deposit'

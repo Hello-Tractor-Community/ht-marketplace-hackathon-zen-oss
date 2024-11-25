@@ -1,11 +1,12 @@
 import { Router } from 'express'
+import { HttpStatusCode } from 'axios'
 //import userGroup from './userGroup'
 import sellerGroup from './sellerGroup'
 import buyerGroup from './buyerGroup'
 import wishlistGroup from './wishlistGroup'
 import adminGroup from './adminGroup'
 import reviewsGroup from './reviewsGroup'
-import { HttpStatusCode } from 'axios'
+import conversationGroup from './conversationGroup'
 
 const router = Router()
 
@@ -20,6 +21,7 @@ router.use('/buyer', buyerGroup)
 router.use('/admin', adminGroup)
 router.use('/wishlist', wishlistGroup)
 router.use('/reviews', reviewsGroup)
+router.use('/conversation', conversationGroup)
 
 
 export default router

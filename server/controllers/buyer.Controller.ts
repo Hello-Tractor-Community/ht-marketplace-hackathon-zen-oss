@@ -95,8 +95,22 @@ export const googleSSOCallback = async (
         })
       }
 
+      const populatedUser = await User.findById(savedUser.id).populate({
+        path: 'userId',
+        model: 'Buyer',
+        select: '-_id -password -createdAt -updatedAt -__v',
+      })
+
+      if (!populatedUser) {
+        return res.status(HttpStatusCode.BadRequest).json({
+          status: 'error',
+          message: 'Error populating user',
+          data: null,
+        })
+      }
+
       let signedToken = signJwtToken({
-        payload: savedUser.id,
+        payload: populatedUser.id,
         expiresIn: '7d',
       })
 
@@ -115,13 +129,11 @@ export const googleSSOCallback = async (
         httpOnly: isProduction,
       })
 
-      const { password: _, ...buyerWithoutPassword } = savedBuyer.toObject()
-
       return res.status(HttpStatusCode.Created).json({
         status: 'success',
         message: 'Account created successfully',
         data: {
-          buyer: buyerWithoutPassword,
+          buyer: populatedUser,
         },
       })
     } else {
@@ -135,8 +147,22 @@ export const googleSSOCallback = async (
         })
       }
 
+      const populatedUser = await User.findById(user.id).populate({
+        path: 'userId',
+        model: 'Buyer',
+        select: '-_id -password -createdAt -updatedAt -__v',
+      })
+
+      if (!populatedUser) {
+        return res.status(HttpStatusCode.BadRequest).json({
+          status: 'error',
+          message: 'Error populating user',
+          data: null,
+        })
+      }
+
       let signedToken = signJwtToken({
-        payload: user.id,
+        payload: populatedUser.id,
         expiresIn: '7d',
       })
 
@@ -155,13 +181,11 @@ export const googleSSOCallback = async (
         httpOnly: isProduction,
       })
 
-      const { password: _, ...buyerWithoutPassword } = buyer.toObject()
-
       return res.status(HttpStatusCode.Created).json({
         status: 'success',
         message: 'Account created successfully',
         data: {
-          buyerWithoutPassword,
+          buyer: populatedUser,
         },
       })
     }
@@ -264,8 +288,22 @@ export const createBuyer = async (
       })
     }
 
+    const populatedUser = await User.findById(savedUser.id).populate({
+      path: 'userId',
+      model: 'Buyer',
+      select: '-_id -password -createdAt -updatedAt -__v',
+    })
+
+    if (!populatedUser) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error populating user',
+        data: null,
+      })
+    }
+
     let signedToken = signJwtToken({
-      payload: savedUser.id,
+      payload: populatedUser.id,
       expiresIn: '7d',
     })
 
@@ -284,13 +322,11 @@ export const createBuyer = async (
       httpOnly: isProduction,
     })
 
-    const { password: _, ...buyerWithoutPassword } = savedBuyer.toObject()
-
     return res.status(HttpStatusCode.Created).json({
       status: 'success',
       message: 'Account created successfully',
       data: {
-        buyer: buyerWithoutPassword,
+        user: populatedUser,
       },
     })
   } catch (err) {
@@ -309,8 +345,8 @@ export const loginBuyer = async (
   req: Request,
   res: Response<IServerResponse>,
 ) => {
-  const { email, password } = req.body
   try {
+    const { email, password } = req.body
     if (!email || !password) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
@@ -339,11 +375,13 @@ export const loginBuyer = async (
         data: null,
       })
     }
-
-    buyer.lastLogin = new Date()
     await buyer.save()
 
-    let user = await User.findOne({ userId: buyer.id })
+    const user = await User.findOne({ userDetails: buyer.id }).populate({
+      path: 'userId',
+      model: 'Buyer',
+      select: '-_id -password -createdAt -updatedAt -__v',
+    })
     if (!user) {
       return res.status(HttpStatusCode.InternalServerError).json({
         status: 'error',
@@ -351,6 +389,8 @@ export const loginBuyer = async (
         data: null,
       })
     }
+    user.lastLogin = new Date()
+    await user.save()
 
     let signedToken = signJwtToken({
       payload: user.id,
@@ -372,13 +412,11 @@ export const loginBuyer = async (
       httpOnly: isProduction,
     })
 
-    const { password: _, ...buyerWithoutPassword } = buyer.toObject()
-
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
       message: 'User logged in successfully',
       data: {
-        buyer: buyerWithoutPassword,
+        user,
         token: signedToken,
       },
     })
@@ -652,7 +690,7 @@ export const deleteBuyer = async (
       })
     }
 
-    let user = await Buyer.findOneAndDelete({userId: buyer.id})
+    let user = await Buyer.findOneAndDelete({ userId: buyer.id })
 
     if (!user) {
       return res.status(HttpStatusCode.BadRequest).json({
