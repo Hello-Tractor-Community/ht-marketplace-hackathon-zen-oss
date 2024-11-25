@@ -72,8 +72,8 @@ export const DEF_SPECS = [
 
 export default function Page() {
 	return (
-		<section className='mb-24 mt-10 h-full w-full lg:px-32'>
-			<div className='container flex items-start gap-8'>
+		<section className='mb-40 md:mb-24 mt-10 h-full w-full lg:px-32'>
+			<div className='px-4 md:px-6 lg:container flex flex-col lg:flex-row items-start gap-8'>
 				<TractorGallery images={IMAGES} />
 				<TractorInfo
 					title='Sonalika DI-35'

@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export default function Page() {
 	return (
-		<section className='container mb-12 mt-6 h-fit lg:px-24'>
+		<section className='mb-32 mt-6 h-fit px-4 lg:container md:px-6 lg:mb-12 lg:px-24'>
 			<h2 className=''>
 				Hello there,&nbsp;
 				<span className='font-manrope font-semibold'>

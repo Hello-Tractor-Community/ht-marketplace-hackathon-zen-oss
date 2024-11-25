@@ -48,8 +48,13 @@ export default function Filters({ className }: FilterProps) {
 		(typeof filterStatus)[0] | null
 	>(null)
 	return (
-		<div className={cn('container -mt-4 flex flex-col gap-4', className)}>
-			<div className='flex items-center gap-12'>
+		<div
+			className={cn(
+				'-mt-4 flex flex-col gap-4 overflow-x-auto px-4 2xl:container',
+				className
+			)}
+		>
+			<div className='flex items-center gap-2 md:gap-4 2xl:gap-12'>
 				<div className='flex w-fit items-center gap-2 rounded-full border border-gray-200 bg-slate-100 p-1'>
 					<p className='cursor-pointer rounded-full bg-gray-500 px-3 py-1 font-manrope text-xs text-white hover:bg-slate-200'>
 						All
@@ -105,12 +110,13 @@ export default function Filters({ className }: FilterProps) {
 					href='/map'
 					className='ml-auto flex items-center gap-2 text-sm underline-offset-2 hover:text-htractor-sage hover:underline'
 				>
-					<Map size={20} />
-					<span>See our dealers near you.</span>
+					<Map className="w-5 h-5" />
+					<span className='hidden 2xl:flex'>See our dealers near you.</span>
 				</Link>
 			</div>
+			<div className='mb-2' />
 
-			<p className='font-manrope'>
+			<p className='hidden font-manrope'>
 				Result: <span className='font-semibold'>124</span> tractors
 				found for <span className='font-semibold'>Case Ih jx</span>
 			</p>

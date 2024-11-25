@@ -15,7 +15,7 @@ export default function CallToAction() {
 						<h1 className='text-center text-2xl font-manrope font-bold'>
 							Lets Grow Together
 						</h1>
-						<h2 className='mt-4 max-w-md text-sm'>
+						<h2 className='mt-4 text-center md:text-start max-w-md text-sm'>
 							Get access to timely and affordable mechanization
 							service whenever you need it. Whether you are
 							getting a new or used tractor, we have got you
@@ -23,7 +23,7 @@ export default function CallToAction() {
 						</h2>
 					</div>
 
-					<div className='grid grid-cols-2 gap-4'>
+					<div className='grid grid-cols-1  md:grid-cols-2 md:gap-4'>
 						<div className='flex flex-col gap-2 p-4 rounded-lg'>
 								<div
 									style={{

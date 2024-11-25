@@ -27,7 +27,7 @@ export default function FeaturesProducts({
 
 	return (
 		<section className={cn('relative space-y-6 lg:mx-32', className)}>
-			<div className='container h-full w-full'>
+			<div className='px-4 md:px-6 lg:container h-full w-full'>
 				<div className=' flex w-full items-center justify-between'>
 					<h1 className='text-center capitalize font-manrope text-2xl font-bold'>
 						{title}
@@ -72,6 +72,7 @@ export default function FeaturesProducts({
 					navigation={true}
 					pagination={true}
 					modules={[Autoplay, Navigation, Pagination]}
+                    style={{borderRadius: '0px'}}
 					className={cn('h-full w-full')}
 				>
 					{products.map((slide, index) => {

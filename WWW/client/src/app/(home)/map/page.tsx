@@ -20,8 +20,8 @@ import { DEFAULT_SLIDES } from '@/components/home/banner'
 
 export default function Page() {
 	return (
-		<section className='container flex flex-col pb-24 pt-6 lg:px-24'>
-			<div className='h-[500px] w-full overflow-hidden rounded-lg border-4 border-gray-200 bg-slate-100'>
+		<section className='flex flex-col pb-24 pt-6 lg:container lg:px-24'>
+			<div className='h-[500px] w-full overflow-hidden border-4 border-gray-200 bg-slate-100 lg:rounded-lg'>
 				<DealerMap />
 			</div>
 
@@ -104,7 +104,7 @@ export function DealerMap() {
 							<Layers />
 						</div>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className='z-[1000]'>
+					<DropdownMenuContent className='mr-4 lg:mr-0 z-[1000]'>
 						<DropdownMenuLabel className='font-[500]'>
 							Map Type
 						</DropdownMenuLabel>

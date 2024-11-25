@@ -71,7 +71,7 @@ export default function ProductSearchCard({
 				</div>
 			</div>
 
-			<div className='h-fit space-y-6 p-6'>
+			<div className='hidden md:flex md:flex-col h-fit space-y-6 p-6'>
 				<h1 className='text-2xl font-[500] text-gray-900'>
 					{product.model}
 				</h1>

@@ -63,7 +63,7 @@ export function UserWishlist() {
 	return (
 		<Sheet open={isOpened} onOpenChange={() => setIsOpened(!isOpened)}>
 			<SheetTrigger>
-				<div className='flex cursor-pointer flex-col items-center hover:opacity-80'>
+				<div className='hidden 2xl:flex cursor-pointer flex-col items-center hover:opacity-80'>
 					<Heart />
 					<p className='text-sm'>Wishlist</p>
 				</div>
