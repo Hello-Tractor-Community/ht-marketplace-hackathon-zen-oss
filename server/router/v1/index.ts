@@ -7,6 +7,7 @@ import wishlistGroup from './wishlistGroup'
 import adminGroup from './adminGroup'
 import reviewsGroup from './reviewsGroup'
 import conversationGroup from './conversationGroup'
+import productGroup from './productGroup'
 
 const router = Router()
 
@@ -22,6 +23,7 @@ router.use('/admin', adminGroup)
 router.use('/wishlist', wishlistGroup)
 router.use('/reviews', reviewsGroup)
 router.use('/conversation', conversationGroup)
+router.use('/product', productGroup)
 
 
 export default router

@@ -5,7 +5,7 @@ const router = Router()
 
 router.post('/', conversationsController.createConversation)
 router.get('/messages', conversationsController.getMessagesInConversation)
-router.get('/all', conversationsController.getConversations)
+router.get('/all', conversationsController.getAllConversations)
 router.put('/', conversationsController.updateHasNewMsg)
 
 export default router
