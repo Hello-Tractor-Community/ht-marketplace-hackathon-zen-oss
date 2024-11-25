@@ -58,9 +58,9 @@ export default function DealerShop() {
 		setPage(1)
 	}
 	return (
-		<section className='container pb-32  pt-8 lg:px-32'>
+		<section className='px-4 md:container pb-32  pt-8 lg:px-32'>
 			<div className='rounded-lg border-4 border-gray-200 bg-white p-6'>
-				<div className='flex gap-6'>
+				<div className='flex flex-col md:flex-row gap-6'>
 					<img
 						src={
 							'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
@@ -93,7 +93,7 @@ export default function DealerShop() {
 			</div>
 
 			<div>
-				<div className='mt-4 flex items-center gap-12'>
+				<div className='mt-4 flex overflow-x-auto items-center gap-12'>
 					<div className='flex w-fit items-center gap-2 rounded-full border border-gray-200 bg-slate-100 p-1'>
 						<p className='cursor-pointer rounded-full bg-gray-500 px-3 py-1 font-manrope text-xs text-white hover:bg-slate-200'>
 							All
@@ -118,7 +118,7 @@ export default function DealerShop() {
 							/>
 							<input
 								placeholder='Search shop'
-								className='flex h-9 w-full bg-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0  disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
+								className='flex h-9 min-w-[150px] md:w-full bg-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0  disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
 							/>
 						</div>
 					</div>
