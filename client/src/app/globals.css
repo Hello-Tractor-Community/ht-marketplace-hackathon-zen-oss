@@ -7,6 +7,9 @@
 		--card: 0 0% 99%;
 		--card-foreground: 218 69% 1%;
 
+		--background: 0 0% 100%;
+		--foreground: 20 14.3% 4.1%;
+
 		--popover: 0 0% 100%;
 		--popover-foreground: 0 0% 3.9%;
 
@@ -59,8 +62,8 @@
 	}
 
 	.dark {
-		--background: 218 65% 100%;
-		--foreground: 218 69% 2%;
+		--background: 20 14.3% 4.1%;
+		--foreground: 60 9.1% 97.8%;
 
 		--card: 0 0% 3.9%;
 		--card-foreground: 0 0% 98%;
@@ -108,41 +111,5 @@
 	}
 	body {
 		@apply bg-background text-foreground;
-	}
-}
-
-/* grid banner css */
-@layer components {
-	.grid-hero {
-		display: grid;
-		grid-template-rows: auto;
-		grid-template-columns: 1fr;
-		margin-top: 32px;
-		/* gap: 32px; */
-		grid-template-areas: 'swiper';
-
-		@media (min-width: 992px) {
-			grid-template-columns: auto 1fr 1fr;
-			grid-template-rows: auto;
-			grid-template-areas: 'categories swiper swiper';
-		}
-
-		@media (min-width: 1280px) {
-			grid-template-columns: auto 1fr 1fr 1fr;
-			grid-template-rows: auto;
-			grid-template-areas: 'categories swiper swiper swiper';
-		}
-	}
-
-	.grid-area-categories {
-		grid-area: categories;
-		height: auto;
-		border-radius: 4px;
-		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-	}
-	.grid-area-swiper {
-		grid-area: swiper;
-		height: auto;
-		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 	}
 }
