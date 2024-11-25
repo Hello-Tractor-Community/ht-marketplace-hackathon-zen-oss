@@ -11,7 +11,7 @@ export default function NotFound() {
 			<Header />
 			<MobileBottom />
 
-			<div className='container py-12 lg:px-32'>
+			<div className='px-4 mb-24 lg:mb-0 md:container py-12 lg:px-32'>
 				<div className='inline-flex w-full flex-col items-center justify-start gap-10'>
 					<div className='h-[550px] w-full rounded-lg border border-htractor-hibiscus'>
 						<div className='flex items-center justify-between border-b border-htractor-hibiscus/30 p-8'>
