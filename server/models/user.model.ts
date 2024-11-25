@@ -1,21 +1,22 @@
 import { Document, Schema, model, Types } from 'mongoose'
 
-interface BuyerDoc extends Document {
-    seller_id: Types.ObjectId
-    buyer_id: Types.ObjectId
-    lastLogin: Date
+interface UserDoc extends Document {
+  userType: 'Buyer' | 'Seller'
+  userId: Types.ObjectId
+  lastLogin: Date
 }
 
-const UserSchema: Schema = new Schema<BuyerDoc>(
+const UserSchema: Schema = new Schema<UserDoc>(
   {
-      seller_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Seller',
-      },
-      buyer_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      },
+    userType: {
+      type: String,
+      enum: ['Buyer', 'Seller'],
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      refPath: 'userType',
+      required: true,
+    },
     lastLogin: {
       type: Date,
       default: Date.now(),
@@ -24,6 +25,6 @@ const UserSchema: Schema = new Schema<BuyerDoc>(
   { timestamps: true },
 )
 
-const User = model<BuyerDoc>('User', UserSchema)
+const User = model<UserDoc>('User', UserSchema)
 
 export default User
