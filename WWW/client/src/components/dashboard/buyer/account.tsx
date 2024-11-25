@@ -38,7 +38,7 @@ export default function BuyerAccountSettings() {
 			<h1 className='py-2 font-manrope text-2xl font-medium'>
 				Account Settings
 			</h1>
-			<div className='mt-2 overflow-hidden rounded-xl border-4 border-gray-200 bg-white  py-8 sm:px-8'>
+			<div className='flex flex-col items-center md:items-start px-4  mt-2 overflow-hidden rounded-xl border-4 border-gray-200 bg-white  py-8 sm:px-8'>
 				<div className='relative inline-block'>
 					<img
 						src={formData.profilePhoto}
@@ -147,9 +147,9 @@ export default function BuyerAccountSettings() {
 
 				<Separator className='my-4' />
 
-				<p className='font-manrope text-xl font-semibold'>Password</p>
+				<p className='font-manrope text-xl font-semibold w-full'>Password</p>
 
-				<div className='mt-4 flex'>
+				<div className='mt-4 flex flex-col md:flex-row px-4 md:px-0'>
 					<div className='flex flex-col space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0'>
 						<Label htmlFor='login-password'>
 							<span className='text-sm text-gray-500'>
@@ -189,14 +189,10 @@ export default function BuyerAccountSettings() {
 						Recover Account
 					</Button>
 				</p>
-				<Button variant='outline' className='my-4'>
+				<Button variant='outline' className='my-4 mr-auto'>
 					Save Password
 				</Button>
 			</div>
 		</div>
 	)
-}
-
-const SellerProfile = () => {
-	return <div></div>
 }

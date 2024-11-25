@@ -104,7 +104,7 @@ export function DealerMap() {
 							<Layers />
 						</div>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className='z-[1000]'>
+					<DropdownMenuContent className='mr-4 lg:mr-0 z-[1000]'>
 						<DropdownMenuLabel className='font-[500]'>
 							Map Type
 						</DropdownMenuLabel>
