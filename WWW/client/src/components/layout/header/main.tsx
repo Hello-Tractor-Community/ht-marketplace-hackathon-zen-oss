@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 export default function Main() {
 	const [openSearchMobile, setOpenSearchMobile] = useState(false)
 	return (
-		<section className='mt-[18px] 2xl:container md:mt-0 2xl:mt-[45px] 3xl:px-14'>
+		<section className='2xl:container 2xl:mt-[45px] 3xl:px-14'>
 			<div className='flex w-full flex-col items-start md:flex-row'>
 				<div
 					className={cn(
@@ -59,11 +59,11 @@ const SearchTractor = () => {
 	}
 
 	return (
-		<section className='flex w-full flex-col gap-4 md:flex-row md:items-center 2xl:grid 2xl:grid-cols-10 2xl:place-items-center 2xl:gap-0'>
+		<section className='mt-2 flex w-full flex-col gap-4 md:mt-0 md:flex-row md:items-center 2xl:grid 2xl:grid-cols-10 2xl:place-items-center 2xl:gap-0'>
 			<div className='relative w-full flex-1 2xl:col-span-9 2xl:flex-none'>
 				<div
 					className={cn(
-						'absolute top-0 z-[500] -mt-[35px] w-full border border-transparent p-2',
+						'absolute top-0 z-[500] -mt-[35px] w-full border border-transparent md:p-2',
 						{
 							'rounded-xl border-border bg-white': isFocused
 						}

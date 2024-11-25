@@ -41,7 +41,7 @@ export const DEFAULT_SLIDES = [
 export default function Banner() {
 	return (
 		<section className='mt-8 lg:mx-32'>
-			<div className='container h-full w-full'>
+			<div className='px-4 md:container h-full w-full'>
 				<div className=''>
 					<HomeSlide className='grid-area-swiper' />
 				</div>
@@ -100,14 +100,14 @@ function HomeSlide({ className }: { className?: string }) {
 							backgroundColor: colors[colorIndex]
 						}}
 					>
-						<div className='flex w-full items-center justify-between py-36 px-28'>
+						<div className='flex w-full flex-col-reverse gap-4 md:gap-0 items-center justify-between px-2 lg:flex-row lg:px-28 lg:py-36'>
 							<div className='grid w-fit grid-cols-1  place-content-start justify-items-start  gap-2 capitalize'>
 								<motion.h1
 									initial={animation.title.hide}
 									whileInView={animation.title.show}
 									transition={{ delay: 0.3 }}
 									className={cn(
-										'font-sans text-xl font-semibold capitalize lg:text-4xl line-clamp-1',
+										'line-clamp-1 font-sans text-xl font-semibold capitalize lg:text-4xl',
 										{ 'text-white': colorIndex == 2 }
 									)}
 								>
@@ -118,7 +118,7 @@ function HomeSlide({ className }: { className?: string }) {
 									whileInView={animation.subtitle.show}
 									transition={{ delay: 0.25 }}
 									className={cn(
-										'max-w-60 font-sans text-left text-sm leading-8 lg:max-w-screen-md lg:text-xl',
+										'max-w-60 text-left font-sans text-sm leading-8 lg:max-w-screen-md lg:text-xl',
 										{ 'text-white': colorIndex == 2 }
 									)}
 								>
@@ -130,7 +130,7 @@ function HomeSlide({ className }: { className?: string }) {
 									transition={{ delay: 0.2 }}
 									className={cn(
 										buttonVariants({ variant: 'default' }),
-										'rounded px-4 py-6 text-lg text-white mt-4 w-[150px] text-center'
+										'lg:mt-4 w-[150px] rounded px-4 py-6 text-center text-lg text-white'
 									)}
 									href={`/links/here`}
 								>
@@ -143,7 +143,7 @@ function HomeSlide({ className }: { className?: string }) {
 								height={800}
 								src={slide.tractor_model_logo_url}
 								alt={slide.model}
-								className='max-w-[55%]'
+								className='md:max-w-[55%]'
 							/>
 						</div>
 					</SwiperSlide>

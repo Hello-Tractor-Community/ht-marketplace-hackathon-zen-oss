@@ -18,7 +18,7 @@ export default function TopNav() {
 		<section className='relative z-[1000] w-full border-b border-neutral-200 bg-gray-50 lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:flex lg:px-32'>
 			<div className='container flex h-full items-center justify-between p-1'>
 				<h3 className='flex items-center font-[500]'>
-					Welcome to Hello Tractor&nbsp;
+					<span className="hidden md:inline-flex">Welcome to Hello Tractor&nbsp;</span>
 					<span className='-mt-0.5 ml-0.5 -rotate-45 animate-bounce text-htractor-hibiscus'>
 						<ShoppingCart size={20} />
 					</span>
