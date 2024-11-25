@@ -1,13 +1,14 @@
 import { Logger } from 'borgen'
 import Seller from '../models/seller.model'
-import axios, { HttpStatusCode } from 'axios'
+import { HttpStatusCode } from 'axios'
 import type { IServerResponse } from '../types'
 import type { Request, Response } from 'express'
 import SiteSettings from '../models/settings.model'
-import { signJwtToken, verifyJwtToken } from '../utils/utils'
+import { signJwtToken } from '../utils/utils'
 import { Config } from '../utils/config'
 import bcrypt from 'bcrypt'
 import { google } from 'googleapis'
+import User from '../models/user.model'
 
 let isProduction = Config.NODE_ENV === 'production'
 
@@ -71,7 +72,6 @@ export const createSeller = async (
 
     let hashedPassword = await bcrypt.hash(password, 10)
 
-
     const identityToolkit = google.identitytoolkit({
       version: 'v3',
       auth: Config.GCP_API_KEY,
@@ -105,8 +105,23 @@ export const createSeller = async (
       })
     }
 
+    let user = new User({
+      userType: 'Seller',
+      userId: savedSeller.id,
+    })
+
+    let savedUser = await user.save()
+
+    if (!savedUser) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error creating user',
+        data: null,
+      })
+    }
+
     let signedToken = signJwtToken({
-      payload: savedSeller.id,
+      payload: savedUser.id,
       expiresIn: '7d',
     })
 
@@ -143,7 +158,6 @@ export const createSeller = async (
     })
   }
 }
-
 
 // Verify the code sent to seller
 // @route POST /api/v1/seller/verify
@@ -185,7 +199,7 @@ export const verifySeller = async (
       auth: Config.GCP_API_KEY,
     })
 
-   const response = await identityToolkit.relyingparty.verifyPhoneNumber({
+    const response = await identityToolkit.relyingparty.verifyPhoneNumber({
       requestBody: {
         code,
         sessionInfo,
@@ -225,9 +239,6 @@ export const verifySeller = async (
     })
   }
 }
-
-
-
 
 // Login a seller
 // @route POST /api/v1/seller/login
@@ -269,8 +280,17 @@ export const loginSeller = async (
     seller.lastLogin = new Date()
     await seller.save()
 
+    let user = await User.findOne({ userId: seller.id })
+    if (!user) {
+      return res.status(HttpStatusCode.InternalServerError).json({
+        status: 'error',
+        message: 'Error fetching user',
+        data: null,
+      })
+    }
+
     let signedToken = signJwtToken({
-      payload: seller.id,
+      payload: user.id,
       expiresIn: '7d',
     })
 
@@ -323,7 +343,6 @@ export const logoutSeller = async (
     data: null,
   })
 }
-
 
 // Update seller password
 // @route PUT /api/v1/seller/password

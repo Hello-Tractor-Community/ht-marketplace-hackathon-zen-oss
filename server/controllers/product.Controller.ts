@@ -9,10 +9,7 @@ import Store from '../models/store.model'
 
 // Create a new tractor
 // @route POST /api/v1/product
-export const createProduct = async (
-  req: Request,
-  res: Response<IServerResponse>,
-) => {
+export const createProduct = async (req: Request, res: Response) => {
   try {
     const {
       title,
@@ -23,8 +20,19 @@ export const createProduct = async (
       shipping_options,
       delivery_times,
       costs,
+      engine,
+      transmission,
+      brakes,
+      steering,
+      take_off,
+      fuel_tank,
+      dimensions,
+      hydraulics,
+      wheels,
+      other_info,
+      year,
+      images, // Array of URLs from Uploadthing
     } = req.body
-    const files = req.files as Express.Multer.File[]
 
     // Validate required fields
     if (
@@ -33,63 +41,60 @@ export const createProduct = async (
       !category ||
       !price ||
       !stock ||
-      !shipping_options ||
-      !delivery_times ||
-      !costs
+      !images?.length
     ) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
-        message: 'Please enter all fields',
+        message: 'Missing required fields',
         data: null,
       })
     }
 
-    // Process images if they exist
-    let imageNames: string[] = []
-    if (files && files.length > 0) {
-      try {
-        imageNames = await Promise.all(files.map((file) => processImage(file)))
-      } catch (error) {
-        Logger.error({ message: 'Error processing images: ' + error })
-        return res.status(HttpStatusCode.InternalServerError).json({
-          status: 'error',
-          message: 'Error processing images',
-          data: null,
-        })
-      }
+    // Validate price and stock
+    if (price <= 0 || stock < 0 || (costs && costs < 0)) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Invalid price, stock, or costs values',
+        data: null,
+      })
     }
 
-    const store = await Store.findOne({ seller_id: res.locals.userId })
+    // Find seller's store
+    const store = await Store.findOne({ seller_id: req.user.id })
     if (!store) {
-      return res.status(HttpStatusCode.BadRequest).json({
+      return res.status(HttpStatusCode.NotFound).json({
         status: 'error',
         message: 'Store not found',
         data: null,
       })
     }
 
-    // Create new product with images
+    // Create product
     const newProduct = new Product({
       store_id: store._id,
       title,
       description,
       category,
-      stock,
-      images: imageNames,
       price,
+      stock,
       shipping_options,
       delivery_times,
       costs,
+      engine,
+      transmission,
+      brakes,
+      steering,
+      take_off,
+      fuel_tank,
+      dimensions,
+      hydraulics,
+      wheels,
+      other_info,
+      year,
+      images,
     })
 
-    let savedProduct = await newProduct.save()
-    if (!savedProduct) {
-      return res.status(HttpStatusCode.BadRequest).json({
-        status: 'error',
-        message: 'Error creating product',
-        data: null,
-      })
-    }
+    const savedProduct = await newProduct.save()
 
     return res.status(HttpStatusCode.Created).json({
       status: 'success',
@@ -97,10 +102,10 @@ export const createProduct = async (
       data: savedProduct,
     })
   } catch (error) {
-    Logger.error({ message: 'Error creating product: ' + error })
+    Logger.error('Error creating product:', error)
     return res.status(HttpStatusCode.InternalServerError).json({
       status: 'error',
-      message: 'Error creating product',
+      message: 'Failed to create product',
       data: null,
     })
   }

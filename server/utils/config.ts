@@ -8,4 +8,5 @@ export const Config = {
   GCP_API_KEY: process.env.GCP_API_KEY as string,
   WORKOS_API_KEY: process.env.WORKOS_API_KEY as string,
   WORKOS_CLIENT_ID: process.env.WORKOS_CLIENT_ID as string,
+  UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN as string,
 }

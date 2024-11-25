@@ -8,6 +8,7 @@ import { signJwtToken } from '../utils/utils'
 import { Config } from '../utils/config'
 import bcrypt from 'bcrypt'
 import { WorkOS } from '@workos-inc/node'
+import User from '../models/user.model'
 
 let isProduction = Config.NODE_ENV === 'production'
 
@@ -64,7 +65,6 @@ export const googleSSOCallback = async (
 
     const buyer = await Buyer.findOne({ email: profile.email })
     if (!buyer) {
-      // Create a new buyer
       const newBuyer = new Buyer({
         name,
         email: profile.email,
@@ -81,8 +81,22 @@ export const googleSSOCallback = async (
         })
       }
 
+      let user = new User({
+        userType: 'Buyer',
+        userId: savedBuyer.id,
+      })
+
+      let savedUser = await user.save()
+      if (!savedUser) {
+        return res.status(HttpStatusCode.BadRequest).json({
+          status: 'error',
+          message: 'Error creating user',
+          data: null,
+        })
+      }
+
       let signedToken = signJwtToken({
-        payload: savedBuyer.id,
+        payload: savedUser.id,
         expiresIn: '7d',
       })
 
@@ -101,7 +115,7 @@ export const googleSSOCallback = async (
         httpOnly: isProduction,
       })
 
-    const { password: _, ...buyerWithoutPassword } = savedBuyer.toObject()
+      const { password: _, ...buyerWithoutPassword } = savedBuyer.toObject()
 
       return res.status(HttpStatusCode.Created).json({
         status: 'success',
@@ -111,9 +125,18 @@ export const googleSSOCallback = async (
         },
       })
     } else {
+      const user = await User.findOne({ userId: buyer.id })
+
+      if (!user) {
+        return res.status(HttpStatusCode.BadRequest).json({
+          status: 'error',
+          message: 'Error finding user',
+          data: null,
+        })
+      }
 
       let signedToken = signJwtToken({
-        payload: buyer.id,
+        payload: user.id,
         expiresIn: '7d',
       })
 
@@ -132,7 +155,7 @@ export const googleSSOCallback = async (
         httpOnly: isProduction,
       })
 
-    const { password: _, ...buyerWithoutPassword } = buyer.toObject()
+      const { password: _, ...buyerWithoutPassword } = buyer.toObject()
 
       return res.status(HttpStatusCode.Created).json({
         status: 'success',
@@ -142,7 +165,6 @@ export const googleSSOCallback = async (
         },
       })
     }
-
   } catch (err) {
     Logger.error({ message: 'Error fetching user info' + err })
     return res.status(HttpStatusCode.InternalServerError).json({
@@ -228,8 +250,22 @@ export const createBuyer = async (
       })
     }
 
+    let user = new User({
+      userType: 'Buyer',
+      userId: savedBuyer.id,
+    })
+
+    let savedUser = await user.save()
+    if (!savedUser) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'Error creating user',
+        data: null,
+      })
+    }
+
     let signedToken = signJwtToken({
-      payload: savedBuyer.id,
+      payload: savedUser.id,
       expiresIn: '7d',
     })
 
@@ -307,8 +343,17 @@ export const loginBuyer = async (
     buyer.lastLogin = new Date()
     await buyer.save()
 
+    let user = await User.findOne({ userId: buyer.id })
+    if (!user) {
+      return res.status(HttpStatusCode.InternalServerError).json({
+        status: 'error',
+        message: 'Error fetching user',
+        data: null,
+      })
+    }
+
     let signedToken = signJwtToken({
-      payload: buyer.id,
+      payload: user.id,
       expiresIn: '7d',
     })
 
@@ -603,6 +648,16 @@ export const deleteBuyer = async (
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Buyer not found',
+        data: null,
+      })
+    }
+
+    let user = await Buyer.findOneAndDelete({userId: buyer.id})
+
+    if (!user) {
+      return res.status(HttpStatusCode.BadRequest).json({
+        status: 'error',
+        message: 'User not found',
         data: null,
       })
     }
