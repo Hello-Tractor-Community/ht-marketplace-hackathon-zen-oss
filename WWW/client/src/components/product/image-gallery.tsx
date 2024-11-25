@@ -17,14 +17,14 @@ export function TractorGallery({ images }: ImageGalleryProps) {
 	}
 
 	return (
-		<div className='relative flex flex-row'>
-			<div className='relative aspect-square'>
-				<div className='w-full rounded-lg bg-slate-100'>
+		<div className='relative flex flex-col lg:flex-row'>
+			<div className='relative mx-auto h-fit w-fit md:aspect-square'>
+				<div className='mx-auto rounded-lg bg-slate-100 md:w-full'>
 					<div
 						style={{
 							backgroundImage: `url(${images[currentIndex]})`
 						}}
-						className='relative mx-auto h-[800px] w-[800px] bg-contain bg-center bg-no-repeat'
+						className='relative mx-auto h-[300px] w-[300px] bg-contain bg-center bg-no-repeat md:h-[750px] md:w-[750px] lg:h-[800px] lg:w-[800px]'
 					></div>
 				</div>
 
@@ -48,7 +48,7 @@ export function TractorGallery({ images }: ImageGalleryProps) {
 				</div>
 			</div>
 
-			<div className='mt-4 flex flex-col gap-2 overflow-x-auto px-4'>
+			<div className='mt-4 flex max-w-[350px] gap-2 overflow-x-auto px-4 md:max-w-full lg:flex-col'>
 				{images.map((img, index) => (
 					<button
 						key={index}
