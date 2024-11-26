@@ -26,7 +26,7 @@ interface FilterProps {
 
 export default function Filters({ className }: FilterProps) {
 	const router = useRouter()
-    const { setQueryParams, queryParams } = useUserStore((state) => state)
+	const { setQueryParams, queryParams } = useUserStore((state) => state)
 
 	// Creates a new URLSearchParams and redirects to the new URL
 	function goToSearch() {
@@ -44,7 +44,6 @@ export default function Filters({ className }: FilterProps) {
 		router.push(newUrl)
 	}
 
-	// On mount, get the query params from the URL and set the state
 	useEffect(() => {
 		if (typeof window == 'undefined') return
 

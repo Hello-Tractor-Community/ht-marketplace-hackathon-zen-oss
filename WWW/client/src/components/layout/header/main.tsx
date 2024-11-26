@@ -15,16 +15,10 @@ import { QueryKeys } from '@/types'
 import { debounce } from 'lodash'
 
 export default function Main() {
-	const [openSearchMobile, setOpenSearchMobile] = useState(false)
 	return (
 		<section className='2xl:container 2xl:mt-[45px] 3xl:px-14'>
 			<div className='flex w-full flex-col items-start md:flex-row'>
-				<div
-					className={cn(
-						'flex items-center gap-4',
-						openSearchMobile && ' hidden lg:flex'
-					)}
-				>
+				<div className={cn('flex items-center gap-4')}>
 					<Link href='/'>
 						<Image
 							src='/HT_LOGO_CMYK_Orange.png'
@@ -62,8 +56,6 @@ const SearchTractor = () => {
 		show: { y: 0, opacity: 1 }
 	}
 
-	// A debounced function to update the queryParams state on user inputing query, should update userQuery
-	// after 500ms of user inactivityq
 	const debouncedSetQueryParams = debounce(
 		(key: QueryKeys, value: string) => {
 			setQueryParams({ ...queryParams, [key]: value })
@@ -110,6 +102,20 @@ const SearchTractor = () => {
 		}
 	}, [])
 
+
+	useEffect(() => {
+		if (typeof window == 'undefined') return
+
+		const searchParams = new URLSearchParams(window.location.search)
+		const newQueryParams = {} as Record<QueryKeys, string>
+
+		for (const key in queryParams) {
+			const value = searchParams.get(key)
+			if (value) newQueryParams[key as QueryKeys] = value
+		}
+
+		setQueryParams(newQueryParams)
+	}, [])
 	return (
 		<section className='mt-2 flex w-full flex-col gap-4 md:mt-0 md:flex-row md:items-center 2xl:grid 2xl:grid-cols-10 2xl:place-items-center 2xl:gap-0'>
 			<div
@@ -144,12 +150,14 @@ const SearchTractor = () => {
 										e.target.value
 									)
 								}
+                                defaultValue={queryParams.userQuery}
 								onFocus={() => setIsFocused(true)}
 								className='hidden h-9 w-full bg-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed  disabled:opacity-50 md:flex md:text-sm'
 							/>
 
 							<input
 								placeholder='Find a tractor'
+                                defaultValue={queryParams.userQuery}
 								onChange={(e) =>
 									debouncedSetQueryParams(
 										'userQuery',
