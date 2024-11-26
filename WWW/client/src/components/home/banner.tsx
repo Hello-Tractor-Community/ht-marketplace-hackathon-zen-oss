@@ -9,6 +9,8 @@ import { buttonVariants } from '@/components/ui/button'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 import Image from 'next/image'
+import { useUserStore } from '@/store/user-store'
+import { useRouter } from 'next/navigation'
 
 export const DEFAULT_SLIDES = [
 	{
@@ -41,7 +43,7 @@ export const DEFAULT_SLIDES = [
 export default function Banner() {
 	return (
 		<section className='mt-8 lg:mx-32'>
-			<div className='px-4 md:container h-full w-full'>
+			<div className='h-full w-full px-4 md:container'>
 				<div className=''>
 					<HomeSlide className='grid-area-swiper' />
 				</div>
@@ -54,6 +56,17 @@ function HomeSlide({ className }: { className?: string }) {
 	const [loading, setLoading] = useState(false)
 	const [slides, setSlides] = useState(DEFAULT_SLIDES)
 	const [colorIndex, setColorIndex] = useState(0)
+	const { isLoggedIn } = useUserStore((state) => state)
+	const router = useRouter()
+
+	const handlePurchase = () => {
+		if (!isLoggedIn) {
+			router.push('/flow/login')
+			return
+		}
+
+		router.push('/account')
+	}
 
 	const colors = ['#93c393', '#93c2c6', '#2f1c54']
 
@@ -100,7 +113,7 @@ function HomeSlide({ className }: { className?: string }) {
 							backgroundColor: colors[colorIndex]
 						}}
 					>
-						<div className='flex w-full flex-col-reverse gap-4 md:gap-0 items-center justify-between px-2 lg:flex-row lg:px-28 lg:py-36'>
+						<div className='flex w-full flex-col-reverse items-center justify-between gap-4 px-2 md:gap-0 lg:flex-row lg:px-28 lg:py-36'>
 							<div className='grid w-fit grid-cols-1  place-content-start justify-items-start  gap-2 capitalize'>
 								<motion.h1
 									initial={animation.title.hide}
@@ -124,18 +137,18 @@ function HomeSlide({ className }: { className?: string }) {
 								>
 									{slide.model}
 								</motion.h2>
-								<motion.a
+								<motion.div
 									initial={animation.button.hide}
 									whileInView={animation.button.show}
 									transition={{ delay: 0.2 }}
 									className={cn(
 										buttonVariants({ variant: 'default' }),
-										'lg:mt-4 w-[150px] rounded px-4 py-6 text-center text-lg text-white'
+										'w-[150px] cursor-pointer rounded px-4 py-6 text-center text-lg text-white lg:mt-4'
 									)}
-									href={`/links/here`}
+									onClick={handlePurchase}
 								>
 									Buy now
-								</motion.a>
+								</motion.div>
 							</div>
 
 							<Image

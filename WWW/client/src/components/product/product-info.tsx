@@ -4,6 +4,8 @@ import { Button } from '../ui/button'
 import { Separator } from '../ui/separator'
 import Link from 'next/link'
 import { Badge } from '../ui/badge'
+import { useUserStore } from '@/store/user-store'
+import { useRouter } from 'next/navigation'
 
 interface TractorInfoProps {
 	title: string
@@ -23,6 +25,18 @@ export function TractorInfo({
 	condition,
 	seller
 }: TractorInfoProps) {
+	const { isLoggedIn } = useUserStore((state) => state)
+	const router = useRouter()
+
+	const handleChat = () => {
+		if (!isLoggedIn) {
+			router.push('/flow/login')
+			return
+		}
+
+		router.push('/account')
+	}
+
 	return (
 		<div className='w-full space-y-6 p-6'>
 			<h1 className='text-2xl font-[500] text-gray-900'>{title}</h1>
@@ -87,7 +101,12 @@ export function TractorInfo({
 					New
 				</Badge>
 
-                <Link href='/' className='text-sm hover:underline underline-offset-2 ml-auto hover:text-htractor-sage'>More Info...</Link>
+				<Link
+					href='/'
+					className='ml-auto text-sm underline-offset-2 hover:text-htractor-sage hover:underline'
+				>
+					More Info...
+				</Link>
 			</div>
 
 			<div className='flex items-center gap-2'>
@@ -96,7 +115,10 @@ export function TractorInfo({
 			</div>
 
 			<div className='space-y-3'>
-				<Button className='w-full rounded-full py-6 text-base'>
+				<Button
+					onClick={handleChat}
+					className='w-full rounded-full py-6 text-base'
+				>
 					Start Chat
 				</Button>
 				<Button

@@ -3,6 +3,7 @@ import { Cog, Heart, MoveRight } from 'lucide-react'
 import Link from 'next/link'
 import { buttonVariants } from '../ui/button'
 import { Badge } from '../ui/badge'
+import { useUserStore } from '@/store/user-store'
 
 interface ProductCardProps {
 	loading: boolean
