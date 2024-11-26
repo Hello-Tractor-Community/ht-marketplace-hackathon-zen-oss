@@ -29,9 +29,12 @@ export const googleSSO = async () => {
 	}
 }
 
+interface IGoogleCode{
+    code: string
+}
 // Callback for Google Single Sign On
 // @route GET /api/v1/buyer/google/callback?code=
-export const googleSSOCallback = async (code: string) => {
+export const googleSSOCallback = async (code: IGoogleCode) => {
 	try {
 		const response = await apiBase.get(
 			`/buyer/google/callback?code=${code}`

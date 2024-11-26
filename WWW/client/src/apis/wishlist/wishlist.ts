@@ -4,7 +4,6 @@ import { apiBase } from '@/lib/config'
 interface IAddToWishlist {
     product_id: string
 }
-
 // Add to Wishlist
 // @route POST /api/v1/wishlist?id=product_id
 export const addToWishlist = async ({ product_id }: IAddToWishlist) => {
