@@ -77,6 +77,9 @@ interface IUpdateSellerDetails {
 	name: string
 	email: string
 	phone: string
+    bio: string
+    address: string
+    location: string
 	companyDetails?: string
 }
 // Update seller details
