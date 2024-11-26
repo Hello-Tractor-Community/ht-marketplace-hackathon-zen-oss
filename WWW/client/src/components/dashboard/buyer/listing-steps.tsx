@@ -11,6 +11,16 @@ import {
 	FormLabel,
 	FormMessage
 } from '@/components/ui/form'
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList
+} from '@/components/ui/command'
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import {
@@ -20,8 +30,14 @@ import {
 	SelectTrigger,
 	SelectValue
 } from '@/components/ui/select'
-import { TractorIcon, Upload, X } from 'lucide-react'
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger
+} from '@/components/ui/popover'
+import { ChevronDown, TractorIcon, Upload, X } from 'lucide-react'
 import { TractorFormData } from '@/types'
+import { TRACTOR_MODELS } from '@/constants/tractors'
 
 interface StepProps {
 	formData: TractorFormData
@@ -29,6 +45,7 @@ interface StepProps {
 }
 
 export const StepOne = ({ formData, setFormData }: StepProps) => {
+	const [open, setOpen] = useState(false)
 	const formSchema = z.object({
 		model: z.string().min(2, 'Model must be at least 2 characters'),
 		wheelDrive: z.string().min(1, 'Wheel drive is required'),
@@ -59,22 +76,51 @@ export const StepOne = ({ formData, setFormData }: StepProps) => {
 
 			<Form {...form}>
 				<form className='space-y-6'>
-					<FormField
-						control={form.control}
-						name='model'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Tractor Model</FormLabel>
-								<FormControl>
-									<Input
-										placeholder='Enter tractor model'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<Popover open={open} onOpenChange={setOpen}>
+						<PopoverTrigger>
+							<div className='flex items-center gap-1 rounded-full border border-gray-200 bg-slate-100 p-2 px-4 font-manrope'>
+								<span className='text-xs capitalize'>
+									{form.getValues('model') ||
+										'Select tractor model'}
+								</span>
+								<ChevronDown className='h-4 w-4' />
+							</div>
+						</PopoverTrigger>
+						<PopoverContent
+							className='p-0'
+							side='bottom'
+							align='start'
+						>
+							<Command>
+								<CommandInput placeholder='Change status...' />
+								<CommandList>
+									<CommandEmpty>
+										No results found.
+									</CommandEmpty>
+									<CommandGroup>
+										{Object.keys(TRACTOR_MODELS).map(
+											(tractor, i) => (
+												<CommandItem
+													key={'tractor-m' + i}
+													value={tractor}
+													onSelect={(value) => {
+														form.setValue(
+															'model',
+															value
+														)
+														setOpen(false)
+													}}
+													className='cursor-pointer'
+												>
+													<span>{tractor}</span>
+												</CommandItem>
+											)
+										)}
+									</CommandGroup>
+								</CommandList>
+							</Command>
+						</PopoverContent>
+					</Popover>
 
 					<FormField
 						control={form.control}
@@ -140,32 +186,22 @@ export const StepOne = ({ formData, setFormData }: StepProps) => {
 						/>
 					</div>
 
-					<FormField
-						control={form.control}
-						name='category'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Category</FormLabel>
-								<Select
-									onValueChange={field.onChange}
-									defaultValue={field.value}
-								>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder='Select category' />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										<SelectItem value='new'>New</SelectItem>
-										<SelectItem value='used'>
-											Used
-										</SelectItem>
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<RadioGroup
+						defaultValue='new'
+						onValueChange={(value: 'new' | 'used') => {
+							form.setValue('category', value)
+						}}
+                        className='flex'
+					>
+						<div className='flex items-center space-x-2'>
+							<RadioGroupItem value='new' id='new' />
+							<Label htmlFor='new'>New Tractor</Label>
+						</div>
+						<div className='flex items-center space-x-2'>
+							<RadioGroupItem value='used' id='used' />
+							<Label htmlFor='used'>Used Tractor</Label>
+						</div>
+					</RadioGroup>
 				</form>
 			</Form>
 		</Card>
