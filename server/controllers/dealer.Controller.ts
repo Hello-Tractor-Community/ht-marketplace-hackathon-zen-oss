@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 import Dealer from '../models/dealer.model'
 
 // Fetch all dealers from database
-// @route GET /api/v1/dealers
+// @route GET /api/v1/dealer
 export const getAllDealers = async (
   req: Request,
   res: Response<IServerResponse>,
@@ -35,7 +35,7 @@ export const getAllDealers = async (
 }
 
 // Get details of a particular dealer
-// @route GET /api/v1/dealers/?id=dealer_id
+// @route GET /api/v1/dealer/?id=dealer_id
 export const getDealer = async (
   req: Request,
   res: Response<IServerResponse>,
