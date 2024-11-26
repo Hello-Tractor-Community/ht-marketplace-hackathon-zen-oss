@@ -2,25 +2,24 @@ import { toast } from 'sonner'
 import { apiBase } from '@/lib/config'
 
 interface ICreateProduct {
-	title: string
+	model: string
+	wheelDrive: string
+	horsePower: string
+	price: string
+	engineHours: string
 	description: string
-	category: string
-	price: number
-	stock: number
-	shipping_options: string
-	delivery_times: string
-	costs: number
-	engine: string
-	transmission: string
-	brakes: string
-	steering: string
-	take_off: string
-	fuel_tank: string
-	dimensions: string
-	hydraulics: string
-	wheels: string
-	other_info: string
-	year: number
+	category: 'new' | 'used'
+	cylinders: string
+	engineRpm: string
+	transmissionType: string
+	clutchType: string
+	gearboxType: string
+	brakesType: string
+	steeringType: string
+	fuelTankCapacity: string
+	liftingCapacity: string
+	frontWheelSize: string
+	rearWheelSize: string
 	images: string[]
 }
 // Create a new tractor
@@ -55,12 +54,14 @@ export const getAllProducts = async ({
 }
 
 interface IFilterProducts {
-	search: string
-	category: string
+	userQuery: string
+	type: string
 	brand: string
-	horsePower: number
+	minHorsePower: number
+	maxHorsePower: number
 	year: number
-	engineHours: number
+	minEngineHours: number
+	maxEngineHours: number
 	minPrice: number
 	maxPrice: number
 	page: number
@@ -71,12 +72,13 @@ interface IFilterProducts {
 // Filter products
 // @route GET /api/v1/product/filter?search=product&category=category&brand=brand&horsePower=hp&year=year&engineHours=engineHours&minPrice=minPrice&maxPrice=maxPrice&page=1&limit=10&sortBy=createdAt&sortOrder=desc
 export const filterProducts = async ({
-	search,
-	category,
-	brand,
-	horsePower,
-	year,
-	engineHours,
+    userQuery,
+    type,
+    brand,
+    minHorsePower,
+    maxHorsePower,
+    minEngineHours,
+    maxEngineHours,
 	minPrice,
 	maxPrice,
 	page = 1,
@@ -86,7 +88,7 @@ export const filterProducts = async ({
 }: IFilterProducts) => {
 	try {
 		const response = await apiBase.get(
-			`/product/filter?search=${search}&category=${category}&brand=${brand}&horsePower=${horsePower}&year=${year}&engineHours=${engineHours}&minPrice=${minPrice}&maxPrice=${maxPrice}&page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}`
+			`/product/filter?userQuery=${userQuery}&type=${type}&brand=${brand}&minHorsePower=${minHorsePower}&maxHorsePower=${maxHorsePower}&minEngineHours=${minEngineHours}&maxEngineHours=${maxEngineHours}&minPrice=${minPrice}&maxPrice=${maxPrice}&page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}`
 		)
 		return response.data
 	} catch (error: any) {
@@ -109,28 +111,27 @@ export const getProduct = async ({ id }: IGetProduct) => {
 }
 
 interface IUpdateProduct {
-	id: string
-	title: string
+    id: string
+	model: string
+	wheelDrive: string
+	horsePower: string
+	price: string
+	engineHours: string
 	description: string
-	category: string
-	price: number
-	stock: number
-	shipping_options: string
-	delivery_times: string
-	costs: number
-	engine: string
-	transmission: string
-	brakes: string
-	steering: string
-	take_off: string
-	fuel_tank: string
-	dimensions: string
-	hydraulics: string
-	wheels: string
-	other_info: string
-	imagesToAdd: string[]
-	imagesToDelete: string[]
-	year: number
+	category: 'new' | 'used'
+	cylinders: string
+	engineRpm: string
+	transmissionType: string
+	clutchType: string
+	gearboxType: string
+	brakesType: string
+	steeringType: string
+	fuelTankCapacity: string
+	liftingCapacity: string
+	frontWheelSize: string
+	rearWheelSize: string
+    imagesToAdd: string[]
+    imagesToDelete: string[]
 }
 // Update a product
 // @route PUT /api/v1/product/?id=product_id
