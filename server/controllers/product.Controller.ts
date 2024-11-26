@@ -167,6 +167,7 @@ export const filterProducts = async (
     const {
       search,
       category,
+      type,
       brand,
       horsePower,
       year,
@@ -194,6 +195,10 @@ export const filterProducts = async (
       searchQuery.brand = String(brand)
     }
 
+    if(type) {
+      searchQuery.type = String(type)
+    }
+
     if (horsePower) {
       searchQuery.horsePower = Number(horsePower)
     }
@@ -213,7 +218,6 @@ export const filterProducts = async (
       if (maxPrice) searchQuery.price.$lte = Number(maxPrice)
     }
 
-    console.log(searchQuery)
 
     // Calculate skip value for pagination
     const skip = (Number(page) - 1) * Number(limit)

@@ -33,6 +33,7 @@ export interface SearchQuery {
   brand?: string
   horsePower?: number
   year?: number
+  type?: string
   engineHours?: number
   price?: {
     $gte?: number
