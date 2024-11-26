@@ -5,8 +5,10 @@ interface UserStore {
 	name: string
 	email: string
 	image: string
-    phone: string
-    role: "seller" | "buyer"
+	phone: string
+	location: string
+	bio: string
+	role: 'seller' | 'buyer'
 	isLoggedIn: boolean
 	queryParams: Record<QueryKeys, string>
 	setQueryParams: (params: Record<QueryKeys, string>) => void
@@ -17,9 +19,11 @@ interface UserStore {
 type UpdateType = {
 	name: string
 	image: string
-    role: "seller" | "buyer"
+	role: 'seller' | 'buyer'
 	email: string
-    phone: string
+	phone: string
+	location?: string
+	bio?: string
 }
 
 export type TRole = 'super' | 'accounts' | 'support'
@@ -29,9 +33,11 @@ export const useUserStore = create<UserStore>((set) => ({
 	name: '',
 	email: '',
 	image: '',
-    phone: '',
+	phone: '',
 	isLoggedIn: false,
-    role: "buyer",
+	role: 'buyer',
+	location: '',
+	bio: '',
 	queryParams: {
 		type: 'all',
 		brand: '',
@@ -50,8 +56,10 @@ export const useUserStore = create<UserStore>((set) => ({
 			name: data.name,
 			email: data.email,
 			image: data.image,
-            role: data.role,
-            phone: data.phone,
+			role: data.role,
+			phone: data.phone,
+			location: data.location || '',
+			bio: data.bio || '',
 			isLoggedIn: true
 		}),
 	logOut: () => set({ isLoggedIn: false })

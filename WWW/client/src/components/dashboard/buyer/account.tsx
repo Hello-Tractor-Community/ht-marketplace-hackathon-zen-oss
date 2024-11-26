@@ -1,18 +1,20 @@
 import { useState } from 'react'
-import { Eye, EyeOff, Pencil, User } from 'lucide-react'
+import { Eye, EyeOff, Pencil } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
+import { useUserStore } from '@/store/user-store'
 
 export default function BuyerAccountSettings() {
 	const [showPassword, setShowPassword] = useState(false)
+	const { name, email, bio, location } = useUserStore((state) => state)
 	const [formData, setFormData] = useState({
-		name: 'John Doe',
-		email: 'john.doe@company.com',
-		location: 'San Francisco, CA',
-		bio: 'Senior Software Engineer passionate about building great products.',
+		name,
+		email,
+		location,
+		bio,
 		currentPassword: '',
 		newPassword: '',
 		profilePhoto:
@@ -38,7 +40,7 @@ export default function BuyerAccountSettings() {
 			<h1 className='py-2 font-manrope text-2xl font-medium'>
 				Account Settings
 			</h1>
-			<div className='flex flex-col items-center md:items-start px-4  mt-2 overflow-hidden rounded-xl border-4 border-gray-200 bg-white  py-8 sm:px-8'>
+			<div className='mt-2 flex flex-col items-center overflow-hidden  rounded-xl border-4 border-gray-200 bg-white px-4 py-8  sm:px-8 md:items-start'>
 				<div className='relative inline-block'>
 					<img
 						src={formData.profilePhoto}
@@ -147,9 +149,11 @@ export default function BuyerAccountSettings() {
 
 				<Separator className='my-4' />
 
-				<p className='font-manrope text-xl font-semibold w-full'>Password</p>
+				<p className='w-full font-manrope text-xl font-semibold'>
+					Password
+				</p>
 
-				<div className='mt-4 flex flex-col md:flex-row px-4 md:px-0'>
+				<div className='mt-4 flex flex-col px-4 md:flex-row md:px-0'>
 					<div className='flex flex-col space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0'>
 						<Label htmlFor='login-password'>
 							<span className='text-sm text-gray-500'>

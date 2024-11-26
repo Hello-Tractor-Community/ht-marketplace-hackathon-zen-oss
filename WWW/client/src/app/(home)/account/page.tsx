@@ -5,14 +5,16 @@ import Listings from '@/components/dashboard/buyer/listings'
 import Wishlist from '@/components/dashboard/buyer/wishlist'
 import BuyerAccountSettings from '@/components/dashboard/buyer/account'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useUserStore } from '@/store/user-store'
 
 export default function Page() {
+    const {name} = useUserStore((state) => state)
 	return (
 		<section className='mb-32 mt-6 h-fit px-4 lg:container md:px-6 lg:mb-12 lg:px-24'>
 			<h2 className=''>
 				Hello there,&nbsp;
 				<span className='font-manrope font-semibold'>
-					Branson &#128075;
+                {name} &#128075;
 				</span>
 			</h2>
 
