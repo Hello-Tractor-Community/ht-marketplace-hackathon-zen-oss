@@ -1,3 +1,4 @@
+import { QueryKeys } from '@/types'
 import { create } from 'zustand'
 
 interface UserStore {
@@ -13,6 +14,9 @@ interface UserStore {
 	membership: TMembership
 	refreshSideBarItems: number
 	inviteCode: string
+	// New
+	queryParams: Record<QueryKeys, string>
+	setQueryParams: (params: Record<QueryKeys, string>) => void
 	setDetails: (data: UpdateType) => void
 	updateBalance: (balance: number) => void
 	setPowerMode: (mode: boolean) => void
@@ -47,6 +51,20 @@ export const useUserStore = create<UserStore>((set) => ({
 	showPowerMode: false,
 	refreshSideBarItems: 1,
 	inviteCode: '',
+	// New
+	queryParams: {
+		type: 'all',
+		brand: '',
+		horsepower: '',
+		year: '',
+		enginehours: '',
+		price: '',
+        userQuery: ''
+	},
+
+	setQueryParams: (params: Record<QueryKeys, string>) => {
+		set({ queryParams: params })
+	},
 	setRefreshSideBarItems: (item: number) =>
 		set({ refreshSideBarItems: item }),
 	setDetails: (data: UpdateType) =>

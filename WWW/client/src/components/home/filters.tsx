@@ -12,34 +12,21 @@ import {
 	PopoverTrigger
 } from '@/components/ui/popover'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { TRACTOR_MODELS } from '@/constants/tractors'
 import { ArrowDownNarrowWide, ChevronDown, Cog, Map } from 'lucide-react'
-
-type QueryKeys =
-	| 'type'
-	| 'brand'
-	| 'horsepower'
-	| 'year'
-	| 'enginehours'
-	| 'price'
+import { QueryKeys } from '@/types'
+import { useUserStore } from '@/store/user-store'
 
 interface FilterProps {
 	className?: string
 }
 
 export default function Filters({ className }: FilterProps) {
-	const [queryParams, setQueryParams] = useState<Record<QueryKeys, string>>({
-		type: 'all',
-		brand: '',
-		horsepower: '',
-		year: '',
-		enginehours: '',
-		price: ''
-	})
 	const router = useRouter()
+    const { setQueryParams, queryParams } = useUserStore((state) => state)
 
 	// Creates a new URLSearchParams and redirects to the new URL
 	function goToSearch() {
@@ -56,6 +43,21 @@ export default function Filters({ className }: FilterProps) {
 
 		router.push(newUrl)
 	}
+
+	// On mount, get the query params from the URL and set the state
+	useEffect(() => {
+		if (typeof window == 'undefined') return
+
+		const searchParams = new URLSearchParams(window.location.search)
+		const newQueryParams = {} as Record<QueryKeys, string>
+
+		for (const key in queryParams) {
+			const value = searchParams.get(key)
+			if (value) newQueryParams[key as QueryKeys] = value
+		}
+
+		setQueryParams(newQueryParams)
+	}, [])
 
 	return (
 		<div
