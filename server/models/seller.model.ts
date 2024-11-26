@@ -1,11 +1,18 @@
 import { Document, Schema, model } from 'mongoose'
 
+interface Location {
+  type: 'Point'
+  coordinates: [number, number]
+}
 interface SellerDoc extends Document {
-  name:string
+  name: string
   email: string
   phone: string[]
   password: string
   companyDetails: string[]
+  bio: string
+  address: string
+  location: Location
   isVerified: boolean
   lastLogin: Date
 }
@@ -33,6 +40,16 @@ const SellerSchema: Schema = new Schema<SellerDoc>(
     companyDetails: {
       type: [String],
       default: [],
+    },
+    address: {
+      type: String,
+      default: '',
+    },
+    location: {
+      type: { type: String, enum: ['Point'], default: 'Point' },
+      coordinates: {
+        type: [Number],
+      },
     },
     isVerified: {
       type: Boolean,

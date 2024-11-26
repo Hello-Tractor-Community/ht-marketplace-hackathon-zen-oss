@@ -21,7 +21,7 @@ export const createSeller = async (
   try {
     let { name, email, phone, password, companyDetails } = req.body
 
-    if (!name || !email || !password || !phone ) {
+    if (!name || !email || !password || !phone) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Please enter all fields',
@@ -72,7 +72,6 @@ export const createSeller = async (
     }
 
     let hashedPassword = await bcrypt.hash(password, 10)
-
 
     let newSeller = new Seller({
       name,
@@ -157,7 +156,6 @@ export const createSeller = async (
     })
   }
 }
-
 
 // Login a seller
 // @route POST /api/v1/seller/login
@@ -360,7 +358,7 @@ export const updateSellerDetails = async (
   res: Response<IServerResponse>,
 ) => {
   try {
-    const { name, email, phone } = req.body
+    const { name, email, phone, address, location, bio } = req.body
     if (!name && !email && !phone) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
@@ -394,6 +392,9 @@ export const updateSellerDetails = async (
     if (name) seller.name = name
     if (email) seller.email = email
     if (phone) seller.phone = phone
+    if (address) seller.address = address
+    if (location) seller.location = location
+    if (bio) seller.bio = bio
 
     let updatedSeller = await seller.save()
 
@@ -406,7 +407,6 @@ export const updateSellerDetails = async (
     }
 
     // seller without password
-
 
     res.status(HttpStatusCode.Ok).json({
       status: 'success',
