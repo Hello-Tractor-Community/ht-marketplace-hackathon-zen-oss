@@ -19,9 +19,9 @@ export const createSeller = async (
   res: Response<IServerResponse>,
 ) => {
   try {
-    let { name, email, phone, password, companyDetails, recaptcha } = req.body
+    let { name, email, phone, password, companyDetails } = req.body
 
-    if (!name || !email || !password || !phone || !recaptcha) {
+    if (!name || !email || !password || !phone ) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
         message: 'Please enter all fields',
