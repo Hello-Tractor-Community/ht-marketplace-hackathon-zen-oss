@@ -10,9 +10,28 @@ import {
 } from '@/components/ui/dropdown-menu'
 import React, { useState } from 'react'
 import { LogOut, ShoppingCart, UserRound } from 'lucide-react'
+import { useUserStore } from '@/store/user-store'
+import { logoutBuyer } from '@/apis/buyer/auth'
+import { toast } from 'sonner'
+import { logoutSeller } from '@/apis/seller/auth'
 
 export default function TopNav() {
+	const { name, role, isLoggedIn, logOut } = useUserStore((state) => state)
 	const [openUserMenu, setOpenUserMenu] = useState(false)
+
+	async function handleLogout() {
+		logOut()
+
+		if (role === 'buyer') {
+			let response = await logoutBuyer()
+			if (!response) return
+			toast.success('Logged out successfully')
+		} else {
+			let response = await logoutSeller()
+			if (!response) return
+			toast.success('Logged out successfully')
+		}
+	}
 
 	return (
 		<section className='relative z-[1000] w-full border-b border-neutral-200 bg-gray-50 lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:flex lg:px-32'>
@@ -46,7 +65,7 @@ export default function TopNav() {
 					</Link>
 
 					<div className='ml-2 flex h-full items-center hover:bg-neutral-100'>
-						{true ? (
+						{isLoggedIn ? (
 							<DropdownMenu>
 								<DropdownMenuTrigger className='focus-visible:outline-none'>
 									<div
@@ -60,7 +79,12 @@ export default function TopNav() {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent className='mr-4 mt-0.5 rounded-none border border-t-2 border-gray-200 border-t-htractor md:mr-0'>
 									<DropdownMenuLabel className='py-0 font-[500]'>
-										Account
+										{(
+											<p className='flex items-center gap-1'>
+												<UserRound className='text-primary-500 h-4 w-4' />
+												{name}
+											</p>
+										) || 'Account'}
 									</DropdownMenuLabel>
 									<DropdownMenuSeparator />
 									<DropdownMenuItem className='p-0'>
@@ -71,14 +95,17 @@ export default function TopNav() {
 											Profile
 										</Link>
 									</DropdownMenuItem>
-									<DropdownMenuItem className='cursor-pointer'>
+									<DropdownMenuItem
+										onClick={handleLogout}
+										className='cursor-pointer'
+									>
 										Logout
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						) : (
 							<Link
-								href='/signin'
+								href='/flow/login'
 								className='flex cursor-pointer items-center gap-4'
 							>
 								<LogOut className='text-primary-500 h-4 w-4' />
