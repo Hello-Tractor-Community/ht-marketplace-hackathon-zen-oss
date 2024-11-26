@@ -76,10 +76,14 @@ export default function Page() {
 		{
 			title: 'Images',
 			component: (
-				<StepFive formData={formData} setFormData={setFormData} />
+				<StepFive formData={formData} setFormData={setFormData} submit={handleSubmit} />
 			)
 		}
 	]
+
+    async function handleSubmit() {
+        console.log(formData)
+    }
 
 	return (
 		<section className='mb-32 mt-6 h-fit px-4 lg:container md:px-6 lg:mb-12 lg:px-24'>
