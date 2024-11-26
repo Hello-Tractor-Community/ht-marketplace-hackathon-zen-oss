@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun run app.ts",
-    "build": "bun build --compile --minify --bytecode --sourcemap ./app.ts --outfile hellotractor",
+    "build": "bun build --compile --minify --sourcemap ./app.ts --outfile hellotractor",
     "deploy": "pm2 start hellotractor --name hellotractor-backend",
     "trust": "bun pm trust --all"
   },
