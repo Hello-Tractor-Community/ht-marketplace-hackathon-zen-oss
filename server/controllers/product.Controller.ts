@@ -3,34 +3,33 @@ import Product from '../models/product.model'
 import { HttpStatusCode } from 'axios'
 import type { IServerResponse, SearchQuery } from '../types'
 import type { Request, Response } from 'express'
-import { deleteImages, processImage } from '../utils/image-upload'
-import Store from '../models/store.model'
-import { Types } from 'mongoose'
+import { deleteImages } from '../utils/image-upload'
+import Seller from '../models/seller.model'
 
 // Create a new tractor
 // @route POST /api/v1/product
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const {
-		model,
-		wheelDrive,
-		horsePower,
-		price,
-		engineHours,
-		description,
-		category,
-		cylinders,
-		engineRpm,
-		transmissionType,
-		clutchType,
-		gearboxType,
-		brakesType,
-		steeringType,
-		fuelTankCapacity,
-		liftingCapacity,
-		frontWheelSize,
-		rearWheelSize,
-		images: []
+      model,
+      wheelDrive,
+      horsePower,
+      price,
+      engineHours,
+      description,
+      category,
+      cylinders,
+      engineRpm,
+      transmissionType,
+      clutchType,
+      gearboxType,
+      brakesType,
+      steeringType,
+      fuelTankCapacity,
+      liftingCapacity,
+      frontWheelSize,
+      rearWheelSize,
+      images: [],
     } = req.body
 
     const seller_id = res.locals.userId
@@ -64,47 +63,46 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     // Validate price and stock
-    if (price <= 0 || stock < 0 || (costs && costs < 0)) {
+    if (price <= 0) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',
-        message: 'Invalid price, stock, or costs values',
+        message: 'Invalid price values',
         data: null,
       })
     }
 
     // Find seller's store
-    const store = await Store.findOne({ seller_id })
-    if (!store) {
+    const seller = await Seller.findById(seller_id)
+    if (!seller) {
       return res.status(HttpStatusCode.NotFound).json({
         status: 'error',
-        message: 'Store not found',
+        message: 'Seller not found',
         data: null,
       })
     }
 
     // Create product
     const newProduct = new Product({
-      store_id: store._id,
-      title,
+      seller_id,
+      modelName: model,
+      wheelDrive,
+      horsePower,
+      price,
+      engineHours,
       description,
       category,
-      price,
-      stock,
-      shipping_options,
-      delivery_times,
-      costs,
-      engine,
-      transmission,
-      brakes,
-      steering,
-      take_off,
-      fuel_tank,
-      dimensions,
-      hydraulics,
-      wheels,
-      other_info,
-      year,
-      images,
+      cylinders,
+      engineRpm,
+      transmissionType,
+      clutchType,
+      gearboxType,
+      brakesType,
+      steeringType,
+      fuelTankCapacity,
+      liftingCapacity,
+      frontWheelSize,
+      rearWheelSize,
+      images: [],
     })
 
     const savedProduct = await newProduct.save()
@@ -312,19 +310,24 @@ export const updateProduct = async (
   try {
     const { id } = req.query
     const {
-      title,
+      model,
+      wheelDrive,
+      horsePower,
+      price,
+      engineHours,
       description,
       category,
-      brand,
-      price,
-      stock,
-      shipping_options,
-      delivery_times,
-      costs,
-      features,
-      horsePower,
-      year,
-      engineHours,
+      cylinders,
+      engineRpm,
+      transmissionType,
+      clutchType,
+      gearboxType,
+      brakesType,
+      steeringType,
+      fuelTankCapacity,
+      liftingCapacity,
+      frontWheelSize,
+      rearWheelSize,
       imagesToAdd, // New image URLs from the frontend
       imagesToDelete,
     } = req.body
@@ -352,19 +355,24 @@ export const updateProduct = async (
 
     product.images = remainingImages
 
-    if (title) product.title = title
+    if (model) product.modelName = model
+    if (wheelDrive) product.wheelDrive = wheelDrive
+    if (horsePower) product.horsePower = horsePower
+    if (price) product.price = price
+    if (engineHours) product.engineHours = engineHours
     if (description) product.description = description
     if (category) product.category = category
-    if (brand) product.brand = brand
-    if (price) product.price = price
-    if (stock) product.stock = stock
-    if (shipping_options) product.shipping_options = shipping_options
-    if (delivery_times) product.delivery_times = delivery_times
-    if (costs) product.costs = costs
-    if (features) product.features = features // Ensure features array matches schema
-    if (horsePower) product.horsePower = horsePower
-    if (year) product.year = year
-    if (engineHours) product.engineHours = engineHours
+    if (cylinders) product.cylinders = cylinders
+    if (engineRpm) product.engineRpm = engineRpm
+    if (transmissionType) product.transmissionType = transmissionType
+    if (clutchType) product.clutchType = clutchType
+    if (gearboxType) product.gearboxType = gearboxType
+    if (brakesType) product.brakesType = brakesType
+    if (steeringType) product.steeringType = steeringType
+    if (fuelTankCapacity) product.fuelTankCapacity = fuelTankCapacity
+    if (liftingCapacity) product.liftingCapacity = liftingCapacity
+    if (frontWheelSize) product.frontWheelSize = frontWheelSize
+    if (rearWheelSize) product.rearWheelSize = rearWheelSize
 
     let updatedProduct = await product.save()
     if (!updatedProduct) {
