@@ -245,7 +245,7 @@ interface SelectDropdownProps {
 export const SelectDropdown = ({
 	type,
 	icon,
-	listItems,
+	listItems = [],
 	selectedItem,
 	setSelectedItem
 }: SelectDropdownProps) => {

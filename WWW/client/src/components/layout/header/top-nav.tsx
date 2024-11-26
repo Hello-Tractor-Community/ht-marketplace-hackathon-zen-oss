@@ -106,9 +106,8 @@ export default function TopNav() {
 						) : (
 							<Link
 								href='/flow/login'
-								className='flex cursor-pointer items-center gap-4'
+								className='flex cursor-pointer items-center gap-1 font-[500] text-htractor underline-offset-2 hover:underline'
 							>
-								<LogOut className='text-primary-500 h-4 w-4' />
 								<span>Login</span>
 							</Link>
 						)}
