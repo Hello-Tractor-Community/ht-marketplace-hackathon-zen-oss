@@ -1,5 +1,14 @@
 export type AdminRole = 'super' | 'admin'
 
+export type QueryKeys =
+	| 'type'
+	| 'brand'
+	| 'horsepower'
+	| 'year'
+	| 'enginehours'
+	| 'price'
+    | 'userQuery'
+
 export interface TractorFormData {
 	model: string
 	wheelDrive: string
