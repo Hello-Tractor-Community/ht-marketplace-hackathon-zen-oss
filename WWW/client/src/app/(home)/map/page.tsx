@@ -54,21 +54,142 @@ const createClusterCustomIcon = function (cluster: any) {
 // markers
 const markers = [
 	{
-		geocode: { lat: -1.2921, lng: 36.8219 } as LatLngExpression,
-		popUp: 'Jayson Mureithi Dealers'
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Lusaka Rd, Nairobi\nPhone: +254722843433'
 	},
 	{
-		geocode: { lat: -1.2832, lng: 36.8214 } as LatLngExpression,
-		popUp: 'Mark Morphis Dealers'
+		geocode: {
+			lng: 36.052040497088704,
+			lat: -0.28999981551338344
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Nakuru Kisumu Rd, Nakuru\nPhone: +254722316821'
 	},
 	{
-		geocode: { lat: -1.295, lng: 36.8412 } as LatLngExpression,
-		popUp: 'Elegante Beunio Dealers'
+		geocode: {
+			lng: 37.07599918327432,
+			lat: 0.01150204498553343
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Sagana Rd, Nanyuki/Meru\nPhone: +254727443226'
+	},
+	{
+		geocode: {
+			lng: 35.27480168090905,
+			lat: 0.5105841554000572
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Eldoret Kisumu Rd, Eldoret/Kitale\nPhone: +254723256074'
+	},
+	{
+		geocode: {
+			lng: 34.75068968085394,
+			lat: -0.09681999772493884
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Obote Rd, Kisumu\nPhone: +254722540558'
+	},
+	{
+		geocode: {
+			lng: 39.65766547222288,
+			lat: -4.061735215174758
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Archbishop Makarios Rd, Mombasa\nPhone: +254720935034'
+	},
+	{
+		geocode: {
+			lng: 35.27127864671338,
+			lat: 0.5189855951750221
+		} as LatLngExpression,
+		popUp: 'Mascor (John Deere) - Uganda Rd, Eldoret \nPhone: 254 207 602 298'
+	},
+	{
+		geocode: {
+			lng: 34.76797144085695,
+			lat: -0.09168150828103418
+		} as LatLngExpression,
+		popUp: 'Mascor (John Deere) - Obote Rd, Kisumu \nPhone: 254 207 602 294'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'Mascor (John Deere) - Old Nairobi Road,  Nakuru\nPhone: 254 207 602 288'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'Mascor (John Deere) - Narok\nPhone: 254 720 935 034'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'CFAO Motors (Authorises Case Hl Dealer) - Town East, George Morara Rd, Nakuru\nPhone: 207604121'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'CFAO Motors (Authorises Case Hl Dealer) - Kisumu\nPhone: +254719029707'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'CFAO Motors (Authorises Case Hl Dealer) - Kenyatta Rd, Nanyuki\nPhone: 0719 029462'
+	},
+	{
+		geocode: {
+			lng: 35.2904014066872,
+			lat: -0.3662408583545941
+		} as LatLngExpression,
+		popUp: 'CADS Motors (Kericho Toyota) - Moi Highway, Kericho\nPhone: 0708 698899'
+	},
+	{
+		geocode: {
+			lng: 36.842509871697004,
+			lat: -1.3068142614866365
+		} as LatLngExpression,
+		popUp: 'Sichey Automotive EA Ltd - Pembe Plaza, Ground Floor Homa Bay Road/ Enterprise Road Junction Industrial Area, Nairobi \nPhone: 254 735 500 500, +254 768 989 407, +254 757 487 425'
+	},
+	{
+		geocode: {
+			lng: 34.55598633648814,
+			lat: 0.5931351188176409
+		} as LatLngExpression,
+		popUp: 'Terranova Automotive - Webuye Malaba Road – Kandunyi, Bungoma\nPhone: +254 777 222 239'
+	},
+	{
+		geocode: {
+			lng: 36.05977507512129,
+			lat: -0.28793810992389746
+		} as LatLngExpression,
+		popUp: 'Uni- Truck World Ltd  - George Morara Avenue Next To Bhogals Toyota, Nakuru\nPhone: 254 727 228 811, +254 734 228 811, +254 512216045 '
+	},
+	{
+		geocode: {
+			lng: 36.06089558491588,
+			lat: -0.2867164409933456
+		} as LatLngExpression,
+		popUp: 'FMD  -  Town East, Biashara George Morara Ave Nakuru, Kiambu, Nakuru\nPhone: +254722205538'
+	},
+	{
+		geocode: {
+			lng: 36.06090437511119,
+			lat: -0.2867387710106743
+		} as LatLngExpression,
+		popUp: 'FMD  - Lima Hse Kapseret, Kipkenyo, Kenyatta ave, Nakuru\nPhone: +254727509018'
 	}
 ]
 
 type MapType = 'satellite' | 'default'
-export function DealerMap() {
+function DealerMap() {
 	const [mapType, setMapType] = useState<MapType>('default')
 
 	const tileLayerUrls = {
@@ -104,7 +225,7 @@ export function DealerMap() {
 							<Layers />
 						</div>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className='mr-4 lg:mr-0 z-[1000]'>
+					<DropdownMenuContent className='z-[1000] mr-4 lg:mr-0'>
 						<DropdownMenuLabel className='font-[500]'>
 							Map Type
 						</DropdownMenuLabel>
