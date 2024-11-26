@@ -165,8 +165,7 @@ export const filterProducts = async (
 ) => {
   try {
     const {
-      search,
-      category,
+        userQuery,
       type,
       brand,
       horsePower,
@@ -182,13 +181,9 @@ export const filterProducts = async (
 
     const searchQuery: SearchQuery = {}
 
-    if (search) {
-      const searchRegex = new RegExp(String(search), 'i')
-      searchQuery.$or = [{ title: searchRegex }, { description: searchRegex }]
-    }
-
-    if (category) {
-      searchQuery.category = String(category)
+    if (userQuery) {
+      const searchRegex = new RegExp(String(userQuery), 'i')
+      searchQuery.$or = [{ model: searchRegex }, { description: searchRegex }]
     }
 
     if (brand) {

@@ -27,7 +27,7 @@ export interface SearchQuery {
     title?: RegExp
     description?: RegExp
   }>
-  title?: RegExp
+  model?: RegExp
   description?: RegExp
   category?: string
   brand?: string
