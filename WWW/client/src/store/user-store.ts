@@ -5,6 +5,7 @@ interface UserStore {
 	name: string
 	email: string
 	image: string
+    role: "seller" | "buyer"
 	isLoggedIn: boolean
 	queryParams: Record<QueryKeys, string>
 	setQueryParams: (params: Record<QueryKeys, string>) => void
@@ -15,6 +16,7 @@ interface UserStore {
 type UpdateType = {
 	name: string
 	image: string
+    role: "seller" | "buyer"
 	email: string
 }
 
@@ -26,6 +28,7 @@ export const useUserStore = create<UserStore>((set) => ({
 	email: '',
 	image: '',
 	isLoggedIn: false,
+    role: "buyer",
 	queryParams: {
 		type: 'all',
 		brand: '',
@@ -44,6 +47,7 @@ export const useUserStore = create<UserStore>((set) => ({
 			name: data.name,
 			email: data.email,
 			image: data.image,
+            role: data.role,
 			isLoggedIn: true
 		}),
 	logOut: () => set({ isLoggedIn: false })
