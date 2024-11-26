@@ -14,8 +14,9 @@ import { DEFAULT_SLIDES } from '@/components/home/banner'
 import { ListingsTable } from '../seller/listings-table'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 export default function Listings() {
 	const [page, setPage] = useState<number>(1)
@@ -59,9 +60,18 @@ export default function Listings() {
 	return (
 		<div className='mb-36'>
 			<div className='col-span-3 border-4 border-gray-200  bg-white p-6'>
-				<h1 className='py-2 font-manrope text-2xl font-medium'>
-					Your Listings
-				</h1>
+				<div className='flex items-center justify-between'>
+					<h1 className='py-2 font-manrope text-2xl font-medium'>
+						Your Listings
+					</h1>
+
+					<Link
+						href='/dealer/new-listing'
+						className={cn(buttonVariants())}
+					>
+						New Listing
+					</Link>
+				</div>
 
 				<div className='mt-4 flex items-center gap-2'>
 					<div className='relative w-full'>
@@ -122,7 +132,7 @@ export default function Listings() {
 
 					<Button
 						size='lg'
-                        variant={'outline'}
+						variant={'outline'}
 						className='mt-4 gap-2'
 						onClick={() => handleSearch('search')}
 					>
