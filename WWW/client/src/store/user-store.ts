@@ -5,34 +5,17 @@ interface UserStore {
 	name: string
 	email: string
 	image: string
-	balance: number
 	isLoggedIn: boolean
-	powerMode: boolean
-	pdfSize: number
-	showPowerMode: boolean
-	chargeTokens: boolean
-	membership: TMembership
-	refreshSideBarItems: number
-	inviteCode: string
-	// New
 	queryParams: Record<QueryKeys, string>
 	setQueryParams: (params: Record<QueryKeys, string>) => void
 	setDetails: (data: UpdateType) => void
-	updateBalance: (balance: number) => void
-	setPowerMode: (mode: boolean) => void
 	logOut: () => void
 }
 
 type UpdateType = {
 	name: string
 	image: string
-	balance: number
 	email: string
-	membership: TMembership
-	showPowerMode: boolean
-	chargeTokens: boolean
-	inviteCode: string
-	pdfSize: number
 }
 
 export type TRole = 'super' | 'accounts' | 'support'
@@ -42,16 +25,7 @@ export const useUserStore = create<UserStore>((set) => ({
 	name: '',
 	email: '',
 	image: '',
-	balance: 0,
-	membership: 'free',
-	pdfSize: 2,
 	isLoggedIn: false,
-	powerMode: false,
-	chargeTokens: false,
-	showPowerMode: false,
-	refreshSideBarItems: 1,
-	inviteCode: '',
-	// New
 	queryParams: {
 		type: 'all',
 		brand: '',
@@ -59,28 +33,18 @@ export const useUserStore = create<UserStore>((set) => ({
 		year: '',
 		enginehours: '',
 		price: '',
-        userQuery: ''
+		userQuery: ''
 	},
 
 	setQueryParams: (params: Record<QueryKeys, string>) => {
 		set({ queryParams: params })
 	},
-	setRefreshSideBarItems: (item: number) =>
-		set({ refreshSideBarItems: item }),
 	setDetails: (data: UpdateType) =>
 		set({
 			name: data.name,
 			email: data.email,
 			image: data.image,
-			membership: data.membership,
-			inviteCode: data.inviteCode,
-			balance: data.balance,
-			showPowerMode: data.showPowerMode,
-			chargeTokens: data.chargeTokens,
-			isLoggedIn: true,
-			pdfSize: data.pdfSize
+			isLoggedIn: true
 		}),
-	updateBalance: (balance: number) => set({ balance }),
-	setPowerMode: (mode: boolean) => set({ powerMode: mode }),
 	logOut: () => set({ isLoggedIn: false })
 }))
