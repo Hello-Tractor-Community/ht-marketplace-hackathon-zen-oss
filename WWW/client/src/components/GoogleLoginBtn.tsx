@@ -7,17 +7,11 @@ import { useUserStore } from '@/store/user-store'
 import { useGoogleLogin } from '@react-oauth/google'
 
 interface GoogleLoginBtnProps {
-	requiresInvite?: boolean
-	inviteCode?: string
 	isSignup?: boolean
-	isValidInvite?: boolean
 }
 
 const GoogleLoginBtn = ({
-	requiresInvite = false,
 	isSignup = false,
-	inviteCode = '',
-	isValidInvite = false
 }: GoogleLoginBtnProps) => {
 	const [isLoading, setIsLoading] = useState(false)
 	const { setDetails } = useUserStore((state) => state)
@@ -45,22 +39,12 @@ const GoogleLoginBtn = ({
 			name: response.data.name,
 			email: response.data.email,
 			image: response.data.image,
-			membership: response.data.membership,
-			balance: response.data.balance,
-			showPowerMode: response.data.settings.powerMode,
-			chargeTokens: response.data.settings.chargeTokens,
-			inviteCode: response.data.user.inviteData.myInvite.token,
-			pdfSize: response.data.settings.pdfSize
 		})
 
 		router.push('/')
 	}
 
 	const handleLogin = () => {
-		if (requiresInvite && isSignup && !isValidInvite) {
-			return toast.error('Please enter an invite code')
-		}
-
 		setIsLoading(true)
 		login()
 	}
