@@ -3,80 +3,59 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
+import { useState } from 'react'
 import Lottie from 'lottie-react'
-import { debounce } from 'lodash'
+import { Loader } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { useUserStore } from '@/store/user-store'
 import GoogleLoginBtn from '@/components/GoogleLoginBtn'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import heroAnimation from '../../../../public/lotties/login_animation.json'
+import { loginBuyer } from '@/apis/buyer/auth'
+import { loginSeller } from '@/apis/seller/auth'
 
 function Page() {
-	const [inviteCode, setInviteCode] = useState('')
-	const [isValidInvite, setIsValidInvite] = useState(true)
-	const [signUpSettings, setSignUpSettings] = useState({
-		allowSignup: true,
-		requireInvites: false
-	})
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const [isLoading, setIsLoading] = useState(false)
+	const { setDetails } = useUserStore((state) => state)
+	const [loginType, setLoginType] = useState<'seller' | 'buyer'>('buyer')
 
-	const searchParams = useSearchParams()
+	const router = useRouter()
 
-	async function getSettings() {
-		let response: any
-
-		if (!response) return
-
-		setSignUpSettings(response.data)
-	}
-
-	async function verifyInvite(code: string, requiresInvite = false) {
-		if (code.length < 1) {
-			// TODO transations
-			return toast.error('Please enter an invite code')
+	const handleSubmit = async () => {
+		if (!email || !password) {
+			return toast.error('Please fill in all fields')
 		}
-
-		if (requiresInvite) return
-
+		setIsLoading(true)
 		let response: any
 
-		if (!response) return
-
-		if (response.data.isValid) {
-			setIsValidInvite(true)
+		if (loginType === 'buyer') {
+			response = await loginBuyer({ email, password })
 		} else {
-			setIsValidInvite(false)
+			response = await loginSeller({ email, password })
 		}
-	}
 
-	useEffect(() => {
-		getSettings()
+		setIsLoading(false)
 
-		if (searchParams.has('invite')) {
-			let inviteCode = searchParams.get('invite') as string
-			setInviteCode(() => inviteCode)
-			debouncedVerifyInvite(inviteCode, signUpSettings.requireInvites)
-		}
-	}, [])
+		if (!response) return
 
-	// Debounced version of verifyInvite
-	const debouncedVerifyInvite = useCallback(
-		debounce(
-			(code, requireInvite) => verifyInvite(code, requireInvite),
-			500
-		),
-		[]
-	)
+		setDetails({
+			email: response.data.seller.userId.email,
+			name: response.data.seller.userId.name,
+			image: ''
+		})
 
-	// Handle invite code change
-	const handleInviteCodeChange = (value: string) => {
-		setInviteCode(value)
-		debouncedVerifyInvite(inviteCode, signUpSettings.requireInvites)
+		toast.success(response.message)
+		router.push('/account')
 	}
 
 	return (
 		<div className='w-full px-4 lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]'>
-			<div className='flex h-screen items-center justify-center py-12'>
+			<div className='flex h-screen  items-center justify-center py-12'>
 				<div className='mx-auto grid max-w-lg gap-6'>
 					<div className='grid gap-2 text-center'>
 						<Link href='/' className='mx-auto'>
@@ -94,36 +73,93 @@ function Page() {
 						</p>
 					</div>
 
-					<div className='flex flex-col items-center justify-center gap-4'>
-						{signUpSettings.requireInvites && (
-							<div className='w-full space-y-2'>
-								<Input
-									value={inviteCode}
-									onChange={(e) =>
-										handleInviteCodeChange(e.target.value)
-									}
-									placeholder='Invite code e.g xP7-vhT-B7s'
-									className={cn(
-										'rounded-full p-[23px]',
-										isValidInvite
-											? 'border border-green-500'
-											: 'border border-red-500'
-									)}
-									maxLength={11}
-								/>
-								{!isValidInvite && (
-									<p className='text-xs text-red-500'>
-										Invalid invite code
-									</p>
-								)}
+					<div className='flex items-center justify-center'>
+						<div className='flex items-center justify-center py-4'>
+							<div className='mx-auto grid w-[350px] gap-6 md:w-[512px]'>
+								<div className='grid gap-4'>
+									<div className='grid gap-2'>
+										<Label htmlFor='email'>Email</Label>
+										<Input
+											id='email'
+											type='email'
+											className='text-primary focus-visible:ring-primary/10'
+											onChange={(e) =>
+												setEmail(e.target.value)
+											}
+										/>
+									</div>
+									<div className='grid gap-2'>
+										<div className='flex items-center'>
+											<Label htmlFor='password'>
+												Password
+											</Label>
+										</div>
+										<Input
+											id='password'
+											type='password'
+											className='text-primary focus-visible:ring-primary/10'
+											onChange={(e) =>
+												setPassword(e.target.value)
+											}
+										/>
+									</div>
+									<Button
+										onClick={handleSubmit}
+										className='w-full'
+										disabled={isLoading}
+									>
+										{isLoading ? (
+											<Loader className='animate-spin' />
+										) : (
+											'Login'
+										)}
+									</Button>
+
+									<div className='mt-2'>
+										<RadioGroup
+											defaultValue='buyer'
+											onValueChange={(
+												value: 'seller' | 'buyer'
+											) => {
+												setLoginType(value)
+											}}
+											className='flex'
+										>
+											<div className='flex items-center space-x-2'>
+												<RadioGroupItem
+													value='buyer'
+													id='buyer'
+												/>
+												<Label htmlFor='buyer'>
+													Am a buyer
+												</Label>
+											</div>
+											<div className='flex items-center space-x-2'>
+												<RadioGroupItem
+													value='seller'
+													id='seller'
+												/>
+												<Label htmlFor='seller'>
+													Am a seller
+												</Label>
+											</div>
+										</RadioGroup>
+									</div>
+								</div>
 							</div>
-						)}
-						<GoogleLoginBtn
-							requiresInvite={signUpSettings.requireInvites}
-							inviteCode={inviteCode}
-							isSignup={true}
-							isValidInvite={isValidInvite}
-						/>
+						</div>
+					</div>
+
+					<div className='flex w-full items-center gap-2'>
+						<div className='h-[2px] flex-1 bg-gray-100' />
+						<p className='text-center text-sm text-muted-foreground'>
+							Or
+						</p>
+						<div className='h-[2px] flex-1 bg-gray-100' />
+					</div>
+
+					<div className='pointer-events-none flex flex-col items-center justify-center gap-4 opacity-50'>
+						<GoogleLoginBtn isSignup={true} />
 					</div>
 
 					<div className='mx-auto max-w-xs text-center  text-xs text-muted-foreground'>
