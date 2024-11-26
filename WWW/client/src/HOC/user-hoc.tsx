@@ -25,12 +25,6 @@ const withUserAuthRequired = (ChildComponent: React.ComponentType<any>) => {
 				name: name,
 				email: email,
 				image: image,
-				membership: membership,
-				balance: balance,
-				inviteCode: inviteData.myInvite.token,
-				chargeTokens: response.data.settings.chargeTokens,
-				showPowerMode: response.data.settings.powerMode,
-				pdfSize: response.data.settings.pdfSize
 			})
 
 			setIsLoading(false)
