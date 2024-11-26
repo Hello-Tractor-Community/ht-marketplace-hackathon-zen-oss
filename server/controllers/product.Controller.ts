@@ -168,9 +168,11 @@ export const filterProducts = async (
         userQuery,
       type,
       brand,
-      horsePower,
+      minHorsePower,
+      maxHorsePower,
       year,
-      engineHours,
+      minEngineHours,
+      maxEngineHours,
       minPrice,
       maxPrice,
       page = 1,
@@ -183,7 +185,7 @@ export const filterProducts = async (
 
     if (userQuery) {
       const searchRegex = new RegExp(String(userQuery), 'i')
-      searchQuery.$or = [{ model: searchRegex }, { description: searchRegex }]
+      searchQuery.$or = [{ modelName: searchRegex }, { description: searchRegex }]
     }
 
     if (brand) {
@@ -194,16 +196,20 @@ export const filterProducts = async (
       searchQuery.type = String(type)
     }
 
-    if (horsePower) {
-      searchQuery.horsePower = Number(horsePower)
+    if (minHorsePower || maxHorsePower) {
+      searchQuery.horsePower = {}
+      if (minPrice) searchQuery.horsePower.$gte = Number(minPrice)
+      if (maxPrice) searchQuery.horsePower.$lte = Number(maxPrice)
     }
 
     if (year) {
       searchQuery.year = Number(year)
     }
 
-    if (engineHours) {
-      searchQuery.engineHours = Number(engineHours)
+    if (minEngineHours || maxEngineHours) {
+      searchQuery.engineHours= {}
+      if (minPrice) searchQuery.engineHours.$gte = Number(minPrice)
+      if (maxPrice) searchQuery.engineHours.$lte = Number(maxPrice)
     }
 
     // Price range filter
