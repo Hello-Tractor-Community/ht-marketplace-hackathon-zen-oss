@@ -1,46 +1,56 @@
 import { Schema, model, Types, Document } from 'mongoose'
 
 interface ProductDoc extends Document {
-	modelName: string
-	wheelDrive: string
-	horsePower: string
-	price: string
-	engineHours: string
-	description: string
-	category: string
-	cylinders: string
-	engineRpm: string
-	transmissionType: string
-	clutchType: string
-	gearboxType: string
-	brakesType: string
-	steeringType: string
-	fuelTankCapacity: string
-	liftingCapacity: string
-	frontWheelSize: string
-	rearWheelSize: string
-	images: string[]
+  seller_id: Types.ObjectId
+  modelName: string
+  wheelDrive: string
+  horsePower: number
+  price: number
+  engineHours: number
+  description: string
+  category: string
+  cylinders: number
+  engineRpm: number
+  transmissionType: string
+  clutchType: string
+  gearboxType: string
+  brakesType: string
+  steeringType: string
+  fuelTankCapacity: number
+  liftingCapacity: number
+  frontWheelSize: string
+  rearWheelSize: string
+  images: string[]
+  views: number
 }
-const ProductSchema = new Schema<ProductDoc>({
-    modelName: { type: String, required: true },
-    wheelDrive: { type: String, required: true },
-    horsePower: { type: String, required: true },
-    price: { type: String, required: true },
-    engineHours: { type: String, required: true },
-    description: { type: String, required: true },
-    category: { type: String, required: true },
-    cylinders: { type: String, required: true },
-    engineRpm: { type: String, required: true },
-    transmissionType: { type: String, required: true },
-    clutchType: { type: String, required: true },
-    gearboxType: { type: String, required: true },
-    brakesType: { type: String, required: true },
-    steeringType: { type: String, required: true },
-    fuelTankCapacity: { type: String, required: true },
-    frontWheelSize: { type: String, required: true },
-    rearWheelSize: { type: String, required: true },
-    images: { type: [String], required: true },
-}, { timestamps: true })
+const ProductSchema = new Schema<ProductDoc>(
+  {
+    seller_id: {
+      type: Schema.Types.ObjectId,
+      ref: 'Seller',
+    },
+    modelName: { type: String, default: '' },
+    wheelDrive: { type: String, default: '' },
+    horsePower: { type: Number },
+    price: { type: Number },
+    engineHours: { type: Number },
+    description: { type: String, default: '' },
+    category: { type: String, default: '' },
+    cylinders: { type: Number },
+    engineRpm: { type: Number },
+    transmissionType: { type: String, default: '' },
+    clutchType: { type: String, default: '' },
+    gearboxType: { type: String, default: '' },
+    brakesType: { type: String, default: '' },
+    steeringType: { type: String, default: '' },
+    fuelTankCapacity: { type: Number },
+    frontWheelSize: { type: String, default: '' },
+    rearWheelSize: { type: String, default: '' },
+    images: { type: [String], default: [] },
+    views: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+)
 
 const Product = model<ProductDoc>('Product', ProductSchema)
 
