@@ -7,7 +7,6 @@ interface ICreateReview {
 	description: string
 	rating: number
 }
-
 // Create Review
 // @route POST /api/v1/review?id=product_id
 export const createReview = async ({
@@ -28,9 +27,12 @@ export const createReview = async ({
 	}
 }
 
+interface  IGetReview {
+    id: string
+}
 // Get Review
 // @route GET /api/v1/review?id=review_id
-export const getReview = async (id: string) => {
+export const getReview = async (id: IGetReview) => {
 	try {
 		const response = await apiBase.get(`/review?id=${id}`)
 		return response.data

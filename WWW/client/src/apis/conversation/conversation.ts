@@ -42,7 +42,6 @@ export const getAllConversations = async () => {
     }
 }
 
-
 // Update has new message
 // @route PUT /api/v1/conversation?id=conversation_id
 export const updateHasNewMsg = async (conversation_id: string) => {

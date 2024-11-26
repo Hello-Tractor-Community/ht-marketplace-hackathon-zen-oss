@@ -6,42 +6,124 @@ import { verifyJwtToken } from '../utils/utils'
 
 // Cooke name = _ht010usr
 export const sellerAuth = async (
-	req: Request,
-	res: Response<IServerResponse>,
-	next: NextFunction
+  req: Request,
+  res: Response<IServerResponse>,
+  next: NextFunction,
 ) => {
-	try {
-		let cookie = req.cookies._dp010usr
+  try {
+    let cookie = req.cookies._dp010usr
 
-		if (!cookie) {
-			return res.status(HttpStatusCode.Unauthorized).json({
-				status: 'error',
-				message: 'Please login and try again!',
-				data: null
-			})
-		}
+    if (!cookie) {
+      return res.status(HttpStatusCode.Unauthorized).json({
+        status: 'error',
+        message: 'Please login and try again!',
+        data: null,
+      })
+    }
 
-		let decoded = verifyJwtToken(cookie)
+    let decoded = verifyJwtToken(cookie)
 
-		if (decoded.status === 'error') {
-			return res.status(HttpStatusCode.Unauthorized).json({
-				status: 'error',
-				message: 'Unauthorized',
-				data: null
-			})
-		}
+    if (decoded.status === 'error') {
+      return res.status(HttpStatusCode.Unauthorized).json({
+        status: 'error',
+        message: 'Unauthorized',
+        data: null,
+      })
+    }
 
-		// Set user id
-		res.locals.userId = decoded.data.token
+    // Set user id
+    res.locals.userId = decoded.data.token
 
-		next()
-	} catch (err) {
-		Logger.error({ message: 'Error Authenticating user: ' + err })
+    next()
+  } catch (err) {
+    Logger.error({ message: 'Error Authenticating user: ' + err })
 
-		res.status(HttpStatusCode.InternalServerError).json({
-			status: 'error',
-			message: 'Error Authenticating User',
-			data: null
-		})
-	}
+    res.status(HttpStatusCode.InternalServerError).json({
+      status: 'error',
+      message: 'Error Authenticating User',
+      data: null,
+    })
+  }
+}
+
+export const buyerAuth = async (
+  req: Request,
+  res: Response<IServerResponse>,
+  next: NextFunction,
+) => {
+  try {
+    let cookie = req.cookies._dp010usr
+
+    if (!cookie) {
+      return res.status(HttpStatusCode.Unauthorized).json({
+        status: 'error',
+        message: 'Please login and try again!',
+        data: null,
+      })
+    }
+
+    let decoded = verifyJwtToken(cookie)
+
+    if (decoded.status === 'error') {
+      return res.status(HttpStatusCode.Unauthorized).json({
+        status: 'error',
+        message: 'Unauthorized',
+        data: null,
+      })
+    }
+
+    // Set user id
+    res.locals.userId = decoded.data.token
+
+    next()
+  } catch (err) {
+    Logger.error({ message: 'Error Authenticating user: ' + err })
+
+    res.status(HttpStatusCode.InternalServerError).json({
+      status: 'error',
+      message: 'Error Authenticating User',
+      data: null,
+    })
+  }
+}
+
+export const sellerAndBuyerAuth = async (
+  req: Request,
+  res: Response<IServerResponse>,
+  next: NextFunction,
+) => {
+  try {
+    let cookie = req.cookies._dp010usr
+
+    if (!cookie) {
+      return res.status(HttpStatusCode.Unauthorized).json({
+        status: 'error',
+        message: 'Please login and try again!',
+        data: null,
+      })
+    }
+
+    let decoded = verifyJwtToken(cookie)
+
+    if (decoded.status === 'error') {
+      return res.status(HttpStatusCode.Unauthorized).json({
+        status: 'error',
+        message: 'Unauthorized',
+        data: null,
+      })
+    }
+
+    // Set user id
+    res.locals.userId = decoded.data.token
+
+    next()
+  } catch (err) {
+    Logger.error({ message: 'Error Authenticating user: ' + err })
+
+    res.status(HttpStatusCode.InternalServerError).json({
+      status: 'error',
+      message: 'Error Authenticating User',
+      data: null,
+    })
+  }
 }
