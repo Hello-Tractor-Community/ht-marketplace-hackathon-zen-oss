@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Eye, EyeOff, Pencil } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -9,7 +9,8 @@ import { useUserStore } from '@/store/user-store'
 
 export default function BuyerAccountSettings() {
 	const [showPassword, setShowPassword] = useState(false)
-	const { name, email, bio, location } = useUserStore((state) => state)
+	const { name, role, email, bio, location } = useUserStore((state) => state)
+	const [isSeller, setIsSeller] = useState(false)
 	const [formData, setFormData] = useState({
 		name,
 		email,
@@ -20,7 +21,6 @@ export default function BuyerAccountSettings() {
 		profilePhoto:
 			'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
 	})
-	const isSeller = true
 
 	const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
@@ -35,6 +35,15 @@ export default function BuyerAccountSettings() {
 			reader.readAsDataURL(file)
 		}
 	}
+
+	useEffect(() => {
+		if (role === 'seller') {
+			setIsSeller(true)
+		} else {
+			setIsSeller(false)
+		}
+	}, [])
+
 	return (
 		<div>
 			<h1 className='py-2 font-manrope text-2xl font-medium'>

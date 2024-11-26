@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useUserStore } from '@/store/user-store'
 
 export default function Page() {
-	const { name } = useUserStore((state) => state)
+	const { name, role } = useUserStore((state) => state)
 	return (
 		<section className='mb-32 mt-6 h-fit px-4 lg:container md:px-6 lg:mb-12 lg:px-24'>
 			<h2 className=''>
@@ -29,9 +29,11 @@ export default function Page() {
 					<TabsTrigger value='wishlist' className='text-base'>
 						Wishlist
 					</TabsTrigger>
-					<TabsTrigger value='listings' className='text-base'>
-						Listings
-					</TabsTrigger>
+					{role === 'seller' && (
+						<TabsTrigger value='listings' className='text-base'>
+							Listings
+						</TabsTrigger>
+					)}
 				</TabsList>
 
 				<TabsContent value='account'>
