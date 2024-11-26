@@ -24,16 +24,24 @@ export interface WsMessageDataType {
 
 export interface SearchQuery {
   $or?: Array<{
-    title?: RegExp
+    modelName?: RegExp
     description?: RegExp
   }>
-  title?: RegExp
+  modelName?: RegExp
   description?: RegExp
   category?: string
   brand?: string
-  horsePower?: number
+  horsePower?:{
+    $gte?: number
+    $lte?: number
+  }
   year?: number
-  engineHours?: number
+  type?: string
+  engineHours?:{
+
+    $gte?: number
+    $lte?: number
+  }
   price?: {
     $gte?: number
     $lte?: number

@@ -165,12 +165,14 @@ export const filterProducts = async (
 ) => {
   try {
     const {
-      search,
-      category,
+        userQuery,
+      type,
       brand,
-      horsePower,
+      minHorsePower,
+      maxHorsePower,
       year,
-      engineHours,
+      minEngineHours,
+      maxEngineHours,
       minPrice,
       maxPrice,
       page = 1,
@@ -181,29 +183,33 @@ export const filterProducts = async (
 
     const searchQuery: SearchQuery = {}
 
-    if (search) {
-      const searchRegex = new RegExp(String(search), 'i')
-      searchQuery.$or = [{ title: searchRegex }, { description: searchRegex }]
-    }
-
-    if (category) {
-      searchQuery.category = String(category)
+    if (userQuery) {
+      const searchRegex = new RegExp(String(userQuery), 'i')
+      searchQuery.$or = [{ modelName: searchRegex }, { description: searchRegex }]
     }
 
     if (brand) {
       searchQuery.brand = String(brand)
     }
 
-    if (horsePower) {
-      searchQuery.horsePower = Number(horsePower)
+    if(type) {
+      searchQuery.type = String(type)
+    }
+
+    if (minHorsePower || maxHorsePower) {
+      searchQuery.horsePower = {}
+      if (minPrice) searchQuery.horsePower.$gte = Number(minPrice)
+      if (maxPrice) searchQuery.horsePower.$lte = Number(maxPrice)
     }
 
     if (year) {
       searchQuery.year = Number(year)
     }
 
-    if (engineHours) {
-      searchQuery.engineHours = Number(engineHours)
+    if (minEngineHours || maxEngineHours) {
+      searchQuery.engineHours= {}
+      if (minPrice) searchQuery.engineHours.$gte = Number(minPrice)
+      if (maxPrice) searchQuery.engineHours.$lte = Number(maxPrice)
     }
 
     // Price range filter
@@ -213,7 +219,6 @@ export const filterProducts = async (
       if (maxPrice) searchQuery.price.$lte = Number(maxPrice)
     }
 
-    console.log(searchQuery)
 
     // Calculate skip value for pagination
     const skip = (Number(page) - 1) * Number(limit)
