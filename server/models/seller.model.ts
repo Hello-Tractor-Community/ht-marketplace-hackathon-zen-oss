@@ -5,7 +5,6 @@ interface SellerDoc extends Document {
   email: string
   phone: string[]
   password: string
-  sessionInfo: string | null
   companyDetails: string[]
   isVerified: boolean
   lastLogin: Date
@@ -34,10 +33,6 @@ const SellerSchema: Schema = new Schema<SellerDoc>(
     companyDetails: {
       type: [String],
       default: [],
-    },
-    sessionInfo: {
-      type: String,
-      default: '',
     },
     isVerified: {
       type: Boolean,
