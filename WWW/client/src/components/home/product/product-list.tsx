@@ -7,7 +7,14 @@ export default function ProductList({ loading }: { loading: boolean }) {
 		<>
 			<div className='relative mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5'>
 				{true ? (
-					<ProductCard loading={loading} />
+					<ProductCard
+						loading={loading}
+						product={{
+							model: 'John Deere 5055E',
+							tractor_model_logo_url:
+								'https://res.cloudinary.com/htractor/image/upload/v1633666824/tractor-models/john-deere-5055e.png'
+						}}
+					/>
 				) : (
 					<div>Loading ...</div>
 				)}

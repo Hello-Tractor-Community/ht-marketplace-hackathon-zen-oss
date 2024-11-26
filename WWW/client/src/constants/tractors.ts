@@ -1,3 +1,198 @@
+import { LatLngExpression } from "leaflet"
+
+export const DEF_SPECS = [
+	{
+		title: 'Mahindra 275 DI HT TU SP Plus Engine',
+		specs: {
+			'No. Of Cylinder': 3,
+			'HP Category': '39 HP',
+			'Capacity CC': '2234 CC',
+			'Engine Rated RPM': '2200 RPM',
+			'Air Filter': 'Wet Type',
+			'PTO HP': 34,
+			Torque: '145 NM'
+		}
+	},
+	{
+		title: 'Mahindra 275 DI HT TU SP Plus Transmission',
+		specs: {
+			'Clutch Type': 'Dual Clutch',
+			'Gearbox Type': '8 Forward + 2 Reverse',
+			'Main Gear Shift': 'Constant Mesh',
+			'PTO Drive': 'Independent'
+		}
+	},
+	{
+		title: 'Mahindra 275 DI HT TU SP Plus Brakes',
+		specs: {
+			'Service Brake': 'Oil Immersed Brakes',
+			'Parking Brake': 'Mechanical, Hand Operated',
+			'Brake Type': 'Disc Brake'
+		}
+	},
+	{
+		title: 'Mahindra 275 DI HT TU SP Plus Steering',
+		specs: {
+			'Steering Type': 'Power Steering',
+			'Turning Radius': '3.8m',
+			'Steering Column': 'Adjustable'
+		}
+	},
+	{
+		title: 'Mahindra 275 DI HT TU SP Plus Hydraulics',
+		specs: {
+			'Hydraulic Pump': 'Dual Pump',
+			'Lifting Capacity': '1600 kg',
+			'Position Control': 'Standard'
+		}
+	},
+	{
+		title: 'Mahindra 275 DI HT TU SP Plus Wheels And Tyres',
+		specs: {
+			'Front Tyre': '6.00-16',
+			'Rear Tyre': '13.6-28',
+			'Wheel Drive': '2WD'
+		}
+	}
+]
+
+
+export const MARKERS = [
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Lusaka Rd, Nairobi\nPhone: +254722843433'
+	},
+	{
+		geocode: {
+			lng: 36.052040497088704,
+			lat: -0.28999981551338344
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Nakuru Kisumu Rd, Nakuru\nPhone: +254722316821'
+	},
+	{
+		geocode: {
+			lng: 37.07599918327432,
+			lat: 0.01150204498553343
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Sagana Rd, Nanyuki/Meru\nPhone: +254727443226'
+	},
+	{
+		geocode: {
+			lng: 35.27480168090905,
+			lat: 0.5105841554000572
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Eldoret Kisumu Rd, Eldoret/Kitale\nPhone: +254723256074'
+	},
+	{
+		geocode: {
+			lng: 34.75068968085394,
+			lat: -0.09681999772493884
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Obote Rd, Kisumu\nPhone: +254722540558'
+	},
+	{
+		geocode: {
+			lng: 39.65766547222288,
+			lat: -4.061735215174758
+		} as LatLngExpression,
+		popUp: 'CMC (New Holland Dealer) - Archbishop Makarios Rd, Mombasa\nPhone: +254720935034'
+	},
+	{
+		geocode: {
+			lng: 35.27127864671338,
+			lat: 0.5189855951750221
+		} as LatLngExpression,
+		popUp: 'Mascor (John Deere) - Uganda Rd, Eldoret \nPhone: 254 207 602 298'
+	},
+	{
+		geocode: {
+			lng: 34.76797144085695,
+			lat: -0.09168150828103418
+		} as LatLngExpression,
+		popUp: 'Mascor (John Deere) - Obote Rd, Kisumu \nPhone: 254 207 602 294'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'Mascor (John Deere) - Old Nairobi Road,  Nakuru\nPhone: 254 207 602 288'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'Mascor (John Deere) - Narok\nPhone: 254 720 935 034'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'CFAO Motors (Authorises Case Hl Dealer) - Town East, George Morara Rd, Nakuru\nPhone: 207604121'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'CFAO Motors (Authorises Case Hl Dealer) - Kisumu\nPhone: +254719029707'
+	},
+	{
+		geocode: {
+			lng: 36.82933094675188,
+			lat: -1.3029392707690939
+		} as LatLngExpression,
+		popUp: 'CFAO Motors (Authorises Case Hl Dealer) - Kenyatta Rd, Nanyuki\nPhone: 0719 029462'
+	},
+	{
+		geocode: {
+			lng: 35.2904014066872,
+			lat: -0.3662408583545941
+		} as LatLngExpression,
+		popUp: 'CADS Motors (Kericho Toyota) - Moi Highway, Kericho\nPhone: 0708 698899'
+	},
+	{
+		geocode: {
+			lng: 36.842509871697004,
+			lat: -1.3068142614866365
+		} as LatLngExpression,
+		popUp: 'Sichey Automotive EA Ltd - Pembe Plaza, Ground Floor Homa Bay Road/ Enterprise Road Junction Industrial Area, Nairobi \nPhone: 254 735 500 500, +254 768 989 407, +254 757 487 425'
+	},
+	{
+		geocode: {
+			lng: 34.55598633648814,
+			lat: 0.5931351188176409
+		} as LatLngExpression,
+		popUp: 'Terranova Automotive - Webuye Malaba Road – Kandunyi, Bungoma\nPhone: +254 777 222 239'
+	},
+	{
+		geocode: {
+			lng: 36.05977507512129,
+			lat: -0.28793810992389746
+		} as LatLngExpression,
+		popUp: 'Uni- Truck World Ltd  - George Morara Avenue Next To Bhogals Toyota, Nakuru\nPhone: 254 727 228 811, +254 734 228 811, +254 512216045 '
+	},
+	{
+		geocode: {
+			lng: 36.06089558491588,
+			lat: -0.2867164409933456
+		} as LatLngExpression,
+		popUp: 'FMD  -  Town East, Biashara George Morara Ave Nakuru, Kiambu, Nakuru\nPhone: +254722205538'
+	},
+	{
+		geocode: {
+			lng: 36.06090437511119,
+			lat: -0.2867387710106743
+		} as LatLngExpression,
+		popUp: 'FMD  - Lima Hse Kapseret, Kipkenyo, Kenyatta ave, Nakuru\nPhone: +254727509018'
+	}
+]
+
 export const TRACTOR_MODELS = {
 	6170: 'https://ht-mobileassets.s3.amazonaws.com/tractorModels/joohn_deere-removebg-preview.png',
 	6712: 'https://ht-mobileassets.s3.amazonaws.com/tractorModels/download-removebg-preview.png',

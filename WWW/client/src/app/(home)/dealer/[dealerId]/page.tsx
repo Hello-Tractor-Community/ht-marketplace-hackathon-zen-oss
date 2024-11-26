@@ -13,18 +13,18 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { DEFAULT_SLIDES } from '@/components/home/banner'
 import ProductSearchCard from '@/components/cards/search-card'
-import { SelectDropdown, filterStatus } from '@/components/home/filters'
+import { SelectDropdown } from '@/components/home/filters'
 import { toast } from 'sonner'
 
 export default function DealerShop() {
-	const [selectedStatus, setSelectedStatus] = useState<
-		(typeof filterStatus)[0] | null
-	>(null)
 	const [page, setPage] = useState<number>(1)
 	const [search, setSearch] = useState<string>('')
 	const [totalPages, setTotalPages] = useState<number>(1)
 	const [isLoading, setIsLoading] = useState<boolean>(true)
-	const [searchType, setSearchType] = useState<'query' | 'id'>('id')
+	const [filterData, setFilterData] = useState({
+		enginehours: '',
+		price: ''
+	})
 
 	const handlePageChange = (type: 'next' | 'back') => {
 		if (type === 'next') {
@@ -58,9 +58,9 @@ export default function DealerShop() {
 		setPage(1)
 	}
 	return (
-		<section className='px-4 md:container pb-32  pt-8 lg:px-32'>
+		<section className='px-4 pb-32 pt-8  md:container lg:px-32'>
 			<div className='rounded-lg border-4 border-gray-200 bg-white p-6'>
-				<div className='flex flex-col md:flex-row gap-6'>
+				<div className='flex flex-col gap-6 md:flex-row'>
 					<img
 						src={
 							'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
@@ -93,7 +93,7 @@ export default function DealerShop() {
 			</div>
 
 			<div>
-				<div className='mt-4 flex overflow-x-auto items-center gap-12'>
+				<div className='mt-4 flex items-center gap-12 overflow-x-auto'>
 					<div className='flex w-fit items-center gap-2 rounded-full border border-gray-200 bg-slate-100 p-1'>
 						<p className='cursor-pointer rounded-full bg-gray-500 px-3 py-1 font-manrope text-xs text-white hover:bg-slate-200'>
 							All
@@ -118,7 +118,7 @@ export default function DealerShop() {
 							/>
 							<input
 								placeholder='Search shop'
-								className='flex h-9 min-w-[150px] md:w-full bg-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0  disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
+								className='flex h-9 min-w-[150px] bg-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed  disabled:opacity-50 md:w-full md:text-sm'
 							/>
 						</div>
 					</div>
@@ -127,15 +127,36 @@ export default function DealerShop() {
 						<SelectDropdown
 							type='Engine Hours'
 							icon={<Cog size={16} />}
-							selectedItem={selectedStatus}
-							setSelectedItem={setSelectedStatus}
+							selectedItem={filterData.enginehours}
+							setSelectedItem={(item) => {
+								if (item !== null) {
+									setFilterData({
+										...filterData,
+										enginehours: item
+									})
+								}
+							}}
+							listItems={[
+								'0-500hrs',
+								'500-1000hrs',
+								'1000-2000hrs',
+								'2000+hrs'
+							]}
 						/>
 
 						<SelectDropdown
 							type='Price'
 							icon={<ArrowDownNarrowWide size={16} />}
-							selectedItem={selectedStatus}
-							setSelectedItem={setSelectedStatus}
+							selectedItem={filterData.price}
+							setSelectedItem={(item) => {
+								if (item !== null) {
+									setFilterData({
+										...filterData,
+										price: item
+									})
+								}
+							}}
+							listItems={['500k-1.5m', '2m-3m', '4m-5m', '5m+']}
 						/>
 					</div>
 				</div>
@@ -147,7 +168,7 @@ export default function DealerShop() {
 				})}
 			</div>
 
-			<div className='bg-white border-4 border-gray-200 rounded-lg mt-12 py-2'>
+			<div className='mt-12 rounded-lg border-4 border-gray-200 bg-white py-2'>
 				<Pagination>
 					<PaginationContent className='p-1'>
 						<PaginationItem>

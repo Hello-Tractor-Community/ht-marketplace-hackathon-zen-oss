@@ -43,7 +43,8 @@ function Page() {
 			setDetails({
 				email: response.data.user.userId.email,
 				name: response.data.user.userId.name,
-                role: 'buyer',
+				role: 'buyer',
+				phone: '',
 				image: ''
 			})
 		} else {
@@ -56,7 +57,8 @@ function Page() {
 			setDetails({
 				email: response.data.seller.userId.email,
 				name: response.data.seller.userId.name,
-                role: 'seller',
+				phone: '',
+				role: 'seller',
 				image: ''
 			})
 		}

@@ -1,11 +1,11 @@
 import React from 'react'
-import { DEF_SPECS } from '@/app/(home)/tractor/page'
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger
 } from '@/components/ui/accordion'
+import { DEF_SPECS } from '@/constants/tractors'
 
 interface ProductSpecificationsProps {
 	sections: typeof DEF_SPECS

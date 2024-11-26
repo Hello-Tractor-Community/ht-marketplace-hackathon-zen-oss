@@ -10,9 +10,7 @@ interface GoogleLoginBtnProps {
 	isSignup?: boolean
 }
 
-const GoogleLoginBtn = ({
-	isSignup = false,
-}: GoogleLoginBtnProps) => {
+const GoogleLoginBtn = ({ isSignup = false }: GoogleLoginBtnProps) => {
 	const [isLoading, setIsLoading] = useState(false)
 	const { setDetails } = useUserStore((state) => state)
 	const router = useRouter()
@@ -39,6 +37,8 @@ const GoogleLoginBtn = ({
 			name: response.data.name,
 			email: response.data.email,
 			image: response.data.image,
+			role: 'buyer',
+			phone: ''
 		})
 
 		router.push('/')
