@@ -12,38 +12,49 @@ import { Types } from 'mongoose'
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const {
-      title,
-      description,
-      category,
-      price,
-      stock,
-      shipping_options,
-      delivery_times,
-      costs,
-      engine,
-      transmission,
-      brakes,
-      steering,
-      take_off,
-      fuel_tank,
-      dimensions,
-      hydraulics,
-      wheels,
-      other_info,
-      year,
-      images, // Array of URLs from Uploadthing
+		model,
+		wheelDrive,
+		horsePower,
+		price,
+		engineHours,
+		description,
+		category,
+		cylinders,
+		engineRpm,
+		transmissionType,
+		clutchType,
+		gearboxType,
+		brakesType,
+		steeringType,
+		fuelTankCapacity,
+		liftingCapacity,
+		frontWheelSize,
+		rearWheelSize,
+		images: []
     } = req.body
 
     const seller_id = res.locals.userId
 
     // Validate required fields
     if (
-      !title ||
+      !model ||
+      !wheelDrive ||
+      !horsePower ||
+      !price ||
+      !engineHours ||
       !description ||
       !category ||
-      !price ||
-      !stock ||
-      !images?.length
+      !cylinders ||
+      !engineRpm ||
+      !transmissionType ||
+      !clutchType ||
+      !gearboxType ||
+      !brakesType ||
+      !steeringType ||
+      !fuelTankCapacity ||
+      !liftingCapacity ||
+      !frontWheelSize ||
+      !rearWheelSize
     ) {
       return res.status(HttpStatusCode.BadRequest).json({
         status: 'error',

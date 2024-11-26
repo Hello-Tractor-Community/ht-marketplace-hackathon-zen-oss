@@ -73,18 +73,6 @@ export const createSeller = async (
 
     let hashedPassword = await bcrypt.hash(password, 10)
 
-    const identityToolkit = google.identitytoolkit({
-      version: 'v3',
-      auth: Config.GCP_API_KEY,
-    })
-
-    const response = await identityToolkit.relyingparty.sendVerificationCode({
-      requestBody: {
-        phoneNumber: phone,
-        recaptchaToken: recaptcha,
-      },
-    })
-
     const sessionInfo = response.data.sessionInfo
 
     let newSeller = new Seller({
