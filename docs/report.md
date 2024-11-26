@@ -8,8 +8,8 @@ Hello Tractor Marketplace is a comprehensive online marketplace designed to conn
 
 - **Project Name**: Hello Tractor
 - **Team Members**:
-  - [Abel Misiocha] (@Codedwells)
-  - [Ryan Malawa] (@mryan-3)
+  - Abel Misiocha (@Codedwells)
+  - Ryan Malawa (@mryan-3)
 
 ## Tech Stack
 
@@ -27,6 +27,7 @@ Hello Tractor Marketplace is a comprehensive online marketplace designed to conn
 - TypeScript
 - MongoDB
 - WorkOS (Google Authentication)
+- Uploadthing
 
 ### Additional Technologies
 
@@ -50,16 +51,15 @@ Hello Tractor Marketplace is a comprehensive online marketplace designed to conn
 ## Project Challenges
 
 1.  **Seamless Integration**: Ensuring smooth integration between the frontend and backend components was a complex process.
-2.  **Deployment Issues**: Encountered multiple build errors when deploying to production, requiring debugging and optimization.
+2.  **Deployment Issues**: Encountered some build errors when deploying to production, requiring debugging and optimization.
 3.  **Time Constraints**: Balancing feature development within the project timeline demanded effective prioritization and collaboration.
 
 
 ## Lessons Learned
 
-1.  **Teamwork & Communication**: Effective collaboration and clear communication were critical for resolving challenges and delivering the project on time.
-2.  **Problem-Solving**: Debugging deployment issues taught us the importance of understanding dependencies and the value of version control.
+1.  **Teamwork & Communication**: Effective collaboration and clear communication were critical for resolving challenges.
+2.  **Problem-Solving**: Debugging issues taught us the importance of understanding dependencies and the value of version control.
 3.  **Project Management**: Breaking down tasks into smaller, manageable milestones helped us stay on track despite tight deadlines.
-    Future Roadmap
 
 ---
 
