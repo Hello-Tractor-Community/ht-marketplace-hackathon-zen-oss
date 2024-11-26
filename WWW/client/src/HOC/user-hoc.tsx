@@ -25,6 +25,7 @@ const withUserAuthRequired = (ChildComponent: React.ComponentType<any>) => {
 				name: name,
 				email: email,
 				image: image,
+                role: 'buyer',
 			})
 
 			setIsLoading(false)

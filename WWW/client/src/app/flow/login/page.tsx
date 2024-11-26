@@ -35,19 +35,31 @@ function Page() {
 
 		if (loginType === 'buyer') {
 			response = await loginBuyer({ email, password })
+
+			setIsLoading(false)
+
+			if (!response) return
+
+			setDetails({
+				email: response.data.user.userId.email,
+				name: response.data.user.userId.name,
+                role: 'buyer',
+				image: ''
+			})
 		} else {
 			response = await loginSeller({ email, password })
+
+			setIsLoading(false)
+
+			if (!response) return
+
+			setDetails({
+				email: response.data.seller.userId.email,
+				name: response.data.seller.userId.name,
+                role: 'seller',
+				image: ''
+			})
 		}
-
-		setIsLoading(false)
-
-		if (!response) return
-
-		setDetails({
-			email: response.data.seller.userId.email,
-			name: response.data.seller.userId.name,
-			image: ''
-		})
 
 		toast.success(response.message)
 		router.push('/account')
@@ -82,7 +94,7 @@ function Page() {
 										<Input
 											id='email'
 											type='email'
-											className='text-primary focus-visible:ring-primary/10'
+											className='border-gray-200 text-primary focus-visible:ring-primary/10'
 											onChange={(e) =>
 												setEmail(e.target.value)
 											}
@@ -97,7 +109,7 @@ function Page() {
 										<Input
 											id='password'
 											type='password'
-											className='text-primary focus-visible:ring-primary/10'
+											className='border-gray-200 text-primary focus-visible:ring-primary/10'
 											onChange={(e) =>
 												setPassword(e.target.value)
 											}
