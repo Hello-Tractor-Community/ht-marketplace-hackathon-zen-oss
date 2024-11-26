@@ -171,7 +171,7 @@ function Page() {
 					</div>
 
 					<div className='pointer-events-none flex flex-col items-center justify-center gap-4 opacity-50'>
-						<GoogleLoginBtn isSignup={true} />
+						<GoogleLoginBtn isSignup={false} />
 					</div>
 
 					<div className='mx-auto max-w-xs text-center  text-xs text-muted-foreground'>

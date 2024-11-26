@@ -6,8 +6,6 @@ interface ICreateSeller {
 	email: string
 	phone: string
 	password: string
-	companyDetails?: string
-	recaptcha: string
 }
 // Create a seller
 // @route POST /api/v1/seller
